@@ -1,18 +1,20 @@
 ﻿Imports System.Net.Http
-'Imports Newtonsoft.Json
 
 Public Class Form1
-    'Private WithEvents kbHook As New KeyboardHook
     Private WithEvents kbHook As New KeyboardHook
     Private IsKeyUp As Boolean
-    Private g As Graphics  ' pointer-like Graphics on Form1
-    Private paintEvent_graphics As Graphics
-    Private fromPoint As Point  ' regional capture's starting point
+    Private g As Graphics  ' pointer-like Graphics on Form1. for test only
+    Private paintEvent_graphics As Graphics  ' reason unknown
+    'Private fromPoint As Point  ' regional capture's starting point
     Private IsMouseDown As Boolean = False
+    Private Const iniPath As String = "./config.ini"
+    Public _lang As String  ' detective language
+    Public _apikey As String
 
-    '=====https://social.msdn.microsoft.com/Forums/windows/en-US/5dc1b32b-7b7e-41fe-af87-d491d7021bd3/vbnet-smooth-rectangle-drawing-using-mousedrag?forum=winforms
+    '===== Reference:= https://social.msdn.microsoft.com/Forums/windows/en-US/5dc1b32b-7b7e-41fe-af87-d491d7021bd3/vbnet-smooth-rectangle-drawing-using-mousedrag?forum=winforms
     Dim mRect As Rectangle
 
+    '--=====-- Overrides --=====--
     Public Sub New()
         InitializeComponent()
         Me.DoubleBuffered = True
@@ -38,8 +40,10 @@ Public Class Form1
             paintEvent_graphics = e.Graphics
         End Using
     End Sub
-    '=====
+    '===== End Reference
+    '--=====-- End Overrides --=====--
 
+    '--=====-- Initiation --=====--
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'InitWindow()  ' Moved to Timer1 tick event
         IsKeyUp = True
@@ -47,6 +51,32 @@ Public Class Form1
 
     End Sub
 
+    ''' <summary>
+    ''' Hides Form1 at startup. The feature does NOT effect in Frm.Load Event.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
+        Timer1.Enabled = False
+        Me.Hide()
+
+        ''For test
+        'TakeScreenShot()
+
+        InitWindow()
+        InitIniFile()
+
+    End Sub
+    '--=====-- End Initiation --=====--
+
+    '--=====-- Finalization --=====--
+    Public Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing  ' BUG: NOT WORKING
+        'e.Cancel = True
+        FinalizingIniFile()
+    End Sub
+    '--=====-- End Finalization --=====--
+
+    '--=====-- Events --=====--
     Private Sub kbHook_KeyDown(ByVal Key As System.Windows.Forms.Keys) Handles kbHook.KeyDown
         Debug.WriteLine(Key.ToString)
         If Key = Keys.F4 And IsKeyUp Then
@@ -73,20 +103,7 @@ Public Class Form1
         End If
     End Sub
 
-    ''' <summary>
-    ''' Hides Form1 at startup
-    ''' </summary>
-    ''' <param name="sender"></param>
-    ''' <param name="e"></param>
-    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
-        Timer1.Enabled = False
-        Me.Hide()
 
-        ''For test
-        'TakeScreenShot()
-        InitWindow()
-
-    End Sub
 
     ''=====
     'Private Sub Panel1_MouseDown(sender As Object, e As MouseEventArgs) Handles Panel1.MouseDown
@@ -148,6 +165,19 @@ Public Class Form1
     End Sub
     '=====
 
+    Private Sub tray_MouseClick(sender As Object, e As MouseEventArgs) Handles tray.MouseClick
+        If e.Button = Windows.Forms.MouseButtons.Right Then 'Checks if the pressed button is the Right Mouse
+            trayform.Show() 'Shows the Form that is the parent of "traymenu"
+            trayform.Activate() 'Set the Form to "Active", that means that that will be the "selected" window
+            trayform.Width = 1 'Set the Form width to 1 pixel, that is needed because later we will set it behind the "traymenu"
+            trayform.Height = 1 'Set the Form Height to 1 pixel, for the same reason as above
+        End If
+    End Sub
+
+    '--=====-- End Events --=====--
+
+    '--=====-- Functions --=====--
+    'When closing/hiding the Window
     Private Sub FinishingFrm()
         ' comment out the lines below for debug
         Me.Hide()
@@ -168,15 +198,15 @@ Public Class Form1
         Return screenGrab
     End Function
 
-    ' Aborted
-    Private Function TakeRegionalScreenShot(fromPoint As Point, toPoint As Point) As Bitmap
-        Dim captureSize As Size = New Size(Math.Abs(toPoint.X - fromPoint.X), Math.Abs(toPoint.Y - fromPoint.Y))
-        Dim screenGrab As New Bitmap(Math.Abs(toPoint.X - fromPoint.X), Math.Abs(toPoint.Y - fromPoint.Y))
+    '' Aborted
+    'Private Function TakeRegionalScreenShot(fromPoint As Point, toPoint As Point) As Bitmap
+    '    Dim captureSize As Size = New Size(Math.Abs(toPoint.X - fromPoint.X), Math.Abs(toPoint.Y - fromPoint.Y))
+    '    Dim screenGrab As New Bitmap(Math.Abs(toPoint.X - fromPoint.X), Math.Abs(toPoint.Y - fromPoint.Y))
 
-        Dim g1 As Graphics = Graphics.FromImage(screenGrab)
-        g1.CopyFromScreen(fromPoint, New Point(0, 0), captureSize)
-        Return screenGrab
-    End Function
+    '    Dim g1 As Graphics = Graphics.FromImage(screenGrab)
+    '    g1.CopyFromScreen(fromPoint, New Point(0, 0), captureSize)
+    '    Return screenGrab
+    'End Function
 
     Private Function TakeRegionalScreenShot(rect As Rectangle) As Bitmap
         Dim screenGrab As New Bitmap(rect.Width, rect.Height)
@@ -227,14 +257,15 @@ Public Class Form1
 
     End Sub
 
+    'Upload screenshot and receive OCR result
     Private Async Function GetContextFrom(image As Bitmap) As Threading.Tasks.Task
         Try
             Dim httpClient As HttpClient = New HttpClient()
             httpClient.Timeout = New TimeSpan(1, 1, 1)
             Dim form As MultipartFormDataContent = New MultipartFormDataContent()
-            form.Add(New StringContent("helloworld"), "apikey")
+            form.Add(New StringContent(_apikey), "apikey")
             'Dim cmbLanguage As String = "chs"
-            Dim cmbLanguage As String = "eng"
+            Dim cmbLanguage As String = _lang
             form.Add(New StringContent(cmbLanguage), "language")
 
             Dim imageData As Byte() = ConvertToByteArray(image)
@@ -265,12 +296,13 @@ Public Class Form1
             If MessageBox.Show(parsedText, "", MessageBoxButtons.YesNo) = DialogResult.Yes Then Clipboard.SetText(parsedText)  ' BUG: does not pop up. fix: wait
 
         Catch exception As Exception
-            Me.Hide()  ' for debug
-            MessageBox.Show("Ooops" & exception.Message)
+            'Me.Hide()  ' for debug
+            MessageBox.Show("Ooops" & vbCrLf & exception.Message)
         End Try
     End Function
 
     ''' <summary>
+    ''' convert Bitmap to Byte()
     ''' https://dotnettips.wordpress.com/2007/12/16/convert-bitmap-to-byte-array/
     ''' </summary>
     ''' <param name="value"></param>
@@ -285,6 +317,7 @@ Public Class Form1
         Return bitmapBytes
     End Function
 
+    'analyses response documents and returns useful text
     Private Function GetParsedText(ByVal content As String) As String
         Dim parsedText As String
         Dim startIndex As Short = content.IndexOf("ParsedText") + "ParsedText".Length + 3  ' ":"
@@ -292,4 +325,23 @@ Public Class Form1
         parsedText = content.Substring(startIndex, endIndex - startIndex).Replace("\r\n", vbCrLf)
         Return parsedText
     End Function
+
+    'initiate config through ".ini" file
+    Private Sub InitIniFile()
+        Dim iniFile As New IniFile(iniPath)
+        'If Not iniFile.ExistINIFile() Then
+        '    'Dim fileWriter = System.IO.File.CreateText(iniPath)
+        '    iniFile.WriteIni(Section:="Basic config", Key:="Language", Value:="eng")
+        '    iniFile.WriteIni(Section:="Basic config", Key:="API_Key", Value:="helloworld")
+        'End If
+        _lang = iniFile.ReadIni(Section:="Basic config", Key:="Language", DefaultValue:="eng")
+        _apikey = iniFile.ReadIni(Section:="Basic config", Key:="API_Key", DefaultValue:="helloworld")
+    End Sub
+
+    Public Sub FinalizingIniFile()
+        Dim iniFile As New IniFile(iniPath)
+        iniFile.WriteIni(Section:="Basic config", Key:="Language", Value:=_lang)
+        iniFile.WriteIni(Section:="Basic config", Key:="API_Key", Value:=_apikey)
+    End Sub
+    '--=====-- End Functions --=====--
 End Class

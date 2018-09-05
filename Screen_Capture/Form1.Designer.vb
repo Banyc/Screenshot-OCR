@@ -23,8 +23,10 @@ Partial Class Form1
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.tray = New System.Windows.Forms.NotifyIcon(Me.components)
         Me.SuspendLayout()
         '
         'Label1
@@ -38,6 +40,12 @@ Partial Class Form1
         '
         'Timer1
         '
+        '
+        'tray
+        '
+        Me.tray.Icon = CType(resources.GetObject("tray.Icon"), System.Drawing.Icon)
+        Me.tray.Text = "Screenshot OCR"
+        Me.tray.Visible = True
         '
         'Form1
         '
@@ -55,4 +63,5 @@ Partial Class Form1
 
     Friend WithEvents Label1 As Label
     Friend WithEvents Timer1 As Timer
+    Friend WithEvents tray As NotifyIcon
 End Class

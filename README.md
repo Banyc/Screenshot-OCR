@@ -10,3 +10,9 @@ apply OCR to screenshot image.
 4. wait for a message box to pop up. The recognized letters shown in the box are in your clipboard.
 5. click "Yes" to copy them again, "No" to close the message box.
 6. go to step 2.
+
+## Appreciation
+
+- [icon8](https://icons8.com/) - Free Icons site;
+- [ConvertICO](https://convertico.com/) - site for Converting PNG to ICO;
+- and authors whose original code is at the website whose links were written between my codes
