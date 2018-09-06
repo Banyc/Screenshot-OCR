@@ -324,7 +324,7 @@ Public Class Form1
             Dim parsedText As String = GetParsedText(strContent)
             Clipboard.Clear()
             Clipboard.SetText(parsedText)
-            If MessageBox.Show(parsedText, "", MessageBoxButtons.YesNo) = DialogResult.Yes Then Clipboard.SetText(parsedText)  ' BUG: does not pop up. fix: wait
+            If MessageBox.Show(parsedText, "", MessageBoxButtons.YesNoCancel) = DialogResult.Yes Then Clipboard.SetText(parsedText)  ' BUG: does not pop up. fix: wait
 
         Catch exception As Exception
             'Me.Hide()  ' for debug
