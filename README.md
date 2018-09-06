@@ -7,9 +7,9 @@ apply OCR to screenshot image.
 1. run executive file.
 2. Press F4 when you need to convert letters on the screen to editable with OCR.
 3. Press F4 again to undo.
-4. Drag a rectangle to select the letters-contained region, but only from top left to bottom right.
+4. Drag a rectangle to select the letters-contained region.
 5. wait for a message box to pop up. The recognized letters shown in the box are in your clipboard.
-6. click "Yes" to copy them again, "No" to close the message box.
+6. click "OK" to copy them again, "Cancel" to close the message box.
 7. go to step 2.
 
 ## Appreciation

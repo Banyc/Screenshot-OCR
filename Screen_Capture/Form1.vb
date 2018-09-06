@@ -8,7 +8,7 @@ Public Class Form1
     Private g As Graphics  ' pointer-like Graphics on Form1. for test only
 #End If
     Private paintEvent_graphics As Graphics  ' reason unknown
-    'Private fromPoint As Point  ' regional capture's starting point
+    Private _startPoint As Point  ' regional capture rectangle's starting point
     Private IsMouseDown As Boolean = False
     Private Const iniPath As String = "./config.ini"
     Public _lang As String  ' detective language
@@ -27,13 +27,17 @@ Public Class Form1
     Protected Overrides Sub OnMouseDown(ByVal e As MouseEventArgs)
         IsMouseDown = True
         Label1.Text = "MouseDown"
-        mRect = New Rectangle(e.X, e.Y, 0, 0)
+        'mRect = New Rectangle(e.X, e.Y, 0, 0)
+        _startPoint = New Size(e.X, e.Y)
         Me.Invalidate()
     End Sub
 
     Protected Overrides Sub OnMouseMove(ByVal e As MouseEventArgs)
         If e.Button = Windows.Forms.MouseButtons.Left Then
-            mRect = New Rectangle(mRect.Left, mRect.Top, e.X - mRect.Left, e.Y - mRect.Top)
+            'mRect = New Rectangle(_startPoint.X, _startPoint.Y, e.X - _startPoint.X, e.Y - _startPoint.Y)
+            mRect = New Rectangle(Math.Min(_startPoint.X, e.X), Math.Min(_startPoint.Y, e.Y),
+                                  Math.Max(_startPoint.X, e.X) - Math.Min(_startPoint.X, e.X),
+                                  Math.Max(_startPoint.Y, e.Y) - Math.Min(_startPoint.Y, e.Y))
             Me.Invalidate()
         End If
     End Sub
@@ -164,18 +168,17 @@ Public Class Form1
             IsMouseDown = False
             Label1.Text = "MouseUp"
             'Dim toPoint As Point = e.Location
-            If mRect = Nothing Or Not mRect.Size = Size.Empty Then
+            If mRect <> Nothing And mRect.Size.Width <> 0 And mRect.Size.Height <> 0 Then
                 Dim capturedScreen As Bitmap = TakeRegionalScreenShot(mRect)
-#If Not DEBUG Then
-                FinishingFrm()
-#End If
-
 #If DEBUG Then
                 g.DrawImage(capturedScreen, 1, 1)
 #End If
 
                 GetContextFrom(capturedScreen)
             End If
+#If Not DEBUG Then
+            FinishingFrm()
+#End If
         End If
     End Sub
     '=====
@@ -202,6 +205,7 @@ Public Class Form1
         ' comment out the lines below for debug
         Me.Hide()
         Me.BackColor = Color.Gray  ' privacy protection
+        ' erase the previous rectangle
         mRect = Nothing
         Me.Invalidate()
     End Sub
@@ -279,6 +283,8 @@ Public Class Form1
 
     'Upload screenshot and receive OCR result
     Private Async Function GetContextFrom(image As Bitmap) As Threading.Tasks.Task
+        _timeCounter = 0  ' reset
+        Timer2.Enabled = True
         Try
             Dim httpClient As HttpClient = New HttpClient()
             httpClient.Timeout = New TimeSpan(1, 1, 1)
@@ -295,7 +301,6 @@ Public Class Form1
             Label1.Text = "Processing"  ' BUG: occasionally stuck here
 #End If
             'tray.Text = "Processing"
-            Timer2.Enabled = True
             Dim response As HttpResponseMessage = Await httpClient.PostAsync("https://api.ocr.space/Parse/Image", form)
 #If DEBUG Then
             Label1.Text = "Response Received"
@@ -324,14 +329,13 @@ Public Class Form1
             Dim parsedText As String = GetParsedText(strContent)
             Clipboard.Clear()
             Clipboard.SetText(parsedText)
-            If MessageBox.Show(parsedText, "", MessageBoxButtons.YesNoCancel) = DialogResult.Yes Then Clipboard.SetText(parsedText)  ' BUG: does not pop up. fix: wait
+            If MessageBox.Show(parsedText, "", MessageBoxButtons.OKCancel) = DialogResult.OK Then Clipboard.SetText(parsedText)  ' BUG: does not pop up. fix: wait. Cause: bad response
 
         Catch exception As Exception
             'Me.Hide()  ' for debug
             MessageBox.Show("Ooops" & vbCrLf & exception.Message)
         End Try
         Timer2.Enabled = False
-        _timeCounter = 0  ' reset
         tray.Text = "Screenshot OCR"
     End Function
 
@@ -387,6 +391,5 @@ Public Class Form1
         iniFile.WriteIni(Section:="Basic config", Key:="Language", Value:=_lang)
         iniFile.WriteIni(Section:="Basic config", Key:="API_Key", Value:=_apikey)
     End Sub
-
     '--=====-- End Functions --=====--
 End Class
