@@ -3,7 +3,9 @@
 Public Class Form1
     Private WithEvents kbHook As New KeyboardHook
     Private IsKeyUp As Boolean
+#If DEBUG Then
     Private g As Graphics  ' pointer-like Graphics on Form1. for test only
+#End If
     Private paintEvent_graphics As Graphics  ' reason unknown
     'Private fromPoint As Point  ' regional capture's starting point
     Private IsMouseDown As Boolean = False
@@ -84,8 +86,10 @@ Public Class Form1
             If Me.Visible = False Then
                 Dim screenShot As Bitmap = TakeScreenShot()
                 'InitWindow()  ' unnecessary
+#If DEBUG Then
                 'for debug
                 g = Me.CreateGraphics()  ' moved to Me.BackgroundImage
+#End If
 
                 Put_g_OnForm(screenShot)
                 Me.Show()
@@ -159,7 +163,10 @@ Public Class Form1
 
             FinishingFrm()
 
+#If DEBUG Then
             g.DrawImage(capturedScreen, 1, 1)
+#End If
+
             GetContextFrom(capturedScreen)
         End If
     End Sub
