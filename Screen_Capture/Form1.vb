@@ -1,4 +1,5 @@
 ﻿Imports System.Net.Http
+Imports System.Text.RegularExpressions
 
 Public Class Form1
     Private WithEvents kbHook As New KeyboardHook
@@ -12,6 +13,7 @@ Public Class Form1
     Private Const iniPath As String = "./config.ini"
     Public _lang As String  ' detective language
     Public _apikey As String
+    Private _timeCounter As Short  ' counts the time consumption of HTTP response
 
     '===== Reference:= https://social.msdn.microsoft.com/Forums/windows/en-US/5dc1b32b-7b7e-41fe-af87-d491d7021bd3/vbnet-smooth-rectangle-drawing-using-mousedrag?forum=winforms
     Dim mRect As Rectangle
@@ -156,18 +158,24 @@ Public Class Form1
 
     Private Sub Frm_MouseUp(sender As Object, e As MouseEventArgs) Handles MyBase.MouseUp
         If IsMouseDown = True Then
+#If DEBUG Then
+            Me.Hide()  ' for debug to see the output of debug message
+#End If
             IsMouseDown = False
             Label1.Text = "MouseUp"
             'Dim toPoint As Point = e.Location
-            Dim capturedScreen As Bitmap = TakeRegionalScreenShot(mRect)
-
-            FinishingFrm()
-
-#If DEBUG Then
-            g.DrawImage(capturedScreen, 1, 1)
+            If mRect = Nothing Or Not mRect.Size = Size.Empty Then
+                Dim capturedScreen As Bitmap = TakeRegionalScreenShot(mRect)
+#If Not DEBUG Then
+                FinishingFrm()
 #End If
 
-            GetContextFrom(capturedScreen)
+#If DEBUG Then
+                g.DrawImage(capturedScreen, 1, 1)
+#End If
+
+                GetContextFrom(capturedScreen)
+            End If
         End If
     End Sub
     '=====
@@ -181,6 +189,11 @@ Public Class Form1
         End If
     End Sub
 
+    ' counts time consumption of HTTP response
+    Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick
+        _timeCounter += 1
+        tray.Text = "Processing by " & Str(_timeCounter) & "s"
+    End Sub
     '--=====-- End Events --=====--
 
     '--=====-- Functions --=====--
@@ -278,11 +291,22 @@ Public Class Form1
             Dim imageData As Byte() = ConvertToByteArray(image)
             form.Add(New ByteArrayContent(imageData, 0, imageData.Length), "image", "image.jpg")
 
+#If DEBUG Then
             Label1.Text = "Processing"  ' BUG: occasionally stuck here
+#End If
+            'tray.Text = "Processing"
+            Timer2.Enabled = True
             Dim response As HttpResponseMessage = Await httpClient.PostAsync("https://api.ocr.space/Parse/Image", form)
+#If DEBUG Then
             Label1.Text = "Response Received"
+#End If
+            tray.Text = "Response Received"
             Dim strContent As String = Await response.Content.ReadAsStringAsync()
+#If DEBUG Then
             Label1.Text = "Finished"
+#End If
+            Timer2.Enabled = False
+
             'Dim ocrResult As Rootobject = JsonConvert.DeserializeObject(Of Rootobject)(strContent)
 
             'If ocrResult.OCRExitCode = 1 Then
@@ -306,6 +330,9 @@ Public Class Form1
             'Me.Hide()  ' for debug
             MessageBox.Show("Ooops" & vbCrLf & exception.Message)
         End Try
+        Timer2.Enabled = False
+        _timeCounter = 0  ' reset
+        tray.Text = "Screenshot OCR"
     End Function
 
     ''' <summary>
@@ -326,11 +353,21 @@ Public Class Form1
 
     'analyses response documents and returns useful text
     Private Function GetParsedText(ByVal content As String) As String
-        Dim parsedText As String
-        Dim startIndex As Short = content.IndexOf("ParsedText") + "ParsedText".Length + 3  ' ":"
-        Dim endIndex As Short = content.IndexOf(Chr(34), startIndex)
-        parsedText = content.Substring(startIndex, endIndex - startIndex).Replace("\r\n", vbCrLf)
-        Return parsedText
+        'Dim parsedText As String
+        'Dim startIndex As Short = content.IndexOf("ParsedText") + "ParsedText".Length + 3  ' ":"
+        'Dim endIndex As Short = content.IndexOf(Chr(34), startIndex)
+        'parsedText = content.Substring(startIndex, endIndex - startIndex).Replace("\r\n", vbCrLf)
+        'Return parsedText
+
+        ' (?<="ParsedText"\s*:\s*").+?(?=(?<!\\)")
+        Dim pattern As String = "(?<=" & Chr(34) & "ParsedText" & Chr(34) & "\s*:\s*" & Chr(34) & ").+?(?=(?<!\\)" & Chr(34) & ")"
+        Dim match = Regex.Match(content, pattern)
+        If match.Success Then
+            Return match.Value.Replace("\r\n", vbCrLf).Replace("\" & Chr(34), Chr(34))
+        Else
+            ' https://stackoverflow.com/questions/13151322/how-to-raise-an-exception-in-vb-net
+            Throw New System.Exception("Did not match")
+        End If
     End Function
 
     'initiate config through ".ini" file
@@ -350,5 +387,6 @@ Public Class Form1
         iniFile.WriteIni(Section:="Basic config", Key:="Language", Value:=_lang)
         iniFile.WriteIni(Section:="Basic config", Key:="API_Key", Value:=_apikey)
     End Sub
+
     '--=====-- End Functions --=====--
 End Class

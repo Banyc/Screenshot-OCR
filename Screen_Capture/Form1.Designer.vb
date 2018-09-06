@@ -27,6 +27,7 @@ Partial Class Form1
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.tray = New System.Windows.Forms.NotifyIcon(Me.components)
+        Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
         Me.SuspendLayout()
         '
         'Label1
@@ -47,6 +48,10 @@ Partial Class Form1
         Me.tray.Text = "Screenshot OCR"
         Me.tray.Visible = True
         '
+        'Timer2
+        '
+        Me.Timer2.Interval = 1000
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 15.0!)
@@ -64,4 +69,5 @@ Partial Class Form1
     Friend WithEvents Label1 As Label
     Friend WithEvents Timer1 As Timer
     Friend WithEvents tray As NotifyIcon
+    Friend WithEvents Timer2 As Timer
 End Class

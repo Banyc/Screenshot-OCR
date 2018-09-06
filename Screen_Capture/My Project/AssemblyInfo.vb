@@ -10,9 +10,9 @@ Imports System.Runtime.InteropServices
 
 <Assembly: AssemblyTitle("Screen_Capture")>
 <Assembly: AssemblyDescription("")>
-<Assembly: AssemblyCompany("HP Inc.")>
+<Assembly: AssemblyCompany("SB Inc.")>
 <Assembly: AssemblyProduct("Screen_Capture")>
-<Assembly: AssemblyCopyright("Copyright © HP Inc. 2018")>
+<Assembly: AssemblyCopyright("Copyright © SB Inc. 2018")>
 <Assembly: AssemblyTrademark("")>
 
 <Assembly: ComVisible(False)>
