@@ -28,6 +28,7 @@ Partial Class Form1
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.tray = New System.Windows.Forms.NotifyIcon(Me.components)
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
+        Me.lbl_lang = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'Label1
@@ -52,11 +53,21 @@ Partial Class Form1
         '
         Me.Timer2.Interval = 1000
         '
+        'lbl_lang
+        '
+        Me.lbl_lang.AutoSize = True
+        Me.lbl_lang.Location = New System.Drawing.Point(12, 24)
+        Me.lbl_lang.Name = "lbl_lang"
+        Me.lbl_lang.Size = New System.Drawing.Size(71, 15)
+        Me.lbl_lang.TabIndex = 1
+        Me.lbl_lang.Text = "Language"
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 15.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(152, 38)
+        Me.ClientSize = New System.Drawing.Size(152, 53)
+        Me.Controls.Add(Me.lbl_lang)
         Me.Controls.Add(Me.Label1)
         Me.Name = "Form1"
         Me.Opacity = 0R
@@ -70,4 +81,5 @@ Partial Class Form1
     Friend WithEvents Timer1 As Timer
     Friend WithEvents tray As NotifyIcon
     Friend WithEvents Timer2 As Timer
+    Friend WithEvents lbl_lang As Label
 End Class

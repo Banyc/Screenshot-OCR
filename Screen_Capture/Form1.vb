@@ -7,7 +7,6 @@ Public Class Form1
 #If DEBUG Then
     Private g As Graphics  ' pointer-like Graphics on Form1. for test only
 #End If
-    Private paintEvent_graphics As Graphics  ' reason unknown
     Private _startPoint As Point  ' regional capture rectangle's starting point
     Private IsMouseDown As Boolean = False
     Private Const iniPath As String = "./config.ini"
@@ -45,7 +44,7 @@ Public Class Form1
     Protected Overrides Sub OnPaint(ByVal e As PaintEventArgs)
         Using pen As New Pen(Color.Red, 3)
             e.Graphics.DrawRectangle(pen, mRect)
-            paintEvent_graphics = e.Graphics
+            'paintEvent_graphics = e.Graphics
         End Using
     End Sub
     '===== End Reference
@@ -96,7 +95,7 @@ Public Class Form1
                 'for debug
                 g = Me.CreateGraphics()  ' moved to Me.BackgroundImage
 #End If
-
+                lbl_lang.Text = "Language: " & _lang
                 Put_g_OnForm(screenShot)
                 Me.Show()
 
@@ -202,12 +201,13 @@ Public Class Form1
     '--=====-- Functions --=====--
     'When closing/hiding the Window
     Private Sub FinishingFrm()
-        ' comment out the lines below for debug
         Me.Hide()
-        Me.BackColor = Color.Gray  ' privacy protection
+        Me.BackColor = Nothing  ' privacy protection and ready to release RAM.
         ' erase the previous rectangle
         mRect = Nothing
         Me.Invalidate()
+
+        GC.Collect()  ' RAM releases
     End Sub
 
     ''' <summary>
