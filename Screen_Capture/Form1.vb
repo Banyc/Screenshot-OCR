@@ -15,7 +15,7 @@ Public Class Form1
     Private _timeCounter As Short  ' counts the time consumption of HTTP response
 
     '===== Reference:= https://social.msdn.microsoft.com/Forums/windows/en-US/5dc1b32b-7b7e-41fe-af87-d491d7021bd3/vbnet-smooth-rectangle-drawing-using-mousedrag?forum=winforms
-    Dim mRect As Rectangle
+    Dim _mRect As Rectangle
 
     '--=====-- Overrides --=====--
     Public Sub New()
@@ -26,15 +26,15 @@ Public Class Form1
     Protected Overrides Sub OnMouseDown(ByVal e As MouseEventArgs)
         IsMouseDown = True
         Label1.Text = "MouseDown"
-        'mRect = New Rectangle(e.X, e.Y, 0, 0)
+        '_mRect = New Rectangle(e.X, e.Y, 0, 0)
         _startPoint = New Size(e.X, e.Y)
         Me.Invalidate()
     End Sub
 
     Protected Overrides Sub OnMouseMove(ByVal e As MouseEventArgs)
         If e.Button = Windows.Forms.MouseButtons.Left Then
-            'mRect = New Rectangle(_startPoint.X, _startPoint.Y, e.X - _startPoint.X, e.Y - _startPoint.Y)
-            mRect = New Rectangle(Math.Min(_startPoint.X, e.X), Math.Min(_startPoint.Y, e.Y),
+            '_mRect = New Rectangle(_startPoint.X, _startPoint.Y, e.X - _startPoint.X, e.Y - _startPoint.Y)
+            _mRect = New Rectangle(Math.Min(_startPoint.X, e.X), Math.Min(_startPoint.Y, e.Y),
                                   Math.Max(_startPoint.X, e.X) - Math.Min(_startPoint.X, e.X),
                                   Math.Max(_startPoint.Y, e.Y) - Math.Min(_startPoint.Y, e.Y))
             Me.Invalidate()
@@ -43,7 +43,7 @@ Public Class Form1
 
     Protected Overrides Sub OnPaint(ByVal e As PaintEventArgs)
         Using pen As New Pen(Color.Red, 3)
-            e.Graphics.DrawRectangle(pen, mRect)
+            e.Graphics.DrawRectangle(pen, _mRect)
             'paintEvent_graphics = e.Graphics
         End Using
     End Sub
@@ -167,8 +167,8 @@ Public Class Form1
             IsMouseDown = False
             Label1.Text = "MouseUp"
             'Dim toPoint As Point = e.Location
-            If mRect <> Nothing And mRect.Size.Width <> 0 And mRect.Size.Height <> 0 Then
-                Dim capturedScreen As Bitmap = TakeRegionalScreenShot(mRect)
+            If _mRect <> Nothing And _mRect.Size.Width <> 0 And _mRect.Size.Height <> 0 Then
+                Dim capturedScreen As Bitmap = TakeRegionalScreenShot(_mRect)
 #If DEBUG Then
                 g.DrawImage(capturedScreen, 1, 1)
 #End If
@@ -204,8 +204,10 @@ Public Class Form1
         Me.Hide()
         Me.BackColor = Nothing  ' privacy protection and ready to release RAM.
         ' erase the previous rectangle
-        mRect = Nothing
+        _mRect = Nothing
         Me.Invalidate()
+
+        _startPoint = Nothing
 
         GC.Collect()  ' RAM releases
     End Sub
@@ -331,6 +333,7 @@ Public Class Form1
             Clipboard.SetText(parsedText)
             If MessageBox.Show(parsedText, "", MessageBoxButtons.OKCancel) = DialogResult.OK Then Clipboard.SetText(parsedText)  ' BUG: does not pop up. fix: wait. Cause: bad response
 
+            strContent = Nothing  ' for RAM releases
         Catch exception As Exception
             'Me.Hide()  ' for debug
             MessageBox.Show("Ooops" & vbCrLf & exception.Message)
