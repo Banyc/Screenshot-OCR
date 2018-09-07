@@ -4,6 +4,7 @@ Imports System.Text.RegularExpressions
 Public Class Form1
     Private WithEvents kbHook As New KeyboardHook
     Private IsKeyUp As Boolean
+    Private _paintEvent_graphics As Graphics
 #If DEBUG Then
     Private g As Graphics  ' pointer-like Graphics on Form1. for test only
 #End If
@@ -44,7 +45,7 @@ Public Class Form1
     Protected Overrides Sub OnPaint(ByVal e As PaintEventArgs)
         Using pen As New Pen(Color.Red, 3)
             e.Graphics.DrawRectangle(pen, _mRect)
-            'paintEvent_graphics = e.Graphics
+            _paintEvent_graphics = e.Graphics  ' ready to dispose
         End Using
     End Sub
     '===== End Reference
@@ -202,7 +203,9 @@ Public Class Form1
     'When closing/hiding the Window
     Private Sub FinishingFrm()
         Me.Hide()
-        Me.BackColor = Nothing  ' privacy protection and ready to release RAM.
+        Me.BackgroundImage.Dispose()  ' privacy protection and ready to release RAM.
+        _paintEvent_graphics.Dispose()
+
         ' erase the previous rectangle
         _mRect = Nothing
         Me.Invalidate()
@@ -287,6 +290,7 @@ Public Class Form1
     Private Async Function GetContextFrom(image As Bitmap) As Threading.Tasks.Task
         _timeCounter = 0  ' reset
         Timer2.Enabled = True
+        'Dim httpClient As HttpClient = New HttpClient()
         Try
             Dim httpClient As HttpClient = New HttpClient()
             httpClient.Timeout = New TimeSpan(1, 1, 1)
@@ -333,13 +337,24 @@ Public Class Form1
             Clipboard.SetText(parsedText)
             If MessageBox.Show(parsedText, "", MessageBoxButtons.OKCancel) = DialogResult.OK Then Clipboard.SetText(parsedText)  ' BUG: does not pop up. fix: wait. Cause: bad response
 
-            strContent = Nothing  ' for RAM releases
+            ' for RAM releases
+            parsedText = Nothing
+            strContent = Nothing
+
         Catch exception As Exception
             'Me.Hide()  ' for debug
             MessageBox.Show("Ooops" & vbCrLf & exception.Message)
         End Try
         Timer2.Enabled = False
         tray.Text = "Screenshot OCR"
+
+        ' BUG: NOT WORKING
+        'Try
+        '    httpClient.Dispose()
+        'Catch ex As Exception
+
+        'End Try
+        'GC.Collect()
     End Function
 
     ''' <summary>
