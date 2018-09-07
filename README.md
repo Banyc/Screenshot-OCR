@@ -4,7 +4,7 @@ Apply OCR to Screenshot Image.
 
 ## How to use
 
-### For OCR now!
+### For OCR Now
 
 1. Run executive file;
 2. Press F4 when you need to convert letters on the screen to editable with OCR;
@@ -26,3 +26,7 @@ Apply OCR to Screenshot Image.
 - [ConvertICO](https://convertico.com/) - site for Converting PNG to ICO;
 - [Kelly](https://github.com/guo40020) - a pro giving me technical advises;
 - and authors whose original code is at the website whose links were written between my codes.
+
+## TODO
+
+- [ ] Add [Sogou API for OCR](http://ai.sogou.com/ai-docs/api/ocr)
