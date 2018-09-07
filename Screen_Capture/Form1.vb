@@ -56,7 +56,6 @@ Public Class Form1
         'InitWindow()  ' Moved to Timer1 tick event
         IsKeyUp = True
         Timer1.Enabled = True
-
     End Sub
 
     ''' <summary>
@@ -113,53 +112,6 @@ Public Class Form1
         End If
     End Sub
 
-
-
-    ''=====
-    'Private Sub Panel1_MouseDown(sender As Object, e As MouseEventArgs) Handles Panel1.MouseDown
-    '    IsMouseDown = True
-    '    Label1.Text = "Panel1MouseDown"
-    '    fromPoint = e.Location
-    'End Sub
-    'Private Sub Panel1_MouseMove(sender As Object, e As MouseEventArgs) Handles Panel1.MouseMove
-    '    If IsMouseDown Then
-    '        g = Graphics.FromImage(Me.BackgroundImage)
-    '        'Panel1.Visible = False
-    '        'Panel1.Refresh()
-    '        'Panel1.Visible = True
-    '        'g.Clear(Color.FromArgb(0, 0, 0, 0))
-    '        g.DrawRectangle(Pens.Red, fromPoint.X, fromPoint.Y, e.X - fromPoint.X, e.Y - fromPoint.Y)  ' BUG: cannot erase the previous rectangle
-
-    '    End If
-    'End Sub
-
-    'Private Sub Panel1_MouseUp(sender As Object, e As MouseEventArgs) Handles Panel1.MouseUp
-    '    If IsMouseDown = True Then
-    '        IsMouseDown = False
-    '        'MessageBox.Show("Checkpoint.1")
-    '        Label1.Text = "MouseUp"
-    '        Dim toPoint As Point = e.Location
-    '        Dim capturedScreen As Bitmap = TakeRegionalScreenShot(fromPoint, toPoint)
-    '        g.DrawImage(capturedScreen, 1, 1)
-    '        GetContextFrom(capturedScreen)
-    '    End If
-    'End Sub
-    ''=====
-    '=====
-    ''Aborted
-    'Private Sub Frm_MouseDown(sender As Object, e As MouseEventArgs) Handles Me.MouseDown
-    '    IsMouseDown = True
-    '    Label1.Text = "MouseDown"
-    '    'fromPoint = e.Location  ‘ see Overrided OnMouseDown
-    'End Sub
-
-    'Private Sub Frm_MouseMove(sender As Object, e As MouseEventArgs) Handles Me.MouseMove
-    '    If IsMouseDown Then
-    '        g.DrawRectangle(Pens.Red, fromPoint.X, fromPoint.Y, e.X - fromPoint.X, e.Y - fromPoint.Y)  ' BUG: cannot erase the previous rectangle
-    '        'PictureBox1.
-    '    End If
-    'End Sub
-
     Private Sub Frm_MouseUp(sender As Object, e As MouseEventArgs) Handles MyBase.MouseUp
         If IsMouseDown = True Then
 #If DEBUG Then
@@ -181,7 +133,6 @@ Public Class Form1
 #End If
         End If
     End Sub
-    '=====
 
     Private Sub tray_MouseClick(sender As Object, e As MouseEventArgs) Handles tray.MouseClick
         If e.Button = Windows.Forms.MouseButtons.Right Then 'Checks if the pressed button is the Right Mouse
@@ -287,74 +238,73 @@ Public Class Form1
     End Sub
 
     'Upload screenshot and receive OCR result
+    ' BUG: this function may highly be buggy
     Private Async Function GetContextFrom(image As Bitmap) As Threading.Tasks.Task
         _timeCounter = 0  ' reset
         Timer2.Enabled = True
         'Dim httpClient As HttpClient = New HttpClient()
         Try
-            Dim httpClient As HttpClient = New HttpClient()
-            httpClient.Timeout = New TimeSpan(1, 1, 1)
-            Dim form As MultipartFormDataContent = New MultipartFormDataContent()
-            form.Add(New StringContent(_apikey), "apikey")
-            'Dim cmbLanguage As String = "chs"
-            Dim cmbLanguage As String = _lang
-            form.Add(New StringContent(cmbLanguage), "language")
+            Using httpClient As HttpClient = New HttpClient()
+                httpClient.Timeout = New TimeSpan(1, 1, 1)
+                Using form As MultipartFormDataContent = New MultipartFormDataContent()
+                    form.Add(New StringContent(_apikey), "apikey")
+                    'Dim cmbLanguage As String = "chs"
+                    Dim cmbLanguage As String = _lang
+                    form.Add(New StringContent(cmbLanguage), "language")
 
-            Dim imageData As Byte() = ConvertToByteArray(image)
-            form.Add(New ByteArrayContent(imageData, 0, imageData.Length), "image", "image.jpg")
+                    Dim imageData As Byte() = ConvertToByteArray(image)
+                    form.Add(New ByteArrayContent(imageData, 0, imageData.Length), "image", "image.jpg")
 
 #If DEBUG Then
             Label1.Text = "Processing"  ' BUG: occasionally stuck here
 #End If
-            'tray.Text = "Processing"
-            Dim response As HttpResponseMessage = Await httpClient.PostAsync("https://api.ocr.space/Parse/Image", form)
+                    'tray.Text = "Processing"
+                    Using response As HttpResponseMessage = Await httpClient.PostAsync("https://api.ocr.space/Parse/Image", form)
 #If DEBUG Then
             Label1.Text = "Response Received"
 #End If
-            tray.Text = "Response Received"
-            Dim strContent As String = Await response.Content.ReadAsStringAsync()
+                        tray.Text = "Response Received"
+                        Dim strContent As String = Await response.Content.ReadAsStringAsync()
 #If DEBUG Then
             Label1.Text = "Finished"
 #End If
-            Timer2.Enabled = False
+                        Timer2.Enabled = False
+#If DEBUG Then
+            'TextBox1.Text = strContent
+#End If
 
-            'Dim ocrResult As Rootobject = JsonConvert.DeserializeObject(Of Rootobject)(strContent)
+                        Debug.WriteLine(strContent)
 
-            'If ocrResult.OCRExitCode = 1 Then
+                        Dim parsedText As String = GetParsedText(strContent)
+                        Clipboard.Clear()
+                        Clipboard.SetText(parsedText)
+                        If MessageBox.Show(parsedText, "", MessageBoxButtons.OKCancel) = DialogResult.OK Then Clipboard.SetText(parsedText)  ' BUG: does not pop up. fix: wait. Cause: bad response
 
-            '    For i As Integer = 0 To ocrResult.ParsedResults.Count() - 1
-            '        txtResult.Text = txtResult.Text + ocrResult.ParsedResults(i).ParsedText
-            '    Next
-            'Else
-            '    MessageBox.Show("ERROR: " & strContent)
-            'End If
+                        ' for RAM releases
+                        parsedText = Nothing
+                        strContent = Nothing
 
-            'TextBox1.Text = strContent  ' for debug
-            Debug.WriteLine(strContent)
-
-            Dim parsedText As String = GetParsedText(strContent)
-            Clipboard.Clear()
-            Clipboard.SetText(parsedText)
-            If MessageBox.Show(parsedText, "", MessageBoxButtons.OKCancel) = DialogResult.OK Then Clipboard.SetText(parsedText)  ' BUG: does not pop up. fix: wait. Cause: bad response
-
-            ' for RAM releases
-            parsedText = Nothing
-            strContent = Nothing
-
+                    End Using
+                    imageData = Nothing
+                End Using
+            End Using
         Catch exception As Exception
-            'Me.Hide()  ' for debug
+#If DEBUG Then
+            'Me.Hide()
+#End If
             MessageBox.Show("Ooops" & vbCrLf & exception.Message)
+        Finally
+            GC.Collect()
         End Try
         Timer2.Enabled = False
         tray.Text = "Screenshot OCR"
 
-        ' BUG: NOT WORKING
+        ' BUG: NOT WORKING; CAUSE: Await-ed lines and its relative ones process AFTER the lines below.
         'Try
         '    httpClient.Dispose()
         'Catch ex As Exception
 
         'End Try
-        'GC.Collect()
     End Function
 
     ''' <summary>
