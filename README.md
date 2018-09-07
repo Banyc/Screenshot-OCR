@@ -1,6 +1,6 @@
-# Screen_Capture
+# Screenshot OCR
 
-apply OCR to screenshot image.
+Apply OCR to Screenshot Image.
 
 ## How to use
 
@@ -14,7 +14,7 @@ apply OCR to screenshot image.
 
 ## Appreciation
 
-- [Free-OCR-API](https://github.com/A9T9/Free-OCR-API-CSharp) - Free OCR API
+- [Free-OCR-API](https://github.com/A9T9/Free-OCR-API-CSharp) - Free OCR API;
 - [icon8](https://icons8.com/) - Free Icons site;
 - [ConvertICO](https://convertico.com/) - site for Converting PNG to ICO;
-- and authors whose original code is at the website whose links were written between my codes
+- and authors whose original code is at the website whose links were written between my codes.
