@@ -27,7 +27,6 @@ Partial Class Form1
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.tray = New System.Windows.Forms.NotifyIcon(Me.components)
-        Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
         Me.lbl_lang = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
@@ -48,10 +47,6 @@ Partial Class Form1
         Me.tray.Icon = CType(resources.GetObject("tray.Icon"), System.Drawing.Icon)
         Me.tray.Text = "Screenshot OCR"
         Me.tray.Visible = True
-        '
-        'Timer2
-        '
-        Me.Timer2.Interval = 1000
         '
         'lbl_lang
         '
@@ -80,6 +75,5 @@ Partial Class Form1
     Friend WithEvents Label1 As Label
     Friend WithEvents Timer1 As Timer
     Friend WithEvents tray As NotifyIcon
-    Friend WithEvents Timer2 As Timer
     Friend WithEvents lbl_lang As Label
 End Class

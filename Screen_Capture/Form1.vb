@@ -15,6 +15,43 @@ Public Class Form1
     Public _apikey As String
     Private _timeCounter As Short  ' counts the time consumption of HTTP response
 
+    Private Enum Language
+        ara = 0
+        chs
+        cht
+        cze
+        dan
+        dut
+        eng
+        fin
+        fre 
+        ger
+        gre
+        hun
+        jap
+        kor
+        nor
+        pol
+        por
+        spa
+        swe
+        tur
+    End Enum
+
+    Private Enum Mode
+        A9T9 = 0
+        Sogou
+    End Enum
+
+    Private Structure Settings
+        Property Mode As Mode
+        Public Structure A9T9
+            Property Apikey As String
+            Property Lang As Language
+        End Structure
+    End Structure
+    Private _settings As Settings
+
     '===== Reference:= https://social.msdn.microsoft.com/Forums/windows/en-US/5dc1b32b-7b7e-41fe-af87-d491d7021bd3/vbnet-smooth-rectangle-drawing-using-mousedrag?forum=winforms
     Dim _mRect As Rectangle
 
@@ -125,8 +162,13 @@ Public Class Form1
 #If DEBUG Then
                 g.DrawImage(capturedScreen, 1, 1)
 #End If
-
-                GetContextFrom(capturedScreen)
+#If Not DEBUG Then
+                HttpRequests.A9T9_OCR(capturedScreen, _apikey, _lang)
+#End If
+#If DEBUG Then
+                HttpRequests.A9T9_OCR(capturedScreen, _apikey, _lang)
+                'HttpRequests.Sogou_OCR(capturedScreen)
+#End If
             End If
 #If Not DEBUG Then
             FinishingFrm()
@@ -143,11 +185,6 @@ Public Class Form1
         End If
     End Sub
 
-    ' counts time consumption of HTTP response
-    Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick
-        _timeCounter += 1
-        tray.Text = "Processing by " & Str(_timeCounter) & "s"
-    End Sub
     '--=====-- End Events --=====--
 
     '--=====-- Functions --=====--
@@ -178,16 +215,6 @@ Public Class Form1
         Return screenGrab
     End Function
 
-    '' Aborted
-    'Private Function TakeRegionalScreenShot(fromPoint As Point, toPoint As Point) As Bitmap
-    '    Dim captureSize As Size = New Size(Math.Abs(toPoint.X - fromPoint.X), Math.Abs(toPoint.Y - fromPoint.Y))
-    '    Dim screenGrab As New Bitmap(Math.Abs(toPoint.X - fromPoint.X), Math.Abs(toPoint.Y - fromPoint.Y))
-
-    '    Dim g1 As Graphics = Graphics.FromImage(screenGrab)
-    '    g1.CopyFromScreen(fromPoint, New Point(0, 0), captureSize)
-    '    Return screenGrab
-    'End Function
-
     Private Function TakeRegionalScreenShot(rect As Rectangle) As Bitmap
         Dim screenGrab As New Bitmap(rect.Width, rect.Height)
 
@@ -216,140 +243,11 @@ Public Class Form1
         Me.TopMost = True
         Me.Opacity = 1
         Me.BackColor = Color.Gray
-
-        'Panel1.Left = 0
-        'Panel1.Top = 0
-        'Panel1.Size = Me.Size
-        'Panel1.BackColor = Color.FromArgb(0, 0, 0, 0)
-        'g = Panel1.CreateGraphics()
-        'Panel1.Visible = False
-
-
-        'PictureBox1.BackColor = Color.Gray
-        'Panel1.BackColor = Color.FromArgb(200, 100, 100, 100)
-        'TransparencyKey = PictureBox1.BackColor
-
-        'https://stackoverflow.com/questions/21798859/make-the-forms-background-to-transparent
-        'Me.TransparencyKey = Me.BackColor
-        'Me.BackColor = Color.Black
-        'Me.BackColor = Color.FromArgb(0, 0, 0, 0)
-        'Me.Opacity = 0.25
-
     End Sub
-
-    'Upload screenshot and receive OCR result
-    ' BUG: this function may highly be buggy
-    Private Async Function GetContextFrom(image As Bitmap) As Threading.Tasks.Task
-        _timeCounter = 0  ' reset
-        Timer2.Enabled = True
-        'Dim httpClient As HttpClient = New HttpClient()
-        Try
-            Using httpClient As HttpClient = New HttpClient()
-                httpClient.Timeout = New TimeSpan(1, 1, 1)
-                Using form As MultipartFormDataContent = New MultipartFormDataContent()
-                    form.Add(New StringContent(_apikey), "apikey")
-                    'Dim cmbLanguage As String = "chs"
-                    Dim cmbLanguage As String = _lang
-                    form.Add(New StringContent(cmbLanguage), "language")
-
-                    Dim imageData As Byte() = ConvertToByteArray(image)
-                    form.Add(New ByteArrayContent(imageData, 0, imageData.Length), "image", "image.jpg")
-
-#If DEBUG Then
-            Label1.Text = "Processing"  ' BUG: occasionally stuck here
-#End If
-                    'tray.Text = "Processing"
-                    Using response As HttpResponseMessage = Await httpClient.PostAsync("https://api.ocr.space/Parse/Image", form)
-#If DEBUG Then
-            Label1.Text = "Response Received"
-#End If
-                        tray.Text = "Response Received"
-                        Dim strContent As String = Await response.Content.ReadAsStringAsync()
-#If DEBUG Then
-            Label1.Text = "Finished"
-#End If
-                        Timer2.Enabled = False
-#If DEBUG Then
-            'TextBox1.Text = strContent
-#End If
-
-                        Debug.WriteLine(strContent)
-
-                        Dim parsedText As String = GetParsedText(strContent)
-                        Clipboard.Clear()
-                        Clipboard.SetText(parsedText)
-                        If MessageBox.Show(parsedText, "", MessageBoxButtons.OKCancel) = DialogResult.OK Then Clipboard.SetText(parsedText)  ' BUG: does not pop up. fix: wait. Cause: bad response
-
-                        ' for RAM releases
-                        parsedText = Nothing
-                        strContent = Nothing
-
-                    End Using
-                    imageData = Nothing
-                End Using
-            End Using
-        Catch exception As Exception
-#If DEBUG Then
-            'Me.Hide()
-#End If
-            MessageBox.Show("Ooops" & vbCrLf & exception.Message)
-        Finally
-            GC.Collect()
-        End Try
-        Timer2.Enabled = False
-        tray.Text = "Screenshot OCR"
-
-        ' BUG: NOT WORKING; CAUSE: Await-ed lines and its relative ones process AFTER the lines below.
-        'Try
-        '    httpClient.Dispose()
-        'Catch ex As Exception
-
-        'End Try
-    End Function
-
-    ''' <summary>
-    ''' convert Bitmap to Byte()
-    ''' https://dotnettips.wordpress.com/2007/12/16/convert-bitmap-to-byte-array/
-    ''' </summary>
-    ''' <param name="value"></param>
-    ''' <returns></returns>
-    Public Shared Function ConvertToByteArray(ByVal value As Bitmap) As Byte()
-        Dim bitmapBytes As Byte()
-        Using stream As New System.IO.MemoryStream()
-            'value.Save(stream, value.RawFormat)
-            value.Save(stream, System.Drawing.Imaging.ImageFormat.Jpeg)
-            bitmapBytes = stream.ToArray()
-        End Using
-        Return bitmapBytes
-    End Function
-
-    'analyses response documents and returns useful text
-    Private Function GetParsedText(ByVal content As String) As String
-        'Dim parsedText As String
-        'Dim startIndex As Short = content.IndexOf("ParsedText") + "ParsedText".Length + 3  ' ":"
-        'Dim endIndex As Short = content.IndexOf(Chr(34), startIndex)
-        'parsedText = content.Substring(startIndex, endIndex - startIndex).Replace("\r\n", vbCrLf)
-        'Return parsedText
-
-        ' (?<="ParsedText"\s*:\s*").+?(?=(?<!\\)")
-        Dim pattern As String = "(?<=" & Chr(34) & "ParsedText" & Chr(34) & "\s*:\s*" & Chr(34) & ").+?(?=(?<!\\)" & Chr(34) & ")"
-        Dim match = Regex.Match(content, pattern)
-        If match.Success Then
-            Return match.Value.Replace("\r\n", vbCrLf).Replace("\" & Chr(34), Chr(34))
-        Else
-            ' https://stackoverflow.com/questions/13151322/how-to-raise-an-exception-in-vb-net
-            Throw New System.Exception("Did not match")
-        End If
-    End Function
 
     'initiate config through ".ini" file
     Private Sub InitIniFile()
         Dim iniFile As New IniFile(iniPath)
-        'If Not iniFile.ExistINIFile() Then
-        '    'Dim fileWriter = System.IO.File.CreateText(iniPath)
-        '    iniFile.WriteIni(Section:="Basic config", Key:="Language", Value:="eng")
-        '    iniFile.WriteIni(Section:="Basic config", Key:="API_Key", Value:="helloworld")
-        'End If
         _lang = iniFile.ReadIni(Section:="Basic config", Key:="Language", DefaultValue:="eng")
         _apikey = iniFile.ReadIni(Section:="Basic config", Key:="API_Key", DefaultValue:="helloworld")
     End Sub
