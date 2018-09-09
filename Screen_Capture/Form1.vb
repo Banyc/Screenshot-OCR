@@ -50,7 +50,7 @@ Public Class Form1
     End Structure
 
     '===== Reference:= https://social.msdn.microsoft.com/Forums/windows/en-US/5dc1b32b-7b7e-41fe-af87-d491d7021bd3/vbnet-smooth-rectangle-drawing-using-mousedrag?forum=winforms
-    Dim _mRect As Rectangle
+    Private _mRect As Rectangle
 
     '--=====-- Overrides --=====--
     Public Sub New()
@@ -61,14 +61,12 @@ Public Class Form1
     Protected Overrides Sub OnMouseDown(ByVal e As MouseEventArgs)
         IsMouseDown = True
         Label1.Text = "MouseDown"
-        '_mRect = New Rectangle(e.X, e.Y, 0, 0)
         _startPoint = New Size(e.X, e.Y)
         Me.Invalidate()
     End Sub
 
     Protected Overrides Sub OnMouseMove(ByVal e As MouseEventArgs)
         If e.Button = Windows.Forms.MouseButtons.Left Then
-            '_mRect = New Rectangle(_startPoint.X, _startPoint.Y, e.X - _startPoint.X, e.Y - _startPoint.Y)
             _mRect = New Rectangle(Math.Min(_startPoint.X, e.X), Math.Min(_startPoint.Y, e.Y),
                                   Math.Max(_startPoint.X, e.X) - Math.Min(_startPoint.X, e.X),
                                   Math.Max(_startPoint.Y, e.Y) - Math.Min(_startPoint.Y, e.Y))
@@ -87,9 +85,9 @@ Public Class Form1
 
     '--=====-- Initiation --=====--
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'InitWindow()  ' Moved to Timer1 tick event
+        'InitWindow()  ' Moved to tmrFrmLoad tick event
         IsKeyUp = True
-        Timer1.Enabled = True
+        tmrFrmLoad.Enabled = True
     End Sub
 
     ''' <summary>
@@ -97,22 +95,16 @@ Public Class Form1
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
-        Timer1.Enabled = False
+    Private Sub tmrFrmLoad_Tick(sender As Object, e As EventArgs) Handles tmrFrmLoad.Tick
+        tmrFrmLoad.Enabled = False
         Me.Hide()
-
-        ''For test
-        'TakeScreenShot()
-
         InitWindow()
         InitIniFile()
-
     End Sub
     '--=====-- End Initiation --=====--
 
     '--=====-- Finalization --=====--
-    Public Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing  ' BUG: NOT WORKING
-        'e.Cancel = True
+    Public Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         FinalizingIniFile()
     End Sub
     '--=====-- End Finalization --=====--
@@ -124,7 +116,6 @@ Public Class Form1
             IsKeyUp = False
             If Me.Visible = False Then
                 Dim screenShot As Bitmap = TakeScreenShot()
-                'InitWindow()  ' unnecessary
 #If DEBUG Then
                 'for debug
                 g = Me.CreateGraphics()  ' moved to Me.BackgroundImage
@@ -163,19 +154,17 @@ Public Class Form1
 #If DEBUG Then
                 g.DrawImage(capturedScreen, 1, 1)
 #End If
-
                 Select Case Settings.Mode
                     Case Mode.A9T9
                         HttpRequests.A9T9_OCR(capturedScreen, Settings.A9T9.Apikey, Settings.A9T9.Lang.ToString)
                     Case Mode.Sogou
                         HttpRequests.Sogou_OCR(capturedScreen)
                 End Select
-
             End If
 #If Not DEBUG Then
             FinishingFrm()
 #End If
-            End If
+        End If
     End Sub
 
     Private Sub tray_MouseClick(sender As Object, e As MouseEventArgs) Handles tray.MouseClick
@@ -238,6 +227,7 @@ Public Class Form1
 
     End Sub
 
+    'initiate Form1's properties
     Private Sub InitWindow()
         'https://stackoverflow.com/questions/14554186/run-in-full-screen-with-no-start-menu
         Me.FormBorderStyle = Windows.Forms.FormBorderStyle.None

@@ -25,7 +25,7 @@ Partial Class Form1
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.tmrFrmLoad = New System.Windows.Forms.Timer(Me.components)
         Me.tray = New System.Windows.Forms.NotifyIcon(Me.components)
         Me.lbl_lang = New System.Windows.Forms.Label()
         Me.SuspendLayout()
@@ -38,9 +38,6 @@ Partial Class Form1
         Me.Label1.Size = New System.Drawing.Size(95, 15)
         Me.Label1.TabIndex = 0
         Me.Label1.Text = "Screen shot"
-        '
-        'Timer1
-        '
         '
         'tray
         '
@@ -73,7 +70,7 @@ Partial Class Form1
     End Sub
 
     Friend WithEvents Label1 As Label
-    Friend WithEvents Timer1 As Timer
+    Friend WithEvents tmrFrmLoad As Timer
     Friend WithEvents tray As NotifyIcon
     Friend WithEvents lbl_lang As Label
 End Class
