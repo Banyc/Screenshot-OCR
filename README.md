@@ -8,8 +8,8 @@ Apply OCR to Screenshot Image.
 
 1. Run executive file;
 2. Press F4 when you need to convert letters on the screen to editable with OCR;
-3. Press F
-4. Drag a rectangle to select the letters-contained regi4 again to undo;on;
+3. Press F4 again to undo;
+4. Drag a rectangle to select the letters-contained region;
 5. Wait for a message box to pop up. The recognized letters shown in the box are in your clipboard;
 6. Click "OK" to copy them again, "Cancel" to close the message box;
 7. Go to step 2.
@@ -22,6 +22,7 @@ Apply OCR to Screenshot Image.
 ## Appreciation
 
 - [Free-OCR-API](https://github.com/A9T9/Free-OCR-API-CSharp) - Free OCR API;
+- [Sogou API for OCR](http://ocr.shouji.sogou.com/v2/ocr/json) - High Quality OCR API without Documentation;
 - [icon8](https://icons8.com/) - Free Icons site;
 - [ConvertICO](https://convertico.com/) - site for Converting PNG to ICO;
 - [Kelly](https://github.com/guo40020) - a pro giving me technical advises;
@@ -29,4 +30,5 @@ Apply OCR to Screenshot Image.
 
 ## TODO
 
-- [X] Add [Sogou API for OCR](http://ai.sogou.com/ai-docs/api/ocr)
+- [X] Add [Sogou API for OCR](http://ai.sogou.com/ai-docs/api/ocr)(link here with documentation is different from the former one)
+- [ ] Add a Search-by-Image feature
