@@ -52,14 +52,16 @@ Public Class HttpRequests
                     Form.Add(New ByteArrayContent(imageData, 0, imageData.Length), "pic", "1111111.jpg")  ' add image to message body; BUG: file name may necessarily be "1111111.jpg"
                     Using response As HttpResponseMessage = Await httpClient.PostAsync(url, Form)  ' get response through POST method
                         strContent = Await response.Content.ReadAsStringAsync()
-                        Clipboard.SetText(strContent)
-                        If MessageBox.Show(strContent, "Sogou", MessageBoxButtons.OKCancel) = DialogResult.OK Then Clipboard.SetText(strContent)
+                        Dim parsedText As String = GetParsedTextFromSogou(strContent)
+                        Clipboard.Clear()
+                        Clipboard.SetText(parsedText)
+                        If MessageBox.Show(parsedText, "Sogou", MessageBoxButtons.OKCancel) = DialogResult.OK Then Clipboard.SetText(strContent)
 
                     End Using
                     imageData = Nothing
                 End Using
             End Using
-        Catch ex As HttpRequestException
+        Catch ex As Exception  ' HttpRequestException not working
             MessageBox.Show(ex.Message)
         End Try
     End Function
@@ -100,5 +102,29 @@ Public Class HttpRequests
             ' https://stackoverflow.com/questions/13151322/how-to-raise-an-exception-in-vb-net
             Throw New System.Exception("Did not match")
         End If
+    End Function
+
+    Private Shared Function GetParsedTextFromSogou(content As String) As String
+        Dim pattern As String
+        'Check if OCR succeeds. This may be unnecessary
+        ' (?<="success"\s*:\s*).+?(?=\s*\})
+        pattern = "(?<=" & Chr(34) & "success" & Chr(34) & "\s*:\s*).+?(?=\s*\})"
+        Dim match = Regex.Match(content, pattern)
+        If match.Success Then
+            If Int(match.Value) = 0 Then Throw New System.Exception("OCR fails")
+        Else
+            ' https://stackoverflow.com/questions/13151322/how-to-raise-an-exception-in-vb-net
+            Throw New System.Exception("Regex did not match")
+        End If
+
+        'parse content
+        Dim parsedText As String = ""
+        ' (?<="content"\s*:\s*").+?(?=(?<!\\)")
+        pattern = "(?<=" & Chr(34) & "content" & Chr(34) & "\s*:\s*" & Chr(34) & ").+?(?=(?<!\\)" & Chr(34) & ")"
+        Dim matches = Regex.Matches(content, pattern)
+        For Each match In matches
+            parsedText &= match.Value.Replace("\n", vbNewLine).Replace("\" & Chr(34), Chr(34))
+        Next
+        Return parsedText
     End Function
 End Class
