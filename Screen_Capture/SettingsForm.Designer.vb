@@ -25,13 +25,19 @@ Partial Class SettingsForm
         Me.lblMode = New System.Windows.Forms.Label()
         Me.cbbMode = New System.Windows.Forms.ComboBox()
         Me.gbA9T9 = New System.Windows.Forms.GroupBox()
+        Me.txtTimeOut = New System.Windows.Forms.TextBox()
         Me.TxtApiKey = New System.Windows.Forms.TextBox()
+        Me.lblTimeOut = New System.Windows.Forms.Label()
         Me.lblApiKey = New System.Windows.Forms.Label()
         Me.lblLang = New System.Windows.Forms.Label()
         Me.cbbLang = New System.Windows.Forms.ComboBox()
-        Me.ComboBox1 = New System.Windows.Forms.ComboBox()
         Me.btnApply = New System.Windows.Forms.Button()
+        Me.gbSogou = New System.Windows.Forms.GroupBox()
+        Me.txtTimeOut2 = New System.Windows.Forms.TextBox()
+        Me.lblTimeOut2 = New System.Windows.Forms.Label()
+        Me.btnCancel = New System.Windows.Forms.Button()
         Me.gbA9T9.SuspendLayout()
+        Me.gbSogou.SuspendLayout()
         Me.SuspendLayout()
         '
         'lblMode
@@ -54,17 +60,25 @@ Partial Class SettingsForm
         '
         'gbA9T9
         '
+        Me.gbA9T9.Controls.Add(Me.txtTimeOut)
         Me.gbA9T9.Controls.Add(Me.TxtApiKey)
+        Me.gbA9T9.Controls.Add(Me.lblTimeOut)
         Me.gbA9T9.Controls.Add(Me.lblApiKey)
         Me.gbA9T9.Controls.Add(Me.lblLang)
         Me.gbA9T9.Controls.Add(Me.cbbLang)
-        Me.gbA9T9.Controls.Add(Me.ComboBox1)
         Me.gbA9T9.Location = New System.Drawing.Point(15, 35)
         Me.gbA9T9.Name = "gbA9T9"
-        Me.gbA9T9.Size = New System.Drawing.Size(217, 84)
+        Me.gbA9T9.Size = New System.Drawing.Size(217, 115)
         Me.gbA9T9.TabIndex = 2
         Me.gbA9T9.TabStop = False
         Me.gbA9T9.Text = "A9T9"
+        '
+        'txtTimeOut
+        '
+        Me.txtTimeOut.Location = New System.Drawing.Point(83, 81)
+        Me.txtTimeOut.Name = "txtTimeOut"
+        Me.txtTimeOut.Size = New System.Drawing.Size(121, 25)
+        Me.txtTimeOut.TabIndex = 3
         '
         'TxtApiKey
         '
@@ -72,6 +86,15 @@ Partial Class SettingsForm
         Me.TxtApiKey.Name = "TxtApiKey"
         Me.TxtApiKey.Size = New System.Drawing.Size(121, 25)
         Me.TxtApiKey.TabIndex = 3
+        '
+        'lblTimeOut
+        '
+        Me.lblTimeOut.AutoSize = True
+        Me.lblTimeOut.Location = New System.Drawing.Point(6, 84)
+        Me.lblTimeOut.Name = "lblTimeOut"
+        Me.lblTimeOut.Size = New System.Drawing.Size(71, 15)
+        Me.lblTimeOut.TabIndex = 2
+        Me.lblTimeOut.Text = "Time Out"
         '
         'lblApiKey
         '
@@ -100,37 +123,72 @@ Partial Class SettingsForm
         Me.cbbLang.Size = New System.Drawing.Size(121, 23)
         Me.cbbLang.TabIndex = 1
         '
-        'ComboBox1
-        '
-        Me.ComboBox1.FormattingEnabled = True
-        Me.ComboBox1.Location = New System.Drawing.Point(83, 18)
-        Me.ComboBox1.Name = "ComboBox1"
-        Me.ComboBox1.Size = New System.Drawing.Size(121, 23)
-        Me.ComboBox1.TabIndex = 1
-        '
         'btnApply
         '
-        Me.btnApply.Location = New System.Drawing.Point(161, 125)
+        Me.btnApply.Location = New System.Drawing.Point(157, 213)
         Me.btnApply.Name = "btnApply"
         Me.btnApply.Size = New System.Drawing.Size(75, 23)
         Me.btnApply.TabIndex = 3
         Me.btnApply.Text = "Apply"
         Me.btnApply.UseVisualStyleBackColor = True
         '
+        'gbSogou
+        '
+        Me.gbSogou.Controls.Add(Me.txtTimeOut2)
+        Me.gbSogou.Controls.Add(Me.lblTimeOut2)
+        Me.gbSogou.Location = New System.Drawing.Point(15, 156)
+        Me.gbSogou.Name = "gbSogou"
+        Me.gbSogou.Size = New System.Drawing.Size(217, 51)
+        Me.gbSogou.TabIndex = 2
+        Me.gbSogou.TabStop = False
+        Me.gbSogou.Text = "Sogou"
+        '
+        'txtTimeOut2
+        '
+        Me.txtTimeOut2.Location = New System.Drawing.Point(83, 17)
+        Me.txtTimeOut2.Name = "txtTimeOut2"
+        Me.txtTimeOut2.Size = New System.Drawing.Size(121, 25)
+        Me.txtTimeOut2.TabIndex = 3
+        '
+        'lblTimeOut2
+        '
+        Me.lblTimeOut2.AutoSize = True
+        Me.lblTimeOut2.Location = New System.Drawing.Point(6, 20)
+        Me.lblTimeOut2.Name = "lblTimeOut2"
+        Me.lblTimeOut2.Size = New System.Drawing.Size(71, 15)
+        Me.lblTimeOut2.TabIndex = 2
+        Me.lblTimeOut2.Text = "Time Out"
+        '
+        'btnCancel
+        '
+        Me.btnCancel.Location = New System.Drawing.Point(17, 213)
+        Me.btnCancel.Name = "btnCancel"
+        Me.btnCancel.Size = New System.Drawing.Size(75, 23)
+        Me.btnCancel.TabIndex = 3
+        Me.btnCancel.Text = "Cancel"
+        Me.btnCancel.UseVisualStyleBackColor = True
+        '
         'SettingsForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 15.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(248, 159)
+        Me.AutoSize = True
+        Me.ClientSize = New System.Drawing.Size(248, 244)
+        Me.ControlBox = False
+        Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
+        Me.Controls.Add(Me.gbSogou)
         Me.Controls.Add(Me.gbA9T9)
         Me.Controls.Add(Me.cbbMode)
         Me.Controls.Add(Me.lblMode)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Name = "SettingsForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Settings"
         Me.gbA9T9.ResumeLayout(False)
         Me.gbA9T9.PerformLayout()
+        Me.gbSogou.ResumeLayout(False)
+        Me.gbSogou.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -141,8 +199,13 @@ Partial Class SettingsForm
     Friend WithEvents gbA9T9 As GroupBox
     Friend WithEvents lblLang As Label
     Friend WithEvents cbbLang As ComboBox
-    Friend WithEvents ComboBox1 As ComboBox
     Friend WithEvents TxtApiKey As TextBox
     Friend WithEvents lblApiKey As Label
     Friend WithEvents btnApply As Button
+    Friend WithEvents txtTimeOut As TextBox
+    Friend WithEvents lblTimeOut As Label
+    Friend WithEvents gbSogou As GroupBox
+    Friend WithEvents txtTimeOut2 As TextBox
+    Friend WithEvents lblTimeOut2 As Label
+    Friend WithEvents btnCancel As Button
 End Class

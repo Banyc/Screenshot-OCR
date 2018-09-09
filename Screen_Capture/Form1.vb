@@ -52,6 +52,10 @@ Public Class Form1
         Public Structure A9T9
             Public Shared Property Apikey As String
             Public Shared Property Lang As Language
+            Public Shared Property TimeOut As Integer  'of Seconds
+        End Structure
+        Public Structure Sogou
+            Public Shared Property TimeOut As Integer  'of Seconds
         End Structure
     End Structure
 
@@ -186,8 +190,12 @@ Public Class Form1
                 trayform.Width = 1 'Set the Form width to 1 pixel, that is needed because later we will set it behind the "traymenu"
                 trayform.Height = 1 'Set the Form Height to 1 pixel, for the same reason as above
             Case Windows.Forms.MouseButtons.Left
-                SettingsForm.Show()
-                SettingsForm.Activate()
+                If SettingsForm.Visible Then
+                    SettingsForm.Close()
+                Else
+                    SettingsForm.Show()
+                    SettingsForm.Activate()
+                End If
         End Select
     End Sub
     '--=====-- End Events --=====--
@@ -255,6 +263,8 @@ Public Class Form1
         Settings.Mode = CType(Int(iniFile.ReadIni(Section:="Default", Key:="Mode", DefaultValue:="0")), Mode)
         Settings.A9T9.Lang = CType(Int(iniFile.ReadIni(Section:="A9T9", Key:="Language", DefaultValue:=Str(Language.eng))), Language)
         Settings.A9T9.Apikey = iniFile.ReadIni(Section:="A9T9", Key:="API_Key", DefaultValue:="helloworld")
+        Settings.A9T9.TimeOut = iniFile.ReadIni(Section:="A9T9", Key:="TimeOut", DefaultValue:="5")
+        Settings.Sogou.TimeOut = iniFile.ReadIni(Section:="Sogou", Key:="TimeOut", DefaultValue:="5")
     End Sub
 
     Public Sub FinalizingIniFile()
@@ -262,6 +272,8 @@ Public Class Form1
         iniFile.WriteIni(Section:="Default", Key:="Mode", Value:=Settings.Mode)
         iniFile.WriteIni(Section:="A9T9", Key:="Language", Value:=Settings.A9T9.Lang)
         iniFile.WriteIni(Section:="A9T9", Key:="API_Key", Value:=Settings.A9T9.Apikey)
+        iniFile.WriteIni(Section:="A9T9", Key:="TimeOut", Value:=Settings.A9T9.TimeOut)
+        iniFile.WriteIni(Section:="Sogou", Key:="TimeOut", Value:=Settings.Sogou.TimeOut)
     End Sub
     '--=====-- End Functions --=====--
 End Class

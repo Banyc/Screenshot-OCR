@@ -39,6 +39,9 @@ Partial Class Form1
         Me.Label1.TabIndex = 0
         Me.Label1.Text = "Screen shot"
         '
+        'tmrFrmLoad
+        '
+        '
         'tray
         '
         Me.tray.Icon = CType(resources.GetObject("tray.Icon"), System.Drawing.Icon)
@@ -63,6 +66,7 @@ Partial Class Form1
         Me.Controls.Add(Me.Label1)
         Me.Name = "Form1"
         Me.Opacity = 0R
+        Me.ShowInTaskbar = False
         Me.Text = "Form1"
         Me.ResumeLayout(False)
         Me.PerformLayout()
