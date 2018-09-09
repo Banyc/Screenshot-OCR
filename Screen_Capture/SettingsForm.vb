@@ -39,4 +39,12 @@ Public Class SettingsForm
         Form1.Settings.A9T9.Apikey = TxtApiKey.Text
         Me.Close()
     End Sub
+
+    Private Sub cbbMode_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbbMode.SelectedIndexChanged
+        If cbbMode.SelectedIndex <> Form1.Mode.A9T9 Then
+            gbA9T9.Enabled = False
+        Else
+            gbA9T9.Enabled = True
+        End If
+    End Sub
 End Class

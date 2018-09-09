@@ -25,7 +25,7 @@ Public Class HttpRequests
                         Dim parsedText As String = GetParsedTextFromA9T9(strContent)
                         Clipboard.Clear()
                         Clipboard.SetText(parsedText)
-                        If MessageBox.Show(parsedText, "", MessageBoxButtons.OKCancel) = DialogResult.OK Then Clipboard.SetText(parsedText)  ' BUG: does not pop up. fix: wait. Cause: bad response
+                        If MessageBox.Show(parsedText, "A9T9 - " & language, MessageBoxButtons.OKCancel) = DialogResult.OK Then Clipboard.SetText(parsedText)  ' BUG: does not pop up. fix: wait. Cause: bad response
 
                         ' for RAM releases
                         parsedText = Nothing
