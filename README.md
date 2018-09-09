@@ -6,8 +6,13 @@ Apply OCR to Screenshot Image.
 
 - Screenshots within the red rectangle are sent to third-party website to do OCR processing. No privacy guarantee.
 - BUGs may occasionally occur, which may mistaken the range of the red rectangle leading to extra screenshot sending. No privacy guarantee for your computer's full-size screenshot.
-- Your screenshot might be used in analyse use to the receiving websites.
 - Your IP address may be exposed to the screenshots receiving websites.
+- Your screenshot and your IP address might be used in analyse use to the receiving websites.
+
+## Introduction to Different APIs
+
+- Sogou OCR API has a better recognition for English and Chinese but with size restriction for uploaded image;
+- A9T9 can identify as many as 20 languages.
 
 ## How to use
 
@@ -16,7 +21,7 @@ Apply OCR to Screenshot Image.
 1. Run executive file;
 2. Press F4 when you need to convert letters on the screen to editable with OCR;
 3. Press F4 again to undo;
-4. Drag a rectangle to select the letters-contained region;
+4. Drag a rectangle to select the letters-contained region while pressing left key;
 5. Wait for a message box to pop up. The recognized letters shown in the box are in your clipboard;
 6. Click "OK" to copy them again, "Cancel" to close the message box;
 7. Go to step 2.
