@@ -16,7 +16,7 @@ Apply OCR to Screenshot Image.
 
 ### For Settings
 
-1. Right click tray icon;
+1. Right click tray icon to list out menu and click settings; or simply left click the icon;
 2. All settings save when option "Exit" in the menu clicked.
 
 ## Appreciation
@@ -29,4 +29,4 @@ Apply OCR to Screenshot Image.
 
 ## TODO
 
-- [ ] Add [Sogou API for OCR](http://ai.sogou.com/ai-docs/api/ocr)
+- [X] Add [Sogou API for OCR](http://ai.sogou.com/ai-docs/api/ocr)

@@ -11,11 +11,9 @@ Public Class Form1
     Private _startPoint As Point  ' regional capture rectangle's starting point
     Private IsMouseDown As Boolean = False
     Private Const iniPath As String = "./config.ini"
-    Public _lang As String  ' detective language
-    Public _apikey As String
     Private _timeCounter As Short  ' counts the time consumption of HTTP response
 
-    Private Enum Language
+    Public Enum Language  ' detective language
         ara = 0
         chs
         cht
@@ -24,7 +22,7 @@ Public Class Form1
         dut
         eng
         fin
-        fre 
+        fre
         ger
         gre
         hun
@@ -38,19 +36,18 @@ Public Class Form1
         tur
     End Enum
 
-    Private Enum Mode
+    Public Enum Mode
         A9T9 = 0
         Sogou
     End Enum
 
-    Private Structure Settings
-        Property Mode As Mode
+    Public Structure Settings
+        Public Shared Property Mode As Mode
         Public Structure A9T9
-            Property Apikey As String
-            Property Lang As Language
+            Public Shared Property Apikey As String
+            Public Shared Property Lang As Language
         End Structure
     End Structure
-    Private _settings As Settings
 
     '===== Reference:= https://social.msdn.microsoft.com/Forums/windows/en-US/5dc1b32b-7b7e-41fe-af87-d491d7021bd3/vbnet-smooth-rectangle-drawing-using-mousedrag?forum=winforms
     Dim _mRect As Rectangle
@@ -132,7 +129,11 @@ Public Class Form1
                 'for debug
                 g = Me.CreateGraphics()  ' moved to Me.BackgroundImage
 #End If
-                lbl_lang.Text = "Language: " & _lang
+                If Settings.Mode = Mode.A9T9 Then
+                    lbl_lang.Text = "Language: " & Settings.A9T9.Lang.ToString
+                Else
+                    lbl_lang.Text = "Language: " & "Default"
+                End If
                 Put_g_OnForm(screenShot)
                 Me.Show()
 
@@ -162,29 +163,33 @@ Public Class Form1
 #If DEBUG Then
                 g.DrawImage(capturedScreen, 1, 1)
 #End If
-#If Not DEBUG Then
-                HttpRequests.A9T9_OCR(capturedScreen, _apikey, _lang)
-#End If
-#If DEBUG Then
-                HttpRequests.A9T9_OCR(capturedScreen, _apikey, _lang)
-                'HttpRequests.Sogou_OCR(capturedScreen)
-#End If
+
+                Select Case Settings.Mode
+                    Case Mode.A9T9
+                        HttpRequests.A9T9_OCR(capturedScreen, Settings.A9T9.Apikey, Settings.A9T9.Lang.ToString)
+                    Case Mode.Sogou
+                        HttpRequests.Sogou_OCR(capturedScreen)
+                End Select
+
             End If
 #If Not DEBUG Then
             FinishingFrm()
 #End If
-        End If
+            End If
     End Sub
 
     Private Sub tray_MouseClick(sender As Object, e As MouseEventArgs) Handles tray.MouseClick
-        If e.Button = Windows.Forms.MouseButtons.Right Then 'Checks if the pressed button is the Right Mouse
-            trayform.Show() 'Shows the Form that is the parent of "traymenu"
-            trayform.Activate() 'Set the Form to "Active", that means that that will be the "selected" window
-            trayform.Width = 1 'Set the Form width to 1 pixel, that is needed because later we will set it behind the "traymenu"
-            trayform.Height = 1 'Set the Form Height to 1 pixel, for the same reason as above
-        End If
+        Select Case e.Button
+            Case Windows.Forms.MouseButtons.Right 'Checks if the pressed button is the Right Mouse
+                trayform.Show() 'Shows the Form that is the parent of "traymenu"
+                trayform.Activate() 'Set the Form to "Active", that means that that will be the "selected" window
+                trayform.Width = 1 'Set the Form width to 1 pixel, that is needed because later we will set it behind the "traymenu"
+                trayform.Height = 1 'Set the Form Height to 1 pixel, for the same reason as above
+            Case Windows.Forms.MouseButtons.Left
+                SettingsForm.Show()
+                SettingsForm.Activate()
+        End Select
     End Sub
-
     '--=====-- End Events --=====--
 
     '--=====-- Functions --=====--
@@ -228,10 +233,8 @@ Public Class Form1
     ''' </summary>
     ''' <param name="screenShot"></param>
     Private Sub Put_g_OnForm(ByVal screenShot As Image)
-        Me.BackgroundImage = screenShot
-        'which similar to
+        Me.BackgroundImage = screenShot  ' which similar to _
         'g.DrawImage(screenShot, New Point(0, 0))
-
 
     End Sub
 
@@ -248,14 +251,16 @@ Public Class Form1
     'initiate config through ".ini" file
     Private Sub InitIniFile()
         Dim iniFile As New IniFile(iniPath)
-        _lang = iniFile.ReadIni(Section:="Basic config", Key:="Language", DefaultValue:="eng")
-        _apikey = iniFile.ReadIni(Section:="Basic config", Key:="API_Key", DefaultValue:="helloworld")
+        Settings.Mode = CType(Int(iniFile.ReadIni(Section:="Default", Key:="Mode", DefaultValue:="0")), Mode)
+        Settings.A9T9.Lang = CType(Int(iniFile.ReadIni(Section:="A9T9", Key:="Language", DefaultValue:="6")), Language)
+        Settings.A9T9.Apikey = iniFile.ReadIni(Section:="A9T9", Key:="API_Key", DefaultValue:="helloworld")
     End Sub
 
     Public Sub FinalizingIniFile()
         Dim iniFile As New IniFile(iniPath)
-        iniFile.WriteIni(Section:="Basic config", Key:="Language", Value:=_lang)
-        iniFile.WriteIni(Section:="Basic config", Key:="API_Key", Value:=_apikey)
+        iniFile.WriteIni(Section:="Default", Key:="Mode", Value:=Settings.Mode)
+        iniFile.WriteIni(Section:="A9T9", Key:="Language", Value:=Settings.A9T9.Lang)
+        iniFile.WriteIni(Section:="A9T9", Key:="API_Key", Value:=Settings.A9T9.Apikey)
     End Sub
     '--=====-- End Functions --=====--
 End Class

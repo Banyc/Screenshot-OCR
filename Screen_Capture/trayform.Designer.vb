@@ -24,44 +24,44 @@ Partial Class trayform
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Me.traymenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.SettingsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.LanguageToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.EngToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ChsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.A9T9ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ModeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.traymenu.SuspendLayout()
         Me.SuspendLayout()
         '
         'traymenu
         '
         Me.traymenu.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.traymenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LanguageToolStripMenuItem, Me.ExitToolStripMenuItem})
+        Me.traymenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SettingsToolStripMenuItem, Me.ExitToolStripMenuItem})
         Me.traymenu.Name = "traymenu"
-        Me.traymenu.Size = New System.Drawing.Size(211, 80)
+        Me.traymenu.Size = New System.Drawing.Size(139, 52)
+        '
+        'SettingsToolStripMenuItem
+        '
+        Me.SettingsToolStripMenuItem.Name = "SettingsToolStripMenuItem"
+        Me.SettingsToolStripMenuItem.Size = New System.Drawing.Size(138, 24)
+        Me.SettingsToolStripMenuItem.Text = "Settings"
         '
         'ExitToolStripMenuItem
         '
         Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(210, 24)
+        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(138, 24)
         Me.ExitToolStripMenuItem.Text = "Exit"
         '
-        'LanguageToolStripMenuItem
+        'A9T9ToolStripMenuItem
         '
-        Me.LanguageToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.EngToolStripMenuItem, Me.ChsToolStripMenuItem})
-        Me.LanguageToolStripMenuItem.Name = "LanguageToolStripMenuItem"
-        Me.LanguageToolStripMenuItem.Size = New System.Drawing.Size(210, 24)
-        Me.LanguageToolStripMenuItem.Text = "Language"
+        Me.A9T9ToolStripMenuItem.Name = "A9T9ToolStripMenuItem"
+        Me.A9T9ToolStripMenuItem.Size = New System.Drawing.Size(122, 26)
+        Me.A9T9ToolStripMenuItem.Text = "A9T9"
         '
-        'EngToolStripMenuItem
+        'ModeToolStripMenuItem
         '
-        Me.EngToolStripMenuItem.Name = "EngToolStripMenuItem"
-        Me.EngToolStripMenuItem.Size = New System.Drawing.Size(216, 26)
-        Me.EngToolStripMenuItem.Text = "eng"
-        '
-        'ChsToolStripMenuItem
-        '
-        Me.ChsToolStripMenuItem.Name = "ChsToolStripMenuItem"
-        Me.ChsToolStripMenuItem.Size = New System.Drawing.Size(216, 26)
-        Me.ChsToolStripMenuItem.Text = "chs"
+        Me.ModeToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.A9T9ToolStripMenuItem})
+        Me.ModeToolStripMenuItem.Name = "ModeToolStripMenuItem"
+        Me.ModeToolStripMenuItem.Size = New System.Drawing.Size(210, 24)
+        Me.ModeToolStripMenuItem.Text = "Mode"
         '
         'trayform
         '
@@ -81,7 +81,7 @@ Partial Class trayform
 
     Friend WithEvents traymenu As ContextMenuStrip
     Friend WithEvents ExitToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents LanguageToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents EngToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents ChsToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents A9T9ToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ModeToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents SettingsToolStripMenuItem As ToolStripMenuItem
 End Class
