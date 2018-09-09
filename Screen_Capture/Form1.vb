@@ -1,5 +1,6 @@
 ﻿Imports System.Net.Http
 Imports System.Text.RegularExpressions
+Imports System.Diagnostics
 
 Public Class Form1
     Private WithEvents kbHook As New KeyboardHook
@@ -93,6 +94,11 @@ Public Class Form1
         'InitWindow()  ' Moved to tmrFrmLoad tick event
         IsKeyUp = True
         tmrFrmLoad.Enabled = True
+        'Avoid running the same program twice
+        If UBound(Process.GetProcessesByName(Process.GetCurrentProcess.ProcessName)) > 0 Then
+            tray.Visible = False 'Hides the tray icon. if we don't do this we can kill the app, but the icon will still be there
+            End
+        End If
     End Sub
 
     ''' <summary>
