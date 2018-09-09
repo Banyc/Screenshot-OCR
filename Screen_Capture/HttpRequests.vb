@@ -100,7 +100,7 @@ Public Class HttpRequests
             Return match.Value.Replace("\r\n", vbCrLf).Replace("\" & Chr(34), Chr(34))
         Else
             ' https://stackoverflow.com/questions/13151322/how-to-raise-an-exception-in-vb-net
-            Throw New System.Exception("Did not match")
+            Throw New System.Exception("Regex pattern did not match the responding text")
         End If
     End Function
 
@@ -114,7 +114,7 @@ Public Class HttpRequests
             If Int(match.Value) = 0 Then Throw New System.Exception("OCR fails")
         Else
             ' https://stackoverflow.com/questions/13151322/how-to-raise-an-exception-in-vb-net
-            Throw New System.Exception("Regex did not match")
+            Throw New System.Exception("Regex pattern did not match the responding text")
         End If
 
         'parse content

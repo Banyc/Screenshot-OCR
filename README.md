@@ -11,8 +11,8 @@ Apply OCR to Screenshot Image.
 
 ## Introduction to Different APIs
 
+- A9T9 can identify as many as 25 languages.
 - Sogou OCR API has a better recognition for English and Chinese but with size restriction for uploaded image;
-- A9T9 can identify as many as 20 languages.
 
 ## How to use
 

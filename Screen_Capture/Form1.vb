@@ -14,26 +14,31 @@ Public Class Form1
     Private _timeCounter As Short  ' counts the time consumption of HTTP response
 
     Public Enum Language  ' detective language
-        ara = 0
-        chs
-        cht
-        cze
-        dan
-        dut
-        eng
-        fin
-        fre
-        ger
-        gre
-        hun
-        jap
-        kor
-        nor
-        pol
-        por
-        spa
-        swe
-        tur
+        ara = 0  'Arabic
+        bul  'Bulgarian
+        chs  'Chinese(Simplified)
+        cht  'Chinese(Traditional)
+        hrv  'Croatian
+        cze  'Czech
+        dan  'Danish
+        dut  'Dutch
+        eng  'English
+        fin  'Finnish
+        fre  'French
+        ger  'German
+        gre  'Greek
+        hun  'Hungarian
+        kor  'Korean
+        ita  'Italian
+        jpn  'Japanese
+        nor  'Norwegian
+        pol  'Polish
+        por  'Portuguese
+        rus  'Russian
+        slv  'Slovenian
+        spa  'Spanish
+        swe  'Swedish
+        tur  'Turkish
     End Enum
 
     Public Enum Mode
@@ -242,7 +247,7 @@ Public Class Form1
     Private Sub InitIniFile()
         Dim iniFile As New IniFile(iniPath)
         Settings.Mode = CType(Int(iniFile.ReadIni(Section:="Default", Key:="Mode", DefaultValue:="0")), Mode)
-        Settings.A9T9.Lang = CType(Int(iniFile.ReadIni(Section:="A9T9", Key:="Language", DefaultValue:="6")), Language)
+        Settings.A9T9.Lang = CType(Int(iniFile.ReadIni(Section:="A9T9", Key:="Language", DefaultValue:=Str(Language.eng))), Language)
         Settings.A9T9.Apikey = iniFile.ReadIni(Section:="A9T9", Key:="API_Key", DefaultValue:="helloworld")
     End Sub
 
