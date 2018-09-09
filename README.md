@@ -14,6 +14,12 @@ Apply OCR to Screenshot Image.
 - A9T9 can identify as many as 25 languages.
 - Sogou OCR API has a better recognition for English and Chinese but with size restriction for uploaded image;
 
+## Prerequisite
+
+- **Windows** system
+- [Install **Microsoft .NET Framework 4.5**](https://www.microsoft.com/en-us/download/details.aspx?id=30653) OR(maybe) higher version
+- (Optional) [Register an **API key**](https://us11.list-manage.com/subscribe?u=ce17e59f5b68a2fd3542801fd&id=252aee70a1)
+
 ## How to use
 
 ### For OCR Now
@@ -33,6 +39,7 @@ Apply OCR to Screenshot Image.
 
 ## Appreciation
 
+- [天若OCR文字识别工具](https://www.52pojie.cn/thread-692917-1-1.html) - Source of Inspiration;
 - [Free-OCR-API](https://github.com/A9T9/Free-OCR-API-CSharp) - Free OCR API;
 - [Sogou API for OCR](http://ocr.shouji.sogou.com/v2/ocr/json) - High Quality OCR API without Documentation;
 - [icon8](https://icons8.com/) - Free Icons site;
