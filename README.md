@@ -22,7 +22,7 @@ Apply OCR to Screenshot Image.
 
 ## How to use
 
-### For OCR Now
+### For Screenshot OCR Now
 
 1. Run executive file;
 2. Press F4 when you need to convert letters on the screen to editable with OCR;
@@ -32,9 +32,17 @@ Apply OCR to Screenshot Image.
 6. Click "OK" to copy them again, "Cancel" to close the message box;
 7. Go to step 2.
 
+### For Uploading Images
+
+1. Right click the tray icon;
+2. Left click "Upload" item;
+3. Choose an image to upload;
+4. Wait for a message box to pop up after clicking "OK". Clipboard updates at the same time;
+5. Click "OK" to copy them again, "Cancel" to close the message box.
+
 ### For Settings
 
-1. Right click tray icon to list out menu and click settings; or simply left click the icon;
+1. Right click tray icon to list out menu and click "Settings"; or simply left click the icon;
 2. All settings save when option "Exit" in the menu clicked.
 
 ## Appreciation
