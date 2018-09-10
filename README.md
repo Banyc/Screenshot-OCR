@@ -4,10 +4,13 @@ Apply OCR to Screenshot Image.
 
 ## Warnings
 
+Make sure to make yourself informed the warnings below before kicking off.
+
 - Screenshots within the red rectangle are sent to third-party website to do OCR processing. No privacy guarantee.
-- BUGs may occasionally occur, which may mistaken the range of the red rectangle leading to extra screenshot sending. No privacy guarantee for your computer's full-size screenshot.
+- BUGs may occasionally occur, which might mistaken the range of the red rectangle leading to extra screenshot sending. No privacy guarantee for your computer's full-size screenshot.
 - Your IP address may be exposed to the screenshots receiving websites.
 - Your screenshot and your IP address might be used in analyse use to the receiving websites.
+- Changes are, though little, files downloaded from the download link might be swapped. No file integrity guarantee.
 
 ## Introduction to Different APIs
 
