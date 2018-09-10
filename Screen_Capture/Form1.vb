@@ -4,15 +4,14 @@ Imports System.Diagnostics
 
 Public Class Form1
     Private WithEvents kbHook As New KeyboardHook
-    Private IsKeyUp As Boolean
-    Private _paintEvent_graphics As Graphics
+    Private IsKeyUp As Boolean  'Keyboard's
+    Private _paintEvent_graphics As Graphics  'For dispose a Graphics in other function
 #If DEBUG Then
     Private g As Graphics  ' pointer-like Graphics on Form1. for test only
 #End If
     Private _startPoint As Point  ' regional capture rectangle's starting point
     Private IsMouseDown As Boolean = False
     Private Const iniPath As String = "./config.ini"
-    Private _timeCounter As Short  ' counts the time consumption of HTTP response
 
     Public Enum Language  ' detective language
         ara = 0  'Arabic
@@ -143,7 +142,7 @@ Public Class Form1
                 Put_g_OnForm(screenShot)
                 Me.Show()
 
-            Else  ' stop grapping regional screenshot mannually
+            Else  ' stop grapping regional screenshot mannually(exit grapping mode)
                 FinishingFrm()
             End If
         End If
@@ -163,11 +162,10 @@ Public Class Form1
 #End If
             IsMouseDown = False
             Label1.Text = "MouseUp"
-            'Dim toPoint As Point = e.Location
             If _mRect <> Nothing And _mRect.Size.Width <> 0 And _mRect.Size.Height <> 0 Then
                 Dim capturedScreen As Bitmap = TakeRegionalScreenShot(_mRect)
 #If DEBUG Then
-                g.DrawImage(capturedScreen, 1, 1)
+                g.DrawImage(capturedScreen, 1, 1)  'The last two args represent left top point from Me
 #End If
                 HttpRequests.AutoDirectOCR(capturedScreen)  'Warning: <Awaitable!>
             End If

@@ -7,6 +7,7 @@ Public Class HttpRequests
         AutoDirectOCR(imageData)
     End Sub
 
+    'Auto decides which party's API to use
     Public Shared Sub AutoDirectOCR(image As Byte())
         Select Case Form1.Settings.Mode
             Case Form1.Mode.A9T9
@@ -88,7 +89,7 @@ Public Class HttpRequests
     End Sub
 
     ''' <summary>
-    ''' convert Bitmap to Byte()
+    ''' Convert Bitmap to Byte()
     ''' https://dotnettips.wordpress.com/2007/12/16/convert-bitmap-to-byte-array/
     ''' </summary>
     ''' <param name="value"></param>
