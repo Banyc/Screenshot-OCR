@@ -24,19 +24,27 @@ Partial Class trayform
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Me.traymenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.UploadToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SettingsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.A9T9ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ModeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.traymenu.SuspendLayout()
         Me.SuspendLayout()
         '
         'traymenu
         '
         Me.traymenu.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.traymenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SettingsToolStripMenuItem, Me.ExitToolStripMenuItem})
+        Me.traymenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.UploadToolStripMenuItem, Me.SettingsToolStripMenuItem, Me.ExitToolStripMenuItem})
         Me.traymenu.Name = "traymenu"
-        Me.traymenu.Size = New System.Drawing.Size(139, 52)
+        Me.traymenu.Size = New System.Drawing.Size(139, 76)
+        '
+        'UploadToolStripMenuItem
+        '
+        Me.UploadToolStripMenuItem.Name = "UploadToolStripMenuItem"
+        Me.UploadToolStripMenuItem.Size = New System.Drawing.Size(138, 24)
+        Me.UploadToolStripMenuItem.Text = "Upload"
         '
         'SettingsToolStripMenuItem
         '
@@ -63,6 +71,10 @@ Partial Class trayform
         Me.ModeToolStripMenuItem.Size = New System.Drawing.Size(210, 24)
         Me.ModeToolStripMenuItem.Text = "Mode"
         '
+        'OpenFileDialog1
+        '
+        Me.OpenFileDialog1.DefaultExt = "jpeg"
+        '
         'trayform
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 15.0!)
@@ -84,4 +96,6 @@ Partial Class trayform
     Friend WithEvents A9T9ToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ModeToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents SettingsToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents UploadToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents OpenFileDialog1 As OpenFileDialog
 End Class

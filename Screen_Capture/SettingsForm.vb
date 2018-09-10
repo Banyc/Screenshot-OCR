@@ -31,14 +31,6 @@ Public Class SettingsForm
         txtTimeOut2.Text = Form1.Settings.Sogou.TimeOut
     End Sub
 
-    'Private Sub cbbMode_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbbMode.SelectedIndexChanged
-    '    Form1.Settings.Mode = CType(cbbMode.SelectedIndex, Form1.Mode)
-    'End Sub
-
-    'Private Sub cbbLang_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbbLang.SelectedIndexChanged
-    '    Form1.Settings.A9T9.Lang = CType(cbbLang.SelectedIndex, Form1.Language)
-    'End Sub
-
     Private Sub SettingsForm_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
         GC.Collect()
     End Sub
@@ -56,6 +48,7 @@ Public Class SettingsForm
         Me.Close()
     End Sub
 
+    'When changing mode
     Private Sub cbbMode_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbbMode.SelectedIndexChanged
         Select Case cbbMode.SelectedIndex
             Case Form1.Mode.A9T9

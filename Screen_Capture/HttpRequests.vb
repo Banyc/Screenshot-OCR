@@ -2,18 +2,31 @@
 Imports System.Text.RegularExpressions
 
 Public Class HttpRequests
-    Public Shared Async Function A9T9_OCR(image As Bitmap, apikey As String, language As String) As Threading.Tasks.Task
+    Public Shared Sub AutoDirectOCR(image As Bitmap)
+        Dim imageData As Byte() = ConvertToByteArray(image)
+        AutoDirectOCR(imageData)
+    End Sub
+
+    Public Shared Sub AutoDirectOCR(image As Byte())
+        Select Case Form1.Settings.Mode
+            Case Form1.Mode.A9T9
+                A9T9_OCR(image, Form1.Settings.A9T9.Apikey, Form1.Settings.A9T9.Lang.ToString, Form1.Settings.A9T9.TimeOut)
+            Case Form1.Mode.Sogou
+                Sogou_OCR(image, Form1.Settings.Sogou.TimeOut)
+        End Select
+    End Sub
+
+    Public Shared Async Function A9T9_OCR(imageData As Byte(), apikey As String, language As String, timeOut As Integer) As Threading.Tasks.Task
         Initiating()
         Try
             Using httpClient As HttpClient = New HttpClient()
-                httpClient.Timeout = New TimeSpan(0, 0, 5)
+                httpClient.Timeout = New TimeSpan(0, 0, timeOut)
                 Using form As MultipartFormDataContent = New MultipartFormDataContent()
                     form.Add(New StringContent(apikey), "apikey")
-                    'Dim cmbLanguage As String = "chs"
+                    'Dim cmbLanguage As String = "eng"
                     Dim cmbLanguage As String = language
                     form.Add(New StringContent(cmbLanguage), "language")
 
-                    Dim imageData As Byte() = ConvertToByteArray(image)
                     form.Add(New ByteArrayContent(imageData, 0, imageData.Length), "image", "image.jpg")
 
                     ' tray_text changes to program name after this step
@@ -41,14 +54,13 @@ Public Class HttpRequests
         Finalizing()
     End Function
 
-    Public Shared Async Function Sogou_OCR(imageRaw As Bitmap) As Threading.Tasks.Task
+    Public Shared Async Function Sogou_OCR(imageData As Byte(), timeOut As Integer) As Threading.Tasks.Task
         Dim strContent As String
         Try
             Const url As String = "http://ocr.shouji.sogou.com/v2/ocr/json"
             Using httpClient As New HttpClient()
-                httpClient.Timeout = New TimeSpan(0, 0, 5)  ' time out after no response by 20s 
+                httpClient.Timeout = New TimeSpan(0, 0, timeOut)  ' time out after no response 
                 Using Form As New MultipartFormDataContent()  ' declare message body
-                    Dim imageData As Byte() = ConvertToByteArray(imageRaw)
                     Form.Add(New ByteArrayContent(imageData, 0, imageData.Length), "pic", "1111111.jpg")  ' add image to message body; BUG: file name may necessarily be "1111111.jpg"
                     Using response As HttpResponseMessage = Await httpClient.PostAsync(url, Form)  ' get response through POST method
                         strContent = Await response.Content.ReadAsStringAsync()
@@ -84,8 +96,11 @@ Public Class HttpRequests
     Private Shared Function ConvertToByteArray(ByVal value As Bitmap) As Byte()
         Dim bitmapBytes As Byte()
         Using stream As New System.IO.MemoryStream()
-            'value.Save(stream, value.RawFormat)
-            value.Save(stream, System.Drawing.Imaging.ImageFormat.Jpeg)
+            Try  'Since null value cannot be detected, use Try instead
+                value.Save(stream, value.RawFormat)
+            Catch ex As Exception
+                value.Save(stream, System.Drawing.Imaging.ImageFormat.Jpeg)
+            End Try
             bitmapBytes = stream.ToArray()
         End Using
         Return bitmapBytes

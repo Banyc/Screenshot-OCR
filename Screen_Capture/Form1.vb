@@ -169,12 +169,7 @@ Public Class Form1
 #If DEBUG Then
                 g.DrawImage(capturedScreen, 1, 1)
 #End If
-                Select Case Settings.Mode
-                    Case Mode.A9T9
-                        HttpRequests.A9T9_OCR(capturedScreen, Settings.A9T9.Apikey, Settings.A9T9.Lang.ToString)
-                    Case Mode.Sogou
-                        HttpRequests.Sogou_OCR(capturedScreen)
-                End Select
+                HttpRequests.AutoDirectOCR(capturedScreen)  'Warning: <Awaitable!>
             End If
 #If Not DEBUG Then
             FinishingFrm()
