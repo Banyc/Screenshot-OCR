@@ -56,6 +56,7 @@ Public Class HttpRequests
     End Function
 
     Public Shared Async Function Sogou_OCR(imageData As Byte(), timeOut As Integer) As Threading.Tasks.Task
+        Initiating()
         Dim strContent As String
         Try
             Const url As String = "http://ocr.shouji.sogou.com/v2/ocr/json"
@@ -68,7 +69,7 @@ Public Class HttpRequests
                         Dim parsedText As String = GetParsedTextFromSogou(strContent)
                         Clipboard.Clear()
                         Clipboard.SetText(parsedText)
-                        If MessageBox.Show(parsedText, "Sogou", MessageBoxButtons.OKCancel) = DialogResult.OK Then Clipboard.SetText(strContent)
+                        If MessageBox.Show(parsedText, "Sogou", MessageBoxButtons.OKCancel) = DialogResult.OK Then Clipboard.SetText(parsedText)
 
                     End Using
                     imageData = Nothing
@@ -77,6 +78,7 @@ Public Class HttpRequests
         Catch ex As Exception  ' HttpRequestException not working
             MessageBox.Show(ex.Message)
         End Try
+        Finalizing()
     End Function
 
     Private Shared Sub Initiating()
