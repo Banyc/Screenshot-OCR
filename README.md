@@ -61,4 +61,4 @@ Make sure to make yourself informed the warnings below before kicking off.
 ## TODO
 
 - [X] Add [Sogou API for OCR](http://ai.sogou.com/ai-docs/api/ocr)(link here with documentation is different from the former one)
-- [ ] Add a Search-by-Image feature
+- [ ] ~~Add a Search-by-Image feature~~ - No free reverse image search API available.
