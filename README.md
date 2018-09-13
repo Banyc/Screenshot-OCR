@@ -63,3 +63,4 @@ Make sure to make yourself informed the warnings below before kicking off.
 - [X] Add [Sogou API for OCR](http://ai.sogou.com/ai-docs/api/ocr)(link here with documentation is different from the former one)
 - [ ] ~~Add a Search-by-Image feature~~ - No free reverse image search API available.
 - [ ] Allow hotkey customization.
+- [ ] Fix BUG: pressing Alt + F4 kills the program though it does not activated.
