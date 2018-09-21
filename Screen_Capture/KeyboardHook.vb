@@ -1,4 +1,5 @@
-﻿'https://stackoverflow.com/questions/15038413/how-to-listen-keyboard-in-background-and-fire-keystrokes-on-demand
+﻿'Suspended
+'https://stackoverflow.com/questions/15038413/how-to-listen-keyboard-in-background-and-fire-keystrokes-on-demand
 Imports System.Runtime.InteropServices
 
 Public Class KeyboardHook

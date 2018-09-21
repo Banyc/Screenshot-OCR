@@ -18,6 +18,7 @@ Public Class trayform
     Private Sub ExitToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExitToolStripMenuItem.Click
         Form1.tray.Visible = False 'Hides the tray icon. if we don't do this we can kill the app, but the icon will still be there
         Form1.FinalizingIniFile()
+        Form1.FinalizingRegisterHotkey()
         End 'Kills the application. It skips Form1's Closing Event
     End Sub
 

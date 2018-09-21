@@ -4,7 +4,6 @@ Imports System.Diagnostics
 
 Public Class Form1
     Private WithEvents kbHook As New KeyboardHook
-    Private IsKeyUp As Boolean  'Keyboard's
     Private _paintEvent_graphics As Graphics  'For dispose a Graphics in other function
 #If DEBUG Then
     Private g As Graphics  ' pointer-like Graphics on Form1. for test only
@@ -46,6 +45,10 @@ Public Class Form1
         Sogou
     End Enum
 
+    Public Enum HotkeyId
+        ScreenCapture
+    End Enum
+
     Public Structure Settings
         Public Shared Property Mode As Mode
         Public Structure A9T9
@@ -55,6 +58,14 @@ Public Class Form1
         End Structure
         Public Structure Sogou
             Public Shared Property TimeOut As Integer  'of Seconds
+        End Structure
+        Public Structure Hotkeys
+            Public Structure ScreenCapture
+                Public Shared Property KeyValue As Integer  'A key's Asc code for initiate screenshot mode
+                Public Shared Property KeyModifier As Hotkey.KeyModifier  'A key's Asc code for initiate screenshot mode
+
+                Public Shared Property HotkeyId As HotkeyId  'This ID is used to distinguish different hotkey in Winsdows message context
+            End Structure
         End Structure
     End Structure
 
@@ -90,12 +101,24 @@ Public Class Form1
         End Using
     End Sub
     '===== End Reference
+
+    'For registerred Hotkey hooking
+    Protected Overrides Sub WndProc(ByRef m As System.Windows.Forms.Message)
+        If m.Msg = Hotkey.WM_HOTKEY Then
+            Debug.WriteLine("m.Msg: " & m.Msg.ToString)
+            Select Case m.WParam.ToInt32  'm.WParam here is the self-identified registerred Id of the specific hotkey
+                Case Settings.Hotkeys.ScreenCapture.HotkeyId
+                    Screenshot_keyPressed()
+            End Select
+            Debug.WriteLine("m.WParam: " & m.WParam.ToString)
+        End If
+        MyBase.WndProc(m)
+    End Sub 'System wide hotkey event handling
     '--=====-- End Overrides --=====--
 
     '--=====-- Initiation --=====--
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'InitWindow()  ' Moved to tmrFrmLoad tick event
-        IsKeyUp = True
         tmrFrmLoad.Enabled = True
         'Avoid running the same program twice
         If UBound(Process.GetProcessesByName(Process.GetCurrentProcess.ProcessName)) > 0 Then
@@ -118,40 +141,30 @@ Public Class Form1
     '--=====-- End Initiation --=====--
 
     '--=====-- Finalization --=====--
+    'This Sub might be skipped. Go to trayform.ExitToolStripMenuItem_Click() function
     Public Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         FinalizingIniFile()
     End Sub
     '--=====-- End Finalization --=====--
 
     '--=====-- Events --=====--
-    Private Sub kbHook_KeyDown(ByVal Key As System.Windows.Forms.Keys) Handles kbHook.KeyDown
-        Debug.WriteLine(Key.ToString)
-        If Key = Keys.F4 And IsKeyUp Then
-            IsKeyUp = False
-            If Me.Visible = False Then
-                Dim screenShot As Bitmap = TakeScreenShot()
+    Private Sub Screenshot_keyPressed()
+        If Me.Visible = False Then
+            Dim screenShot As Bitmap = TakeScreenShot()
 #If DEBUG Then
-                'for debug
-                g = Me.CreateGraphics()  ' moved to Me.BackgroundImage
+            'for debug
+            g = Me.CreateGraphics()  ' moved to Me.BackgroundImage
 #End If
-                If Settings.Mode = Mode.A9T9 Then
-                    lbl_lang.Text = "Language: " & Settings.A9T9.Lang.ToString
-                Else
-                    lbl_lang.Text = "Language: " & "Default"
-                End If
-                Put_g_OnForm(screenShot)
-                Me.Show()
-
-            Else  ' stop grapping regional screenshot mannually(exit grapping mode)
-                FinishingFrm()
+            If Settings.Mode = Mode.A9T9 Then
+                lbl_lang.Text = "Language: " & Settings.A9T9.Lang.ToString
+            Else
+                lbl_lang.Text = "Language: " & "Default"
             End If
-        End If
-    End Sub
+            Put_g_OnForm(screenShot)
+            Me.Show()
 
-    Private Sub kbHook_KeyUp(ByVal Key As System.Windows.Forms.Keys) Handles kbHook.KeyUp
-        Debug.WriteLine(Key)
-        If Key = Keys.F4 Then
-            IsKeyUp = True
+        Else  ' stop grapping regional screenshot mannually(exit grapping mode)
+            FinishingFrm()
         End If
     End Sub
 
@@ -258,6 +271,10 @@ Public Class Form1
         Settings.A9T9.Apikey = iniFile.ReadIni(Section:="A9T9", Key:="API_Key", DefaultValue:="helloworld")
         Settings.A9T9.TimeOut = iniFile.ReadIni(Section:="A9T9", Key:="TimeOut", DefaultValue:="5")
         Settings.Sogou.TimeOut = iniFile.ReadIni(Section:="Sogou", Key:="TimeOut", DefaultValue:="5")
+
+        Settings.Hotkeys.ScreenCapture.KeyValue = Int(iniFile.ReadIni(Section:="HotKey", Key:="ScreenCapture_KeyValue", DefaultValue:=Keys.F4))
+        Settings.Hotkeys.ScreenCapture.KeyModifier = CType(Int(iniFile.ReadIni(Section:="HotKey", Key:="ScreenCapture_KeyModifier", DefaultValue:=Hotkey.KeyModifier.None)), Hotkey.KeyModifier)
+        InitRegisterHotkey()
     End Sub
 
     Public Sub FinalizingIniFile()
@@ -267,6 +284,18 @@ Public Class Form1
         iniFile.WriteIni(Section:="A9T9", Key:="API_Key", Value:=Settings.A9T9.Apikey)
         iniFile.WriteIni(Section:="A9T9", Key:="TimeOut", Value:=Settings.A9T9.TimeOut)
         iniFile.WriteIni(Section:="Sogou", Key:="TimeOut", Value:=Settings.Sogou.TimeOut)
+
+        iniFile.WriteIni(Section:="HotKey", Key:="ScreenCapture_KeyValue", Value:=Settings.Hotkeys.ScreenCapture.KeyValue)
+        iniFile.WriteIni(Section:="HotKey", Key:="ScreenCapture_KeyModifier", Value:=Settings.Hotkeys.ScreenCapture.KeyModifier)
+
+    End Sub
+
+    Private Sub InitRegisterHotkey()
+        Hotkey.registerHotkey(Me, Settings.Hotkeys.ScreenCapture.HotkeyId, Settings.Hotkeys.ScreenCapture.KeyModifier, Settings.Hotkeys.ScreenCapture.KeyValue)
+    End Sub
+
+    Public Sub FinalizingRegisterHotkey()
+        Hotkey.unregisterHotkeys(Me)
     End Sub
     '--=====-- End Functions --=====--
 End Class

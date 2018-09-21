@@ -86,6 +86,7 @@
       <DependentUpon>Form1.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Hotkey.vb" />
     <Compile Include="HttpRequests.vb" />
     <Compile Include="IniFile.vb" />
     <Compile Include="KeyboardHook.vb" />
