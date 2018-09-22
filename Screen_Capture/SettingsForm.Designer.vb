@@ -36,8 +36,14 @@ Partial Class SettingsForm
         Me.txtTimeOut2 = New System.Windows.Forms.TextBox()
         Me.lblTimeOut2 = New System.Windows.Forms.Label()
         Me.btnCancel = New System.Windows.Forms.Button()
+        Me.gbHotkey_Screenshot = New System.Windows.Forms.GroupBox()
+        Me.lblKeyValue = New System.Windows.Forms.Label()
+        Me.cbbHotkeyModifier = New System.Windows.Forms.ComboBox()
+        Me.cbbHotkeyValue = New System.Windows.Forms.ComboBox()
+        Me.lblKeyModifier = New System.Windows.Forms.Label()
         Me.gbA9T9.SuspendLayout()
         Me.gbSogou.SuspendLayout()
+        Me.gbHotkey_Screenshot.SuspendLayout()
         Me.SuspendLayout()
         '
         'lblMode
@@ -125,7 +131,7 @@ Partial Class SettingsForm
         '
         'btnApply
         '
-        Me.btnApply.Location = New System.Drawing.Point(157, 213)
+        Me.btnApply.Location = New System.Drawing.Point(157, 297)
         Me.btnApply.Name = "btnApply"
         Me.btnApply.Size = New System.Drawing.Size(75, 23)
         Me.btnApply.TabIndex = 3
@@ -161,22 +167,72 @@ Partial Class SettingsForm
         '
         'btnCancel
         '
-        Me.btnCancel.Location = New System.Drawing.Point(17, 213)
+        Me.btnCancel.Location = New System.Drawing.Point(15, 297)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(75, 23)
         Me.btnCancel.TabIndex = 3
         Me.btnCancel.Text = "Cancel"
         Me.btnCancel.UseVisualStyleBackColor = True
         '
+        'gbHotkey_Screenshot
+        '
+        Me.gbHotkey_Screenshot.Controls.Add(Me.lblKeyModifier)
+        Me.gbHotkey_Screenshot.Controls.Add(Me.lblKeyValue)
+        Me.gbHotkey_Screenshot.Controls.Add(Me.cbbHotkeyModifier)
+        Me.gbHotkey_Screenshot.Controls.Add(Me.cbbHotkeyValue)
+        Me.gbHotkey_Screenshot.Location = New System.Drawing.Point(15, 213)
+        Me.gbHotkey_Screenshot.Name = "gbHotkey_Screenshot"
+        Me.gbHotkey_Screenshot.Size = New System.Drawing.Size(217, 78)
+        Me.gbHotkey_Screenshot.TabIndex = 2
+        Me.gbHotkey_Screenshot.TabStop = False
+        Me.gbHotkey_Screenshot.Text = "Hotkey For Screenshot"
+        '
+        'lblKeyValue
+        '
+        Me.lblKeyValue.AutoSize = True
+        Me.lblKeyValue.Location = New System.Drawing.Point(6, 20)
+        Me.lblKeyValue.Name = "lblKeyValue"
+        Me.lblKeyValue.Size = New System.Drawing.Size(79, 15)
+        Me.lblKeyValue.TabIndex = 2
+        Me.lblKeyValue.Text = "Key Value"
+        '
+        'cbbHotkeyModifier
+        '
+        Me.cbbHotkeyModifier.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbbHotkeyModifier.FormattingEnabled = True
+        Me.cbbHotkeyModifier.Location = New System.Drawing.Point(83, 46)
+        Me.cbbHotkeyModifier.Name = "cbbHotkeyModifier"
+        Me.cbbHotkeyModifier.Size = New System.Drawing.Size(121, 23)
+        Me.cbbHotkeyModifier.TabIndex = 1
+        '
+        'cbbHotkeyValue
+        '
+        Me.cbbHotkeyValue.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbbHotkeyValue.FormattingEnabled = True
+        Me.cbbHotkeyValue.Location = New System.Drawing.Point(83, 17)
+        Me.cbbHotkeyValue.Name = "cbbHotkeyValue"
+        Me.cbbHotkeyValue.Size = New System.Drawing.Size(121, 23)
+        Me.cbbHotkeyValue.TabIndex = 1
+        '
+        'lblKeyModifier
+        '
+        Me.lblKeyModifier.AutoSize = True
+        Me.lblKeyModifier.Location = New System.Drawing.Point(6, 49)
+        Me.lblKeyModifier.Name = "lblKeyModifier"
+        Me.lblKeyModifier.Size = New System.Drawing.Size(71, 15)
+        Me.lblKeyModifier.TabIndex = 2
+        Me.lblKeyModifier.Text = "Modifier"
+        '
         'SettingsForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 15.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoSize = True
-        Me.ClientSize = New System.Drawing.Size(248, 244)
+        Me.ClientSize = New System.Drawing.Size(248, 328)
         Me.ControlBox = False
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
+        Me.Controls.Add(Me.gbHotkey_Screenshot)
         Me.Controls.Add(Me.gbSogou)
         Me.Controls.Add(Me.gbA9T9)
         Me.Controls.Add(Me.cbbMode)
@@ -189,6 +245,8 @@ Partial Class SettingsForm
         Me.gbA9T9.PerformLayout()
         Me.gbSogou.ResumeLayout(False)
         Me.gbSogou.PerformLayout()
+        Me.gbHotkey_Screenshot.ResumeLayout(False)
+        Me.gbHotkey_Screenshot.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -208,4 +266,9 @@ Partial Class SettingsForm
     Friend WithEvents txtTimeOut2 As TextBox
     Friend WithEvents lblTimeOut2 As Label
     Friend WithEvents btnCancel As Button
+    Friend WithEvents gbHotkey_Screenshot As GroupBox
+    Friend WithEvents lblKeyValue As Label
+    Friend WithEvents cbbHotkeyModifier As ComboBox
+    Friend WithEvents cbbHotkeyValue As ComboBox
+    Friend WithEvents lblKeyModifier As Label
 End Class

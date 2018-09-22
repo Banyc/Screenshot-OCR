@@ -61,7 +61,7 @@ Public Class Form1
         End Structure
         Public Structure Hotkeys
             Public Structure ScreenCapture
-                Public Shared Property KeyValue As Integer  'A key's Asc code for initiate screenshot mode
+                Public Shared Property KeyValue As Keys  'A key's Asc code for initiate screenshot mode
                 Public Shared Property KeyModifier As Hotkey.KeyModifier  'A key's Asc code for initiate screenshot mode
 
                 Public Shared Property HotkeyId As HotkeyId  'This ID is used to distinguish different hotkey in Winsdows message context
@@ -102,11 +102,11 @@ Public Class Form1
     End Sub
     '===== End Reference
 
-    'For registerred Hotkey hooking
+    'For registered Hotkey hooking
     Protected Overrides Sub WndProc(ByRef m As System.Windows.Forms.Message)
         If m.Msg = Hotkey.WM_HOTKEY Then
             Debug.WriteLine("m.Msg: " & m.Msg.ToString)
-            Select Case m.WParam.ToInt32  'm.WParam here is the self-identified registerred Id of the specific hotkey
+            Select Case m.WParam.ToInt32  'm.WParam here is the self-identified registered Id of the specific hotkey
                 Case Settings.Hotkeys.ScreenCapture.HotkeyId
                     Screenshot_keyPressed()
             End Select
@@ -272,7 +272,7 @@ Public Class Form1
         Settings.A9T9.TimeOut = iniFile.ReadIni(Section:="A9T9", Key:="TimeOut", DefaultValue:="5")
         Settings.Sogou.TimeOut = iniFile.ReadIni(Section:="Sogou", Key:="TimeOut", DefaultValue:="5")
 
-        Settings.Hotkeys.ScreenCapture.KeyValue = Int(iniFile.ReadIni(Section:="HotKey", Key:="ScreenCapture_KeyValue", DefaultValue:=Keys.F4))
+        Settings.Hotkeys.ScreenCapture.KeyValue = CType(Int(iniFile.ReadIni(Section:="HotKey", Key:="ScreenCapture_KeyValue", DefaultValue:=Keys.F4)), Keys)
         Settings.Hotkeys.ScreenCapture.KeyModifier = CType(Int(iniFile.ReadIni(Section:="HotKey", Key:="ScreenCapture_KeyModifier", DefaultValue:=Hotkey.KeyModifier.None)), Hotkey.KeyModifier)
         InitRegisterHotkey()
     End Sub
@@ -290,7 +290,7 @@ Public Class Form1
 
     End Sub
 
-    Private Sub InitRegisterHotkey()
+    Public Sub InitRegisterHotkey()
         Hotkey.registerHotkey(Me, Settings.Hotkeys.ScreenCapture.HotkeyId, Settings.Hotkeys.ScreenCapture.KeyModifier, Settings.Hotkeys.ScreenCapture.KeyValue)
     End Sub
 

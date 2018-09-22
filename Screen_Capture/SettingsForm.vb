@@ -29,6 +29,24 @@ Public Class SettingsForm
 
         'Load Time_Out of Sogou
         txtTimeOut2.Text = Form1.Settings.Sogou.TimeOut
+
+        'Load combol box of hotkey options
+        Dim keysArr As Array
+        keysArr = System.Enum.GetValues(GetType(Keys))
+        For Each key In keysArr
+            'If Not System.Enum.IsDefined(GetType(Hotkey.KeyModifier), key) Then
+            cbbHotkeyValue.Items.Add(key.ToString())
+            'End If
+        Next
+        cbbHotkeyValue.SelectedItem = Form1.Settings.Hotkeys.ScreenCapture.KeyValue.ToString()
+        'Load hotkey modifier
+        Dim modifiersArr As Array
+        modifiersArr = System.Enum.GetValues(GetType(Hotkey.KeyModifier))
+        For Each modifier In modifiersArr
+            cbbHotkeyModifier.Items.Add(modifier.ToString())
+        Next
+        cbbHotkeyModifier.SelectedItem = Form1.Settings.Hotkeys.ScreenCapture.KeyModifier.ToString()
+
     End Sub
 
     Private Sub SettingsForm_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
@@ -41,6 +59,12 @@ Public Class SettingsForm
         Form1.Settings.A9T9.Apikey = TxtApiKey.Text
         Form1.Settings.A9T9.TimeOut = Int(txtTimeOut.Text)
         Form1.Settings.Sogou.TimeOut = Int(txtTimeOut2.Text)
+        Form1.Settings.Hotkeys.ScreenCapture.KeyValue = System.Enum.Parse(GetType(Keys), cbbHotkeyValue.SelectedItem)
+        Form1.Settings.Hotkeys.ScreenCapture.KeyModifier = System.Enum.Parse(GetType(Hotkey.KeyModifier), cbbHotkeyModifier.SelectedItem)
+        'Reflesh Key register state
+        Form1.FinalizingRegisterHotkey()
+        Form1.InitRegisterHotkey()
+
         Me.Close()
     End Sub
 
