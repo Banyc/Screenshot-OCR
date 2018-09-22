@@ -60,9 +60,9 @@ Public Class Form1
             Public Shared Property TimeOut As Integer  'of Seconds
         End Structure
         Public Structure Hotkeys
-            Public Structure ScreenCapture
-                Public Shared Property KeyValue As Keys  'A key's Asc code for initiate screenshot mode
-                Public Shared Property KeyModifier As Hotkey.KeyModifier  'A key's Asc code for initiate screenshot mode
+            Public Structure ScreenCapture  'store hotkey activating screenshot mode
+                Public Shared Property KeyValue As Keys
+                Public Shared Property KeyModifier As Hotkey.KeyModifier
 
                 Public Shared Property HotkeyId As HotkeyId  'This ID is used to distinguish different hotkey in Winsdows message context
             End Structure
