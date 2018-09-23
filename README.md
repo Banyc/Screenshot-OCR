@@ -64,3 +64,4 @@ Make sure to make yourself informed the warnings below before kicking off.
 - [ ] ~~Add a Search-by-Image feature~~ - No free reverse image search API available.
 - [X] Allow hotkey customization.
 - [X] Fix BUG: pressing Alt + F4 kills the program though it does not activated.
+- [ ] Break limitation for minimum image size by Sogou API
