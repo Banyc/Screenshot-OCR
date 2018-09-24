@@ -30,6 +30,9 @@ Public Class SettingsForm
         'Load Time_Out of Sogou
         txtTimeOut2.Text = Form1.Settings.Sogou.TimeOut
 
+        'Load Time_Out of SauceNAO
+        txtTimeOut3.Text = Form1.Settings.SauceNAO.Timeout
+
         'Load combol box of hotkey options
         Dim keysArr As Array
         keysArr = System.Enum.GetValues(GetType(Keys))
@@ -59,6 +62,7 @@ Public Class SettingsForm
         Form1.Settings.A9T9.Apikey = TxtApiKey.Text
         Form1.Settings.A9T9.TimeOut = Int(txtTimeOut.Text)
         Form1.Settings.Sogou.TimeOut = Int(txtTimeOut2.Text)
+        Form1.Settings.SauceNAO.Timeout = Int(txtTimeOut3.Text)
         Form1.Settings.Hotkeys.ScreenCapture.KeyValue = System.Enum.Parse(GetType(Keys), cbbHotkeyValue.SelectedItem)
         Form1.Settings.Hotkeys.ScreenCapture.KeyModifier = System.Enum.Parse(GetType(Hotkey.KeyModifier), cbbHotkeyModifier.SelectedItem)
         'Reflesh Key register state
@@ -78,9 +82,15 @@ Public Class SettingsForm
             Case Form1.Mode.A9T9
                 gbA9T9.Enabled = True
                 gbSogou.Enabled = False
+                gbSauceNAO.Enabled = False
             Case Form1.Mode.Sogou
                 gbA9T9.Enabled = False
                 gbSogou.Enabled = True
+                gbSauceNAO.Enabled = False
+            Case Form1.Mode.SauceNAO
+                gbA9T9.Enabled = False
+                gbSogou.Enabled = False
+                gbSauceNAO.Enabled = True
         End Select
     End Sub
 End Class

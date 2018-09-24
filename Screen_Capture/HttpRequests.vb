@@ -14,6 +14,8 @@ Public Class HttpRequests
                 A9T9_OCR(image, Form1.Settings.A9T9.Apikey, Form1.Settings.A9T9.Lang.ToString, Form1.Settings.A9T9.TimeOut)
             Case Form1.Mode.Sogou
                 Sogou_OCR(image, Form1.Settings.Sogou.TimeOut)
+            Case Form1.Mode.SauceNAO
+                SauceNAO(image, Form1.Settings.SauceNAO.Timeout)
         End Select
     End Sub
 
@@ -59,7 +61,7 @@ Public Class HttpRequests
         Initiating()
         Dim strContent As String
         Try
-            Const url As String = "http://ocr.shouji.sogou.com/v2/ocr/json"
+            Const url As String = "https://ocr.shouji.sogou.com/v2/ocr/json"
             Using httpClient As New HttpClient()
                 httpClient.Timeout = New TimeSpan(0, 0, timeOut)  ' time out after no response 
                 Using Form As New MultipartFormDataContent()  ' declare message body
@@ -77,6 +79,36 @@ Public Class HttpRequests
             End Using
         Catch ex As Exception  ' HttpRequestException not working
             MessageBox.Show(ex.Message)
+        End Try
+        Finalizing()
+    End Function
+
+    'http://saucenao.com/ - a image reserve search engine; TODO: Add other engine's entry
+    Public Shared Async Function SauceNAO(imageData As Byte(), timeOut As Integer) As Threading.Tasks.Task
+        Initiating()
+        Try
+            Using httpClient As HttpClient = New HttpClient()
+                httpClient.Timeout = New TimeSpan(0, 0, timeOut)
+                Using form As MultipartFormDataContent = New MultipartFormDataContent()
+                    form.Add(New ByteArrayContent(imageData, 0, imageData.Length), "file", "111111.jpg")
+
+                    ' tray_text changes to program name after this step
+                    Using response As HttpResponseMessage = Await httpClient.PostAsync("https://saucenao.com/search.php", form)
+                        Dim strContent As String = Await response.Content.ReadAsStringAsync()
+
+                        'Not necessarily Google link, also other reverse search engine's link includes in strContent
+                        Dim parsedGoogleLink As String = GetGoogleLinkFromSauceNAO(strContent)
+                        Process.Start(parsedGoogleLink)
+
+                        ' for RAM releases
+                        strContent = Nothing
+
+                    End Using
+                    imageData = Nothing
+                End Using
+            End Using
+        Catch exception As Exception
+            MessageBox.Show("Ooops" & vbCrLf & exception.Message)
         End Try
         Finalizing()
     End Function
@@ -144,5 +176,16 @@ Public Class HttpRequests
             parsedText &= match.Value.Replace("\n", vbNewLine).Replace("\" & Chr(34), Chr(34))
         Next
         Return parsedText
+    End Function
+
+    'match google image search link in response's text
+    Private Shared Function GetGoogleLinkFromSauceNAO(rawText As String)
+        '(?<=<a href=")(.*?google.*?)(?=">)
+        Dim pattern As String = "(?<=<a href=" & Chr(34) & ")(.*?google.*?)(?=" & Chr(34) & ">)"
+        Dim firstMatch As Match = Regex.Match(rawText, pattern)
+        If Not firstMatch.Success Then
+            Throw New System.Exception("Regex pattern failed to match the responding text")
+        End If
+        Return firstMatch.Value
     End Function
 End Class

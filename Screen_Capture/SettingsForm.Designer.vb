@@ -37,13 +37,17 @@ Partial Class SettingsForm
         Me.lblTimeOut2 = New System.Windows.Forms.Label()
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.gbHotkey_Screenshot = New System.Windows.Forms.GroupBox()
+        Me.lblKeyModifier = New System.Windows.Forms.Label()
         Me.lblKeyValue = New System.Windows.Forms.Label()
         Me.cbbHotkeyModifier = New System.Windows.Forms.ComboBox()
         Me.cbbHotkeyValue = New System.Windows.Forms.ComboBox()
-        Me.lblKeyModifier = New System.Windows.Forms.Label()
+        Me.gbSauceNAO = New System.Windows.Forms.GroupBox()
+        Me.txtTimeOut3 = New System.Windows.Forms.TextBox()
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.gbA9T9.SuspendLayout()
         Me.gbSogou.SuspendLayout()
         Me.gbHotkey_Screenshot.SuspendLayout()
+        Me.gbSauceNAO.SuspendLayout()
         Me.SuspendLayout()
         '
         'lblMode
@@ -131,7 +135,7 @@ Partial Class SettingsForm
         '
         'btnApply
         '
-        Me.btnApply.Location = New System.Drawing.Point(157, 297)
+        Me.btnApply.Location = New System.Drawing.Point(157, 354)
         Me.btnApply.Name = "btnApply"
         Me.btnApply.Size = New System.Drawing.Size(75, 23)
         Me.btnApply.TabIndex = 3
@@ -167,7 +171,7 @@ Partial Class SettingsForm
         '
         'btnCancel
         '
-        Me.btnCancel.Location = New System.Drawing.Point(15, 297)
+        Me.btnCancel.Location = New System.Drawing.Point(15, 354)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(75, 23)
         Me.btnCancel.TabIndex = 3
@@ -180,12 +184,21 @@ Partial Class SettingsForm
         Me.gbHotkey_Screenshot.Controls.Add(Me.lblKeyValue)
         Me.gbHotkey_Screenshot.Controls.Add(Me.cbbHotkeyModifier)
         Me.gbHotkey_Screenshot.Controls.Add(Me.cbbHotkeyValue)
-        Me.gbHotkey_Screenshot.Location = New System.Drawing.Point(15, 213)
+        Me.gbHotkey_Screenshot.Location = New System.Drawing.Point(15, 270)
         Me.gbHotkey_Screenshot.Name = "gbHotkey_Screenshot"
         Me.gbHotkey_Screenshot.Size = New System.Drawing.Size(217, 78)
         Me.gbHotkey_Screenshot.TabIndex = 2
         Me.gbHotkey_Screenshot.TabStop = False
         Me.gbHotkey_Screenshot.Text = "Hotkey For Screenshot"
+        '
+        'lblKeyModifier
+        '
+        Me.lblKeyModifier.AutoSize = True
+        Me.lblKeyModifier.Location = New System.Drawing.Point(6, 49)
+        Me.lblKeyModifier.Name = "lblKeyModifier"
+        Me.lblKeyModifier.Size = New System.Drawing.Size(71, 15)
+        Me.lblKeyModifier.TabIndex = 2
+        Me.lblKeyModifier.Text = "Modifier"
         '
         'lblKeyValue
         '
@@ -214,25 +227,44 @@ Partial Class SettingsForm
         Me.cbbHotkeyValue.Size = New System.Drawing.Size(121, 23)
         Me.cbbHotkeyValue.TabIndex = 1
         '
-        'lblKeyModifier
+        'gbSauceNAO
         '
-        Me.lblKeyModifier.AutoSize = True
-        Me.lblKeyModifier.Location = New System.Drawing.Point(6, 49)
-        Me.lblKeyModifier.Name = "lblKeyModifier"
-        Me.lblKeyModifier.Size = New System.Drawing.Size(71, 15)
-        Me.lblKeyModifier.TabIndex = 2
-        Me.lblKeyModifier.Text = "Modifier"
+        Me.gbSauceNAO.Controls.Add(Me.txtTimeOut3)
+        Me.gbSauceNAO.Controls.Add(Me.Label1)
+        Me.gbSauceNAO.Location = New System.Drawing.Point(15, 213)
+        Me.gbSauceNAO.Name = "gbSauceNAO"
+        Me.gbSauceNAO.Size = New System.Drawing.Size(217, 51)
+        Me.gbSauceNAO.TabIndex = 2
+        Me.gbSauceNAO.TabStop = False
+        Me.gbSauceNAO.Text = "SauceNAO"
+        '
+        'txtTimeOut3
+        '
+        Me.txtTimeOut3.Location = New System.Drawing.Point(83, 17)
+        Me.txtTimeOut3.Name = "txtTimeOut3"
+        Me.txtTimeOut3.Size = New System.Drawing.Size(121, 25)
+        Me.txtTimeOut3.TabIndex = 3
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(6, 20)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(71, 15)
+        Me.Label1.TabIndex = 2
+        Me.Label1.Text = "Time Out"
         '
         'SettingsForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 15.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoSize = True
-        Me.ClientSize = New System.Drawing.Size(248, 328)
+        Me.ClientSize = New System.Drawing.Size(248, 385)
         Me.ControlBox = False
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.gbHotkey_Screenshot)
+        Me.Controls.Add(Me.gbSauceNAO)
         Me.Controls.Add(Me.gbSogou)
         Me.Controls.Add(Me.gbA9T9)
         Me.Controls.Add(Me.cbbMode)
@@ -247,6 +279,8 @@ Partial Class SettingsForm
         Me.gbSogou.PerformLayout()
         Me.gbHotkey_Screenshot.ResumeLayout(False)
         Me.gbHotkey_Screenshot.PerformLayout()
+        Me.gbSauceNAO.ResumeLayout(False)
+        Me.gbSauceNAO.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -271,4 +305,7 @@ Partial Class SettingsForm
     Friend WithEvents cbbHotkeyModifier As ComboBox
     Friend WithEvents cbbHotkeyValue As ComboBox
     Friend WithEvents lblKeyModifier As Label
+    Friend WithEvents gbSauceNAO As GroupBox
+    Friend WithEvents txtTimeOut3 As TextBox
+    Friend WithEvents Label1 As Label
 End Class

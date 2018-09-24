@@ -11,11 +11,13 @@ Make sure to make yourself informed the warnings below before kicking off.
 - Your IP address may be exposed to the screenshots receiving websites.
 - Your screenshot and your IP address might be used in analyse use to the receiving websites.
 - Changes are, though little, files downloaded from the download link might be swapped. No file integrity guarantee.
+- some POST links are using unsafe HTTP Communications Protocol, rather than HTTPs.
 
 ## Introduction to Different APIs
 
-- A9T9 can identify as many as 25 languages.
+- A9T9 can identify as many as 25 languages;
 - Sogou OCR API has a better recognition for English and Chinese but with size restriction for uploaded image;
+- SauceNAO includes uploaded files saving and redirection to other image reverse search engine.
 
 ## Prerequisite
 
@@ -35,6 +37,10 @@ Make sure to make yourself informed the warnings below before kicking off.
 6. Click "OK" to copy them again, "Cancel" to close the message box;
 7. Go to step 2.
 
+### For Image Reverse Search
+
+- Goto settings and choose SauceNAO mode.
+
 ### For Uploading Images
 
 1. Right click the tray icon;
@@ -42,6 +48,8 @@ Make sure to make yourself informed the warnings below before kicking off.
 3. Choose an image to upload;
 4. Wait for a message box to pop up after clicking "OK". Clipboard updates at the same time;
 5. Click "OK" to copy them again, "Cancel" to close the message box.
+
+**Hint**: API that is using is based on the mode you chose at settings.
 
 ### For Settings
 
@@ -52,7 +60,8 @@ Make sure to make yourself informed the warnings below before kicking off.
 
 - [天若OCR文字识别工具](https://www.52pojie.cn/thread-692917-1-1.html) - Source of Inspiration;
 - [Free-OCR-API](https://github.com/A9T9/Free-OCR-API-CSharp) - Free OCR API;
-- [Sogou API for OCR](http://ocr.shouji.sogou.com/v2/ocr/json) - High Quality OCR API without Documentation;
+- [Sogou API for OCR](https://ocr.shouji.sogou.com/v2/ocr/json) - High Quality OCR API without Documentation;
+- [SauceNAO](https://saucenao.com/) - an image reverse search site;
 - [icon8](https://icons8.com/) - Free Icons site;
 - [ConvertICO](https://convertico.com/) - site for Converting PNG to ICO;
 - [Kelly](https://github.com/guo40020) - a pro giving me technical advises;
@@ -61,7 +70,7 @@ Make sure to make yourself informed the warnings below before kicking off.
 ## TODO
 
 - [X] Add [Sogou API for OCR](http://ai.sogou.com/ai-docs/api/ocr)(link here with documentation is different from the former one)
-- [ ] ~~Add a Search-by-Image feature~~ - No free reverse image search API available.
+- [X] Add a Search-by-Image feature. Redirect from SauceNAO
 - [X] Allow hotkey customization.
 - [X] Fix BUG: pressing Alt + F4 kills the program though it does not activated.
 - [ ] Break limitation for minimum image size by Sogou API

@@ -43,6 +43,7 @@ Public Class Form1
     Public Enum Mode
         A9T9 = 0
         Sogou
+        SauceNAO
     End Enum
 
     Public Enum HotkeyId
@@ -58,6 +59,9 @@ Public Class Form1
         End Structure
         Public Structure Sogou
             Public Shared Property TimeOut As Integer  'of Seconds
+        End Structure
+        Public Structure SauceNAO
+            Public Shared Property Timeout As Integer  'of Seconds
         End Structure
         Public Structure Hotkeys
             Public Structure ScreenCapture  'store hotkey activating screenshot mode
@@ -271,6 +275,7 @@ Public Class Form1
         Settings.A9T9.Apikey = iniFile.ReadIni(Section:="A9T9", Key:="API_Key", DefaultValue:="helloworld")
         Settings.A9T9.TimeOut = iniFile.ReadIni(Section:="A9T9", Key:="TimeOut", DefaultValue:="5")
         Settings.Sogou.TimeOut = iniFile.ReadIni(Section:="Sogou", Key:="TimeOut", DefaultValue:="5")
+        Settings.SauceNAO.Timeout = iniFile.ReadIni(Section:="SauceNAO", Key:="Timeout", DefaultValue:="5")
 
         Settings.Hotkeys.ScreenCapture.KeyValue = CType(Int(iniFile.ReadIni(Section:="HotKey", Key:="ScreenCapture_KeyValue", DefaultValue:=Keys.F4)), Keys)
         Settings.Hotkeys.ScreenCapture.KeyModifier = CType(Int(iniFile.ReadIni(Section:="HotKey", Key:="ScreenCapture_KeyModifier", DefaultValue:=Hotkey.KeyModifier.None)), Hotkey.KeyModifier)
@@ -284,6 +289,7 @@ Public Class Form1
         iniFile.WriteIni(Section:="A9T9", Key:="API_Key", Value:=Settings.A9T9.Apikey)
         iniFile.WriteIni(Section:="A9T9", Key:="TimeOut", Value:=Settings.A9T9.TimeOut)
         iniFile.WriteIni(Section:="Sogou", Key:="TimeOut", Value:=Settings.Sogou.TimeOut)
+        iniFile.WriteIni(Section:="SauceNAO", Key:="Timeout", Value:=Settings.SauceNAO.Timeout)
 
         iniFile.WriteIni(Section:="HotKey", Key:="ScreenCapture_KeyValue", Value:=Settings.Hotkeys.ScreenCapture.KeyValue)
         iniFile.WriteIni(Section:="HotKey", Key:="ScreenCapture_KeyModifier", Value:=Settings.Hotkeys.ScreenCapture.KeyModifier)
