@@ -74,7 +74,7 @@ Public Class Form1
     End Structure
 
     '===== Reference:= https://social.msdn.microsoft.com/Forums/windows/en-US/5dc1b32b-7b7e-41fe-af87-d491d7021bd3/vbnet-smooth-rectangle-drawing-using-mousedrag?forum=winforms
-    Private _mRect As Rectangle
+    Public _mRect As Rectangle  'TODO: remember to turn it back to private
 
     '--=====-- Overrides --=====--
     Public Sub New()
@@ -180,6 +180,18 @@ Public Class Form1
             If _mRect <> Nothing And _mRect.Size.Width <> 0 And _mRect.Size.Height <> 0 Then
 
                 Dim capturedScreen As Bitmap = TakeRegionalScreenShot(_mRect)
+
+                'For Sogou API only: either width or height must be larger than or equal to 50
+                'https://stackoverflow.com/questions/2144592/resizing-images-in-vb-net
+                If Settings.Mode = Mode.Sogou And (_mRect.Width < 50 Or _mRect.Height < 50) Then
+                    Dim newBitmap As New Bitmap(Math.Max(_mRect.Width, 50), Math.Max(_mRect.Height, 50))
+                    Dim drawMannual As Graphics = Graphics.FromImage(newBitmap)
+                    drawMannual.Clear(Color.White)
+                    drawMannual.DrawImage(capturedScreen, 0, 0)
+                    capturedScreen.Dispose()
+                    capturedScreen = newBitmap
+                End If
+
 #If DEBUG Then
                 g.DrawImage(capturedScreen, 1, 1)  'The last two args represent left top point from Me
 #End If

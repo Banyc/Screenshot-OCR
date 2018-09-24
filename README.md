@@ -16,8 +16,8 @@ Make sure to make yourself informed the warnings below before kicking off.
 ## Introduction to Different APIs
 
 - A9T9 can identify as many as 25 languages;
-- Sogou OCR API has a better recognition for English and Chinese but with size restriction for uploaded image;
-- SauceNAO includes uploaded files saving and redirection to other image reverse search engine. This source is not stable.
+- Sogou OCR API has a better recognition for English and Chinese but with size restriction for uploaded image; sizing problem solved;
+- SauceNAO includes uploaded files storage and redirection to other image reverse search engine. This source is not stable.
 
 ## Prerequisite
 
@@ -61,7 +61,7 @@ Make sure to make yourself informed the warnings below before kicking off.
 - [天若OCR文字识别工具](https://www.52pojie.cn/thread-692917-1-1.html) - Source of Inspiration;
 - [Free-OCR-API](https://github.com/A9T9/Free-OCR-API-CSharp) - Free OCR API;
 - [Sogou API for OCR](https://ocr.shouji.sogou.com/v2/ocr/json) - High Quality OCR API without Documentation;
-- [SauceNAO](https://saucenao.com/) - an image reverse search site;
+- [SauceNAO](https://saucenao.com/) - an image reverse search site and also an image host;
 - [icon8](https://icons8.com/) - Free Icons site;
 - [ConvertICO](https://convertico.com/) - site for Converting PNG to ICO;
 - [Kelly](https://github.com/guo40020) - a pro giving me technical advises;
@@ -73,4 +73,4 @@ Make sure to make yourself informed the warnings below before kicking off.
 - [X] Add a Search-by-Image feature. Redirect from SauceNAO
 - [X] Allow hotkey customization.
 - [X] Fix BUG: pressing Alt + F4 kills the program though it does not activated.
-- [ ] Break limitation for minimum image size by Sogou API
+- [X] Break limitation for minimum image size by Sogou API

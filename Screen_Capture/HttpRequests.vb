@@ -78,7 +78,9 @@ Public Class HttpRequests
                 End Using
             End Using
         Catch ex As Exception  ' HttpRequestException not working
-            MessageBox.Show(ex.Message)
+            MessageBox.Show(ex.Message & vbCrLf & "Width: " & Form1._mRect.Width & " " & "Height: " & Form1._mRect.Height)  'TODO: delect _mRect's info
+            'Test result: either minimum of Width or Height is 50
+
         End Try
         Finalizing()
     End Function
