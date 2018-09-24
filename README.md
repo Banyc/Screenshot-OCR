@@ -1,6 +1,6 @@
 # Screenshot OCR
 
-Apply OCR to Real-Time Screenshot in Single Key Pressing and a Mouse Dragging.
+Apply **OCR** or **Reverse Image Search** to Real-Time Screenshot in Single Key Pressing and a Mouse Dragging.
 
 ## Warnings
 
@@ -17,7 +17,7 @@ Make sure to make yourself informed the warnings below before kicking off.
 
 - A9T9 can identify as many as 25 languages;
 - Sogou OCR API has a better recognition for English and Chinese but with size restriction for uploaded image;
-- SauceNAO includes uploaded files saving and redirection to other image reverse search engine.
+- SauceNAO includes uploaded files saving and redirection to other image reverse search engine. This source is not stable.
 
 ## Prerequisite
 
