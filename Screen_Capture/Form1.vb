@@ -174,9 +174,9 @@ Public Class Form1
 
     Private Sub Frm_MouseUp(sender As Object, e As MouseEventArgs) Handles MyBase.MouseUp
         If IsMouseDown = True Then
-#If DEBUG Then
-            Me.Hide()  ' for debug to see the output of debug message
-#End If
+
+            Me.Hide()  ' temperately hide the red rectangle remained at the edge of the regional screenshot
+
             IsMouseDown = False
             Label1.Text = "MouseUp"
             If _mRect <> Nothing And _mRect.Size.Width <> 0 And _mRect.Size.Height <> 0 Then
@@ -219,7 +219,6 @@ Public Class Form1
 
         ' erase the previous rectangle
         _mRect = Nothing
-        Me.Invalidate()
 
         _startPoint = Nothing
 
