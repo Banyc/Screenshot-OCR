@@ -175,18 +175,23 @@ Public Class Form1
     Private Sub Frm_MouseUp(sender As Object, e As MouseEventArgs) Handles MyBase.MouseUp
         If IsMouseDown = True Then
 
-            Me.Hide()  ' temperately hide the red rectangle remained at the edge of the regional screenshot
-
             IsMouseDown = False
             Label1.Text = "MouseUp"
             If _mRect <> Nothing And _mRect.Size.Width <> 0 And _mRect.Size.Height <> 0 Then
-                Dim capturedScreen As Bitmap = TakeRegionalScreenShot(_mRect)
+                Dim rectCopy As Rectangle = _mRect
+                'Erase the red edges
+                _mRect = Nothing
+                Me.Hide()  'also do the job of Me.Invalidate(), but more faster
+                Me.Show()
+
+                Dim capturedScreen As Bitmap = TakeRegionalScreenShot(rectCopy)
+                _mRect = rectCopy
 #If DEBUG Then
                 g.DrawImage(capturedScreen, 1, 1)  'The last two args represent left top point from Me
 #End If
                 HttpRequests.AutoDirectOCR(capturedScreen)  'Warning: <Awaitable!>
             End If
-#If Not DEBUG Then
+#If Not DEBUG Then  'Auto Exit screenshot mode
             FinishingFrm()
 #End If
         End If
@@ -217,8 +222,9 @@ Public Class Form1
         Me.BackgroundImage.Dispose()  ' privacy protection and ready to release RAM.
         _paintEvent_graphics.Dispose()
 
-        ' erase the previous rectangle
-        _mRect = Nothing
+        '' erase the previous rectangle  'Now reserve the previous drawn rectangle
+        '_mRect = Nothing
+        ''Me.Invalidate()  'Since Me is hidden, no need for Me's re-painting
 
         _startPoint = Nothing
 
