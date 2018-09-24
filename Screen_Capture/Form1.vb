@@ -100,7 +100,7 @@ Public Class Form1
 
     Protected Overrides Sub OnPaint(ByVal e As PaintEventArgs)
         Using pen As New Pen(Color.Red, 3)
-            e.Graphics.DrawRectangle(pen, _mRect)
+            e.Graphics.DrawRectangle(pen, _mRect.X - 2, _mRect.Y - 2, _mRect.Width + 3, _mRect.Height + 3)  'In order not to include the red edges when capturing _mRect area
             _paintEvent_graphics = e.Graphics  ' ready to dispose
         End Using
     End Sub
@@ -178,14 +178,8 @@ Public Class Form1
             IsMouseDown = False
             Label1.Text = "MouseUp"
             If _mRect <> Nothing And _mRect.Size.Width <> 0 And _mRect.Size.Height <> 0 Then
-                Dim rectCopy As Rectangle = _mRect
-                'Erase the red edges
-                _mRect = Nothing
-                Me.Hide()  'also do the job of Me.Invalidate(), but more faster
-                Me.Show()
 
-                Dim capturedScreen As Bitmap = TakeRegionalScreenShot(rectCopy)
-                _mRect = rectCopy
+                Dim capturedScreen As Bitmap = TakeRegionalScreenShot(_mRect)
 #If DEBUG Then
                 g.DrawImage(capturedScreen, 1, 1)  'The last two args represent left top point from Me
 #End If
