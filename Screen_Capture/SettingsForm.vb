@@ -93,4 +93,8 @@ Public Class SettingsForm
                 gbSauceNAO.Enabled = True
         End Select
     End Sub
+
+    Private Sub SettingsForm_Deactivate(sender As Object, e As EventArgs) Handles Me.Deactivate
+        Me.Close()
+    End Sub
 End Class
