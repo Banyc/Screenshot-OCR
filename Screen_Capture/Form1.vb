@@ -184,7 +184,7 @@ Public Class Form1
                 'For Sogou API only: either width or height must be larger than or equal to 50
                 'https://stackoverflow.com/questions/2144592/resizing-images-in-vb-net
                 If Settings.Mode = Mode.Sogou And (_mRect.Width < 50 Or _mRect.Height < 50) Then
-                    Dim newBitmap As New Bitmap(Math.Max(_mRect.Width, 50), Math.Max(_mRect.Height, 50))
+                    Dim newBitmap As New Bitmap(Math.Max(_mRect.Width, 50), Math.Max(_mRect.Height, 50))  'BUG:  from area too small still identify nothing
                     Dim drawMannual As Graphics = Graphics.FromImage(newBitmap)
                     drawMannual.Clear(Color.White)
                     drawMannual.DrawImage(capturedScreen, 0, 0)
@@ -193,7 +193,7 @@ Public Class Form1
                 End If
 
 #If DEBUG Then
-                g.DrawImage(capturedScreen, 1, 1)  'The last two args represent left top point from Me
+                g.DrawImage(capturedScreen, 1, 100)  'The last two args represent left top point from Me
 #End If
                 HttpRequests.AutoDirectOCR(capturedScreen)  'Warning: <Awaitable!>
             End If
