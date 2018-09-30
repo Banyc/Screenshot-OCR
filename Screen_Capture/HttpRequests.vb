@@ -71,7 +71,11 @@ Public Class HttpRequests
                         Dim parsedText As String = GetParsedTextFromSogou(strContent)
                         Clipboard.Clear()
                         Clipboard.SetText(parsedText)
-                        If MessageBox.Show(parsedText, "Sogou", MessageBoxButtons.OKCancel) = DialogResult.OK Then Clipboard.SetText(parsedText)
+                        'If MessageBox.Show(parsedText, "Sogou", MessageBoxButtons.OKCancel) = DialogResult.OK Then Clipboard.SetText(parsedText)
+
+                        'Warning: Consuming a lot of Memory, even closed
+                        Dim OutputForm1 = New OutputForm(parsedText)
+                        If OutputForm1.ShowDialog() = True Then Clipboard.SetText(parsedText)
 
                     End Using
                     imageData = Nothing

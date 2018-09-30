@@ -1,0 +1,30 @@
+﻿<Window x:Name="OutputForm" x:Class="OutputForm"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Screenshot_OCR"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" WindowStyle="None" Background="Transparent" AllowsTransparency="True" ShowInTaskbar="False">
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Loaded">
+            <BeginStoryboard>
+                <Storyboard Duration="00:00:1" Storyboard.TargetProperty="Opacity">
+                    <DoubleAnimation From="0" To="1"/>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
+    <Grid>
+        <Rectangle x:Name="Card" Margin="10,10,10,10" Stroke="Gray" StrokeThickness="0.2" RadiusY="9" RadiusX="9" Fill="White"><!--Fill="#FFF4F4F5"-->
+            <Rectangle.BitmapEffect>
+                <DropShadowBitmapEffect Color="Black" ShadowDepth="0" Softness="0.6" Opacity="0.2">
+
+                </DropShadowBitmapEffect>
+            </Rectangle.BitmapEffect>
+        </Rectangle>
+
+        <Label x:Name="lblOutput" Content="Label" Margin="20,20,20,20" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
+    </Grid>
+</Window>
