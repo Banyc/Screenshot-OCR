@@ -35,9 +35,9 @@ Partial Class Form1
         Me.lblState.AutoSize = True
         Me.lblState.Location = New System.Drawing.Point(12, 9)
         Me.lblState.Name = "lblState"
-        Me.lblState.Size = New System.Drawing.Size(95, 15)
+        Me.lblState.Size = New System.Drawing.Size(39, 15)
         Me.lblState.TabIndex = 0
-        Me.lblState.Text = "Screen shot"
+        Me.lblState.Text = "Mode"
         '
         'tmrFrmLoad
         '
