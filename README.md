@@ -34,7 +34,7 @@ Make sure to make yourself informed the warnings below before kicking off.
 3. Press F4 again to undo;
 4. Drag a rectangle to select the letters-contained region while pressing left key;
 5. Wait for a message box to pop up. The recognized letters shown in the box are in your clipboard;
-6. Click "OK" to copy them again, "Cancel" to close the message box;
+6. Click "OK" to copy them again, "Cancel" to close the message box; in Sogou API mode, double click the message box to copy them again, right click to close it;
 7. Go to step 2.
 
 ### For Image Reverse Search
@@ -74,3 +74,4 @@ Make sure to make yourself informed the warnings below before kicking off.
 - [X] Allow hotkey customization.
 - [X] Fix BUG: pressing Alt + F4 kills the program though it does not activated.
 - [X] Break limitation for minimum image size by Sogou API
+- [ ] Perfect UI
