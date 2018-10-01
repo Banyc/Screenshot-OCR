@@ -74,4 +74,23 @@ Public Class OutputForm
         Card.Stroke = Media.Brushes.Gray
         Card.StrokeThickness = 0.2
     End Sub
+
+    '=== https://stackoverflow.com/questions/5958508/fading-out-a-window
+
+    Private AlreadyFaded As Boolean = False
+
+    Private Sub window_Closing(ByVal sender As Object, ByVal e As CancelEventArgs) Handles Me.Closing
+        If Not AlreadyFaded Then
+            AlreadyFaded = True
+            e.Cancel = True
+            Dim anim = New DoubleAnimation(0, CType(TimeSpan.FromSeconds(0.2), Duration))
+            AddHandler anim.Completed, New EventHandler(AddressOf anim_Completed)
+            Me.BeginAnimation(UIElement.OpacityProperty, anim)
+        End If
+    End Sub
+
+    Private Sub anim_Completed(ByVal sender As Object, ByVal e As EventArgs)
+        Close()
+    End Sub
+    '=== end reference
 End Class
