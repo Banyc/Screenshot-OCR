@@ -22,15 +22,16 @@ Public Class OutputForm
     End Sub
 
     'set the _content to clipboard once again
-    Private Sub OutputForm_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs) Handles Me.MouseDoubleClick
-        'Me.DialogResult = True  'Includes Me.Close()
-        Clipboard.Clear()
-        Clipboard.SetText(_content)
-        Me.Close()
-    End Sub
-
-    Private Sub OutputForm_MouseLeftButtonDown(sender As Object, e As MouseButtonEventArgs) Handles Me.MouseLeftButtonDown
+    Private Sub Card_MouseLeftButtonDown(sender As Object, e As MouseButtonEventArgs) Handles Card.MouseLeftButtonDown
         Me.DragMove()
+        If e.ClickCount = 2 Then  'https://social.msdn.microsoft.com/Forums/vstudio/en-US/83ac6fbd-af42-4b9c-897e-142abb0a8199/can-not-use-event-double-click-on-button?forum=vbgeneral
+            Clipboard.Clear()
+            Clipboard.SetText(_content)
+            Me.Close()
+        End If
+    End Sub
+    Private Sub lblOutput_MouseLeftButtonDown(sender As Object, e As MouseButtonEventArgs) Handles lblOutput.MouseLeftButtonDown
+        Call Card_MouseLeftButtonDown(sender, e)
     End Sub
 
     Private Sub OutputForm_MouseRightButtonUp(sender As Object, e As MouseButtonEventArgs) Handles Me.MouseRightButtonUp
@@ -66,15 +67,21 @@ Public Class OutputForm
     End Sub
 
     'Change border color when mouse enters the form
-    Private Sub OutputForm_MouseEnter(sender As Object, e As MouseEventArgs) Handles Me.MouseEnter
+    Private Sub Card_MouseEnter(sender As Object, e As MouseEventArgs) Handles Card.MouseEnter
         Card.Stroke = Media.Brushes.CornflowerBlue
-        Card.StrokeThickness = 1
+        Card.StrokeThickness = 2
+    End Sub
+    Private Sub lblOutput_MouseEnter(sender As Object, e As MouseEventArgs) Handles lblOutput.MouseEnter
+        Call Card_MouseEnter(sender, e)
     End Sub
 
     'Change border color when mouse leaves the form
-    Private Sub OutputForm_MouseLeave(sender As Object, e As MouseEventArgs) Handles Me.MouseLeave
+    Private Sub Card_MouseLeave(sender As Object, e As MouseEventArgs) Handles Card.MouseLeave
         Card.Stroke = Media.Brushes.Gray
         Card.StrokeThickness = 0.2
+    End Sub
+    Private Sub lblOutput_MouseLeave(sender As Object, e As MouseEventArgs) Handles lblOutput.MouseLeave
+        Call Card_MouseLeave(sender, e)
     End Sub
 
     '=== https://stackoverflow.com/questions/5958508/fading-out-a-window

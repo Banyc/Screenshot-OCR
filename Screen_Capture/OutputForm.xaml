@@ -19,7 +19,7 @@
     <Grid>
         <Rectangle x:Name="Card" Margin="10,10,10,10" Stroke="Gray" StrokeThickness="0.2" RadiusY="9" RadiusX="9" Fill="White"><!--Fill="#FFF4F4F5"-->
             <Rectangle.BitmapEffect>
-                <DropShadowBitmapEffect Color="Black" ShadowDepth="0" Softness="0.6" Opacity="0.2">
+                <DropShadowBitmapEffect Color="Black" ShadowDepth="0" Softness="0.6" Opacity="0.8">
 
                 </DropShadowBitmapEffect>
             </Rectangle.BitmapEffect>
