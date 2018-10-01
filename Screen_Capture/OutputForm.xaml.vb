@@ -6,7 +6,6 @@ Imports System.Windows.Media.Animation
 
 Public Class OutputForm
     Private _content As String
-    'Private _
 
     Public Sub New(content As String)
 
@@ -22,9 +21,12 @@ Public Class OutputForm
         lblOutput.Content = _content
     End Sub
 
+    'set the _content to clipboard once again
     Private Sub OutputForm_MouseDoubleClick(sender As Object, e As MouseButtonEventArgs) Handles Me.MouseDoubleClick
-        Me.DialogResult = True  'Includes Me.Close()
-        'Me.Close()
+        'Me.DialogResult = True  'Includes Me.Close()
+        Clipboard.Clear()
+        Clipboard.SetText(_content)
+        Me.Close()
     End Sub
 
     Private Sub OutputForm_MouseLeftButtonDown(sender As Object, e As MouseButtonEventArgs) Handles Me.MouseLeftButtonDown
@@ -43,15 +45,15 @@ Public Class OutputForm
         'Me.Opacity = 1
     End Sub
 
-    'Locate Window to the center of the screen
-    Private Sub CenterForm()
-        Dim screenWidth As Double = System.Windows.SystemParameters.PrimaryScreenWidth
-        Dim screenHeight As Double = System.Windows.SystemParameters.PrimaryScreenHeight
-        Dim windowWidth As Double = Me.Width
-        Dim windowHeight As Double = Me.Height
-        Me.Left = (screenWidth / 2) - (windowWidth / 2)
-        Me.Top = (screenHeight / 2) - (windowHeight / 2)
-    End Sub
+    ''Locate Window to the center of the screen
+    'Private Sub CenterForm()
+    '    Dim screenWidth As Double = System.Windows.SystemParameters.PrimaryScreenWidth
+    '    Dim screenHeight As Double = System.Windows.SystemParameters.PrimaryScreenHeight
+    '    Dim windowWidth As Double = Me.Width
+    '    Dim windowHeight As Double = Me.Height
+    '    Me.Left = (screenWidth / 2) - (windowWidth / 2)
+    '    Me.Top = (screenHeight / 2) - (windowHeight / 2)
+    'End Sub
 
     'Locate Window to the bottom right of the screen
     Private Sub BottomRightForm()
@@ -63,13 +65,13 @@ Public Class OutputForm
         Me.Top = screenHeight - windowHeight
     End Sub
 
-    'Change border color when mouse enter the form
+    'Change border color when mouse enters the form
     Private Sub OutputForm_MouseEnter(sender As Object, e As MouseEventArgs) Handles Me.MouseEnter
         Card.Stroke = Media.Brushes.CornflowerBlue
         Card.StrokeThickness = 1
     End Sub
 
-    'Change border color when mouse enter the form
+    'Change border color when mouse leaves the form
     Private Sub OutputForm_MouseLeave(sender As Object, e As MouseEventArgs) Handles Me.MouseLeave
         Card.Stroke = Media.Brushes.Gray
         Card.StrokeThickness = 0.2

@@ -75,7 +75,8 @@ Public Class HttpRequests
 
                         'Warning: Consuming a lot of Memory, even closed
                         Dim OutputForm1 = New OutputForm(parsedText)
-                        If OutputForm1.ShowDialog() = True Then Clipboard.SetText(parsedText)
+                        'If OutputForm1.ShowDialog() = True Then Clipboard.SetText(parsedText)
+                        OutputForm1.Show()
 
                     End Using
                     imageData = Nothing

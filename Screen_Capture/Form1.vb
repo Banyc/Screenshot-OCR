@@ -84,7 +84,7 @@ Public Class Form1
 
     Protected Overrides Sub OnMouseDown(ByVal e As MouseEventArgs)
         IsMouseDown = True
-        Label1.Text = "MouseDown"
+        'Label1.Text = "MouseDown"
         _startPoint = New Size(e.X, e.Y)
         Me.Invalidate()
     End Sub
@@ -164,6 +164,7 @@ Public Class Form1
             Else
                 lbl_lang.Text = "Language: " & "Default"
             End If
+            lblState.Text = "Mode: " & Settings.Mode.ToString()
             Put_g_OnForm(screenShot)
             Me.Show()
 
@@ -176,7 +177,7 @@ Public Class Form1
         If IsMouseDown = True Then
 
             IsMouseDown = False
-            Label1.Text = "MouseUp"
+            'Label1.Text = "MouseUp"
             If _mRect <> Nothing And _mRect.Size.Width <> 0 And _mRect.Size.Height <> 0 Then
 
                 Dim capturedScreen As Bitmap = TakeRegionalScreenShot(_mRect)

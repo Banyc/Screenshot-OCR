@@ -24,20 +24,20 @@ Partial Class Form1
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
-        Me.Label1 = New System.Windows.Forms.Label()
+        Me.lblState = New System.Windows.Forms.Label()
         Me.tmrFrmLoad = New System.Windows.Forms.Timer(Me.components)
         Me.tray = New System.Windows.Forms.NotifyIcon(Me.components)
         Me.lbl_lang = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
-        'Label1
+        'lblState
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(12, 9)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(95, 15)
-        Me.Label1.TabIndex = 0
-        Me.Label1.Text = "Screen shot"
+        Me.lblState.AutoSize = True
+        Me.lblState.Location = New System.Drawing.Point(12, 9)
+        Me.lblState.Name = "lblState"
+        Me.lblState.Size = New System.Drawing.Size(95, 15)
+        Me.lblState.TabIndex = 0
+        Me.lblState.Text = "Screen shot"
         '
         'tmrFrmLoad
         '
@@ -63,7 +63,7 @@ Partial Class Form1
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(152, 53)
         Me.Controls.Add(Me.lbl_lang)
-        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.lblState)
         Me.Name = "Form1"
         Me.Opacity = 0R
         Me.ShowInTaskbar = False
@@ -73,7 +73,7 @@ Partial Class Form1
 
     End Sub
 
-    Friend WithEvents Label1 As Label
+    Friend WithEvents lblState As Label
     Friend WithEvents tmrFrmLoad As Timer
     Friend WithEvents tray As NotifyIcon
     Friend WithEvents lbl_lang As Label
