@@ -17,15 +17,15 @@
         </EventTrigger>
     </Window.Triggers>
     <Grid>
-        <Rectangle x:Name="Card" Margin="10,10,10,10" Stroke="Gray" StrokeThickness="0.2" RadiusY="9" RadiusX="9" Fill="White"><!--Fill="#FFF4F4F5"-->
+        <Rectangle x:Name="Card" Margin="10,10,10,10" Stroke="Gray" StrokeThickness="0.2" RadiusY="7" RadiusX="7" Fill="LightYellow" Opacity="0.8"><!--Fill="#FFF4F4F5"-->
             <Rectangle.BitmapEffect>
-                <DropShadowBitmapEffect Color="Black" ShadowDepth="0" Softness="0.6" Opacity="0.8">
+                <DropShadowBitmapEffect Color="Black" ShadowDepth="0" Softness="0.5" Opacity="0.8">
 
                 </DropShadowBitmapEffect>
             </Rectangle.BitmapEffect>
         </Rectangle>
 
-        <Label x:Name="lblOutput" Content="Label" Margin="20,20,20,20" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="lblOutput" Content="Label" Margin="20,20,20,20" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="16"/>
 
     </Grid>
 </Window>

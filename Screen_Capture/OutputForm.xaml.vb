@@ -6,6 +6,7 @@ Imports System.Windows.Media.Animation
 
 Public Class OutputForm
     Private _content As String
+    Private _IsLocated As Boolean = False  ' Check for if it is the first time to locate Card to bottom right.
 
     Public Sub New(content As String)
 
@@ -39,10 +40,14 @@ Public Class OutputForm
         Me.Close()
     End Sub
 
+    ' Warning: it is a dynamic process, executing more than one time at starting up.
     Private Sub lblOutput_SizeChanged(sender As Object, e As SizeChangedEventArgs) Handles lblOutput.SizeChanged
         Me.Width = lblOutput.ActualWidth + 45
-        Me.Height = lblOutput.ActualHeight + 40
+        Me.Height = lblOutput.ActualHeight + 45
+        'If Not _IsLocated Then  'BUG: fail to properly locate Card
         BottomRightForm()
+        '_IsLocated = True
+        'End If
         'Me.Opacity = 1
     End Sub
 
@@ -74,6 +79,20 @@ Public Class OutputForm
     Private Sub lblOutput_MouseEnter(sender As Object, e As MouseEventArgs) Handles lblOutput.MouseEnter
         Call Card_MouseEnter(sender, e)
     End Sub
+
+    '' TODO: Fix BUGS
+    '' change font size when scrolling in side Card
+    '' https://stackoverflow.com/questions/2378296/mousewheel-determining-up-and-down-scrolling-events
+    'Private Sub Card_MouseWheel(sender As Object, e As MouseWheelEventArgs) Handles Card.MouseWheel
+    '    If e.Delta > 0 Then
+    '        lblOutput.FontSize += 3
+    '    Else
+    '        lblOutput.FontSize -= 3
+    '    End If
+    'End Sub
+    'Private Sub lblOutput_MouseWheel(sender As Object, e As MouseWheelEventArgs) Handles lblOutput.MouseWheel
+    '    Call Card_MouseWheel(sender, e)
+    'End Sub
 
     'Change border color when mouse leaves the form
     Private Sub Card_MouseLeave(sender As Object, e As MouseEventArgs) Handles Card.MouseLeave
