@@ -115,6 +115,9 @@ Public Class OutputForm
             AddHandler anim.Completed, New EventHandler(AddressOf anim_Completed)
             Me.BeginAnimation(UIElement.OpacityProperty, anim)
         End If
+        Card = Nothing
+        lblOutput = Nothing
+        MyForm = Nothing
     End Sub
 
     Private Sub anim_Completed(ByVal sender As Object, ByVal e As EventArgs)
