@@ -83,14 +83,20 @@ Public Class Form1
     End Sub
 
     Protected Overrides Sub OnMouseDown(ByVal e As MouseEventArgs)
-        IsMouseDown = True
-        'Label1.Text = "MouseDown"
-        _startPoint = New Size(e.X, e.Y)
-        Me.Invalidate()
+        If e.Button = MouseButtons.Right Then
+            FinishingFrm()
+        Else
+            IsMouseDown = True
+            'Label1.Text = "MouseDown"
+            _startPoint = New Size(e.X, e.Y)
+            Me.Invalidate()
+        End If
     End Sub
 
+    ' Draw a rectangle
     Protected Overrides Sub OnMouseMove(ByVal e As MouseEventArgs)
-        If e.Button = Windows.Forms.MouseButtons.Left Then
+        'https://stackoverflow.com/questions/17839869/run-when-when-you-ctrl-click-a-button-in-a-winform
+        If e.Button = Windows.Forms.MouseButtons.Left And Not My.Computer.Keyboard.CtrlKeyDown Then  ' preserve the previous rectangle when ctrl is pressed
             _mRect = New Rectangle(Math.Min(_startPoint.X, e.X), Math.Min(_startPoint.Y, e.Y),
                                   Math.Max(_startPoint.X, e.X) - Math.Min(_startPoint.X, e.X),
                                   Math.Max(_startPoint.Y, e.Y) - Math.Min(_startPoint.Y, e.Y))
@@ -98,6 +104,7 @@ Public Class Form1
         End If
     End Sub
 
+    ' Graphics settings
     Protected Overrides Sub OnPaint(ByVal e As PaintEventArgs)
         Using pen As New Pen(Color.Red, 3)
             e.Graphics.DrawRectangle(pen, _mRect.X - 2, _mRect.Y - 2, _mRect.Width + 3, _mRect.Height + 3)  'In order not to include the red edges when capturing _mRect area
@@ -178,6 +185,7 @@ Public Class Form1
 
             IsMouseDown = False
             'Label1.Text = "MouseUp"
+
             If _mRect <> Nothing And _mRect.Size.Width <> 0 And _mRect.Size.Height <> 0 Then
 
                 Dim capturedScreen As Bitmap = TakeRegionalScreenShot(_mRect)
@@ -194,13 +202,14 @@ Public Class Form1
                 End If
 
 #If DEBUG Then
-                g.DrawImage(capturedScreen, 1, 100)  'The last two args represent left top point from Me
+                g.DrawImage(capturedScreen, 1, 100)  'The last two args represent left top point from Me 
 #End If
                 HttpRequests.AutoDirectOCR(capturedScreen)  'Warning: <Awaitable!>
             End If
 #If Not DEBUG Then  'Auto Exit screenshot mode
             FinishingFrm()
 #End If
+
         End If
     End Sub
 

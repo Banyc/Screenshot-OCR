@@ -76,6 +76,7 @@ Public Class HttpRequests
                         'Warning: Consuming a lot of Memory, even closed
                         Dim OutputForm1 = New OutputForm(parsedText)
                         'If OutputForm1.ShowDialog() = True Then Clipboard.SetText(parsedText)
+                        OutputForm1.ShowActivated = False  ' Prevents OutputForm from being focused  ' reference: https://social.msdn.microsoft.com/Forums/vstudio/en-US/36aef35e-0b42-41d0-8504-9eade152536b/activate-wpf-window-without-losing-focus-on-previous-opened-applicationwindow?forum=wpf
                         OutputForm1.Show()
 
                     End Using
