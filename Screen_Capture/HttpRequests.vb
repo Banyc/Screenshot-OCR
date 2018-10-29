@@ -155,7 +155,12 @@ Public Class HttpRequests
         Dim pattern As String = "(?<=" & Chr(34) & "ParsedText" & Chr(34) & "\s*:\s*" & Chr(34) & ").+?(?=(?<!\\)" & Chr(34) & ")"
         Dim match = Regex.Match(content, pattern)
         If match.Success Then
-            Return match.Value.Replace("\r\n", vbCrLf).Replace("\" & Chr(34), Chr(34))
+            Dim plainText = match.Value.Replace("\r\n", vbCrLf).Replace("\" & Chr(34), Chr(34))
+            If Form1.Settings.Advance.EraseAllNewlines Then
+                Return ReplaceNewlines(plainText)
+            Else
+                Return plainText
+            End If
         Else
             ' https://stackoverflow.com/questions/13151322/how-to-raise-an-exception-in-vb-net
             Throw New System.Exception("Regex pattern did not match the responding text")
@@ -183,7 +188,12 @@ Public Class HttpRequests
         For Each match In matches
             parsedText &= match.Value.Replace("\n", vbNewLine).Replace("\" & Chr(34), Chr(34))
         Next
-        Return parsedText
+
+        If Form1.Settings.Advance.EraseAllNewlines Then
+            Return ReplaceNewlines(parsedText)
+        Else
+            Return parsedText
+        End If
     End Function
 
     'match google image search link in response's text
@@ -195,5 +205,13 @@ Public Class HttpRequests
             Throw New System.Exception("Regex pattern failed to match the responding text")
         End If
         Return firstMatch.Value
+    End Function
+
+    'Erases all '\n'
+    Private Shared Function ReplaceNewlines(plainText As String)
+        Dim patternNewline2Space As String = "(?<=[a-zA-Z0-9_])" & vbNewLine & "(?=[a-zA-Z0-9_])"  ' '\w' in VB matches Chinese characters
+        plainText = Regex.Replace(plainText, patternNewline2Space, " ", RegexOptions.None)
+        plainText = plainText.Replace(vbNewLine, "")
+        Return plainText
     End Function
 End Class

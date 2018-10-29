@@ -71,6 +71,9 @@ Public Class Form1
                 Public Shared Property HotkeyId As HotkeyId  'This ID is used to distinguish different hotkey in Winsdows message context
             End Structure
         End Structure
+        Public Structure Advance
+            Public Shared Property EraseAllNewlines As Boolean
+        End Structure
     End Structure
 
     '===== Reference:= https://social.msdn.microsoft.com/Forums/windows/en-US/5dc1b32b-7b7e-41fe-af87-d491d7021bd3/vbnet-smooth-rectangle-drawing-using-mousedrag?forum=winforms
@@ -176,6 +179,12 @@ Public Class Form1
             Me.Show()
 
         Else  ' stop grapping regional screenshot mannually(exit grapping mode)
+            FinishingFrm()
+        End If
+    End Sub
+
+    Private Sub Form1_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown  ' not working until the first successful screenshot
+        If e.KeyCode = Keys.Escape Then
             FinishingFrm()
         End If
     End Sub
@@ -301,6 +310,8 @@ Public Class Form1
         Settings.Hotkeys.ScreenCapture.KeyValue = CType(Int(iniFile.ReadIni(Section:="HotKey", Key:="ScreenCapture_KeyValue", DefaultValue:=Keys.F4)), Keys)
         Settings.Hotkeys.ScreenCapture.KeyModifier = CType(Int(iniFile.ReadIni(Section:="HotKey", Key:="ScreenCapture_KeyModifier", DefaultValue:=Hotkey.KeyModifier.None)), Hotkey.KeyModifier)
         InitRegisterHotkey()
+
+        Settings.Advance.EraseAllNewlines = CType(iniFile.ReadIni(Section:="Advance", Key:="EraseAllNewlines", DefaultValue:="1"), Boolean)
     End Sub
 
     Public Sub FinalizingIniFile()
@@ -315,6 +326,7 @@ Public Class Form1
         iniFile.WriteIni(Section:="HotKey", Key:="ScreenCapture_KeyValue", Value:=Settings.Hotkeys.ScreenCapture.KeyValue)
         iniFile.WriteIni(Section:="HotKey", Key:="ScreenCapture_KeyModifier", Value:=Settings.Hotkeys.ScreenCapture.KeyModifier)
 
+        iniFile.WriteIni(Section:="Advance", Key:="EraseAllNewlines", Value:=Settings.Advance.EraseAllNewlines)
     End Sub
 
     Public Sub InitRegisterHotkey()
