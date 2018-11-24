@@ -114,8 +114,9 @@ Public Class OutputForm
 
     'Change border color when mouse leaves the form
     Private Sub Card_MouseLeave(sender As Object, e As MouseEventArgs) Handles Card.MouseLeave
-        Card.Stroke = Media.Brushes.Gray
-        Card.StrokeThickness = 0.2
+        'Card.Stroke = Media.Brushes.Gray
+        'Card.StrokeThickness = 0.2
+        Card.StrokeThickness = 0
     End Sub
     Private Sub lblOutput_MouseLeave(sender As Object, e As MouseEventArgs) Handles lblOutput.MouseLeave
         Call Card_MouseLeave(sender, e)
