@@ -45,8 +45,12 @@ Public Class OutputForm
 
     ' Warning: it is a dynamic process, executing more than one time at starting up.
     Private Sub lblOutput_SizeChanged(sender As Object, e As SizeChangedEventArgs) Handles lblOutput.SizeChanged
-        Me.Width = lblOutput.ActualWidth + 45
-        Me.Height = lblOutput.ActualHeight + 45
+        If lblOutput.ActualWidth > System.Windows.SystemParameters.WorkArea.Width / 3 Then
+            lblOutput.Width = System.Windows.SystemParameters.WorkArea.Width / 3
+            lblOutput_TextBlock.TextWrapping = TextWrapping.Wrap
+        End If
+        Me.Width = lblOutput.ActualWidth + 41
+        Me.Height = lblOutput.ActualHeight + 41
         'If Not _IsLocated Then  'BUG: fail to properly locate Card
         BottomRightForm()
         '_IsLocated = True
