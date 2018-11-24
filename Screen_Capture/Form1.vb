@@ -210,14 +210,14 @@ Public Class Form1
                     capturedScreen = newBitmap
                 End If
 
-#If DEBUG Then
-                g.DrawImage(capturedScreen, 1, 100)  'The last two args represent left top point from Me 
-#End If
+                '#If DEBUG Then
+                '                g.DrawImage(capturedScreen, 1, 100)  'The last two args represent left top point from Me 
+                '#End If
                 HttpRequests.AutoDirectOCR(capturedScreen)  'Warning: <Awaitable!>
             End If
-#If Not DEBUG Then  'Auto Exit screenshot mode
+            '#If Not DEBUG Then  'Auto Exit screenshot mode
             FinishingFrm()
-#End If
+'#End If
 
         End If
     End Sub
