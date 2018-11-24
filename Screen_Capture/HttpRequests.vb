@@ -177,6 +177,7 @@ Public Class HttpRequests
         Return bitmapBytes
     End Function
 
+#Region "text executions"
     'analyses response documents and returns useful text
     Private Shared Function GetParsedTextFromA9T9(ByVal content As String) As String
         ' (?<="ParsedText"\s*:\s*").+?(?=(?<!\\)")
@@ -191,7 +192,7 @@ Public Class HttpRequests
             End If
         Else
             ' https://stackoverflow.com/questions/13151322/how-to-raise-an-exception-in-vb-net
-            Throw New System.Exception("Regex pattern did not match the responding text")
+            Throw New System.Exception("This is a failure on getting proper response from API. Regex pattern did not match the responding text")
         End If
     End Function
 
@@ -202,10 +203,10 @@ Public Class HttpRequests
         pattern = "(?<=" & Chr(34) & "success" & Chr(34) & "\s*:\s*).+?(?=\s*\})"
         Dim match = Regex.Match(content, pattern)
         If match.Success Then
-            If Int(match.Value) = 0 Then Throw New System.Exception("OCR fails")
+            If Int(match.Value) = 0 Then Throw New System.Exception("OCR fails to find any word")
         Else
-            ' https://stackoverflow.com/questions/13151322/how-to-raise-an-exception-in-vb-net
-            Throw New System.Exception("Regex pattern did not match the responding text")
+            ' How to Throw an error https://stackoverflow.com/questions/13151322/how-to-raise-an-exception-in-vb-net
+            Throw New System.Exception("This is a failure on getting proper response from API. Regex pattern did not match the responding text")
         End If
 
         'parse content
@@ -230,7 +231,7 @@ Public Class HttpRequests
         Dim pattern As String = "(?<=<a href=" & Chr(34) & ")(.*?google.*?)(?=" & Chr(34) & ">)"
         Dim firstMatch As Match = Regex.Match(rawText, pattern)
         If Not firstMatch.Success Then
-            Throw New System.Exception("Regex pattern failed to match the responding text")
+            Throw New System.Exception("This is a failure on getting proper response from API. Regex pattern failed to match the responding text")
         End If
         Return firstMatch.Value
     End Function
@@ -242,4 +243,5 @@ Public Class HttpRequests
         plainText = plainText.Replace(vbNewLine, "")
         Return plainText
     End Function
+#End Region
 End Class
