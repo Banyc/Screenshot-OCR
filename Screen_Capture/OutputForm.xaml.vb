@@ -23,20 +23,31 @@ Public Class OutputForm
     End Sub
 
     'set the _content to clipboard once again
+#Region "Mouse Left Button Events"
     Private Sub Card_MouseLeftButtonDown(sender As Object, e As MouseButtonEventArgs) Handles Card.MouseLeftButtonDown
         MouseLeftButtinDownHandling(e)
     End Sub
     Private Sub lblOutput_MouseLeftButtonDown(sender As Object, e As MouseButtonEventArgs) Handles lblOutput.MouseLeftButtonDown
         MouseLeftButtinDownHandling(e)
     End Sub
+    Private Sub MyBase_MouseLeftButtonDown(sender As Object, e As MouseButtonEventArgs) Handles Me.MouseLeftButtonDown
+        Debug.WriteLine("In Output form, left button detected")
+    End Sub
     Private Sub MouseLeftButtinDownHandling(e As MouseButtonEventArgs)
-        Me.DragMove()
+        Try
+            If e.LeftButton = MouseButtonState.Pressed Then
+                Me.DragMove()  ' BUG in some desktop
+            End If
+        Catch
+        End Try
         If e.ClickCount = 2 Then  'https://social.msdn.microsoft.com/Forums/vstudio/en-US/83ac6fbd-af42-4b9c-897e-142abb0a8199/can-not-use-event-double-click-on-button?forum=vbgeneral
             Clipboard.Clear()
             Clipboard.SetText(_content)
             Me.Close()
         End If
+        e.Handled = True
     End Sub
+#End Region
 
     Private Sub OutputForm_MouseRightButtonUp(sender As Object, e As MouseButtonEventArgs) Handles Me.MouseRightButtonUp
         'Me.DialogResult = False  'Includes Me.Close()
