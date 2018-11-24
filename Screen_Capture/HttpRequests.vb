@@ -20,7 +20,7 @@ Public Class HttpRequests
     End Sub
 
     Public Shared Async Function A9T9_OCR(imageData As Byte(), apikey As String, language As String, timeOut As Integer) As Threading.Tasks.Task
-        Initiating()
+        Dim loadingBox = Initiating()
         Try
             Using httpClient As HttpClient = New HttpClient()
                 httpClient.Timeout = New TimeSpan(0, 0, timeOut)
@@ -41,7 +41,15 @@ Public Class HttpRequests
                         Dim parsedText As String = GetParsedTextFromA9T9(strContent)
                         Clipboard.Clear()
                         Clipboard.SetText(parsedText)
-                        If MessageBox.Show(parsedText, "A9T9 - " & language, MessageBoxButtons.OKCancel) = DialogResult.OK Then Clipboard.SetText(parsedText)  ' BUG: does not pop up. fix: wait. Cause: bad response
+                        'If MessageBox.Show(parsedText, "A9T9 - " & language, MessageBoxButtons.OKCancel) = DialogResult.OK Then Clipboard.SetText(parsedText)  ' BUG: does not pop up. fix: wait. Cause: bad response
+
+                        loadingBox.Teminate(parsedText)
+
+                        'Warning: Consuming a lot of Memory, even closed
+                        Dim OutputForm1 = New OutputForm(parsedText)
+                        'If OutputForm1.ShowDialog() = True Then Clipboard.SetText(parsedText)
+                        OutputForm1.ShowActivated = False  ' Prevents OutputForm from being focused  ' reference: https://social.msdn.microsoft.com/Forums/vstudio/en-US/36aef35e-0b42-41d0-8504-9eade152536b/activate-wpf-window-without-losing-focus-on-previous-opened-applicationwindow?forum=wpf
+                        OutputForm1.Show()
 
                         ' for RAM releases
                         parsedText = Nothing
@@ -52,13 +60,18 @@ Public Class HttpRequests
                 End Using
             End Using
         Catch exception As Exception
-            MessageBox.Show("Ooops" & vbCrLf & exception.Message)
+            If loadingBox Is Nothing Then
+                MessageBox.Show("Ooops" & vbCrLf & exception.Message)
+            Else
+                loadingBox.ShowError(exception)
+            End If
+
         End Try
         Finalizing()
     End Function
 
     Public Shared Async Function Sogou_OCR(imageData As Byte(), timeOut As Integer) As Threading.Tasks.Task
-        Initiating()
+        Dim loadingBox = Initiating()
         Dim strContent As String
         Try
             Const url As String = "https://ocr.shouji.sogou.com/v2/ocr/json"
@@ -73,6 +86,8 @@ Public Class HttpRequests
                         Clipboard.SetText(parsedText)
                         'If MessageBox.Show(parsedText, "Sogou", MessageBoxButtons.OKCancel) = DialogResult.OK Then Clipboard.SetText(parsedText)
 
+                        loadingBox.Teminate(parsedText)
+
                         'Warning: Consuming a lot of Memory, even closed
                         Dim OutputForm1 = New OutputForm(parsedText)
                         'If OutputForm1.ShowDialog() = True Then Clipboard.SetText(parsedText)
@@ -84,16 +99,20 @@ Public Class HttpRequests
                 End Using
             End Using
         Catch ex As Exception  ' HttpRequestException not working
-            MessageBox.Show(ex.Message & vbCrLf & "Width: " & Form1._mRect.Width & " " & "Height: " & Form1._mRect.Height)  'TODO: delect _mRect's info
-            'Test result: either minimum of Width or Height is 50
+            If loadingBox Is Nothing Then
+                MessageBox.Show(ex.Message & vbCrLf & "Width: " & Form1._mRect.Width & " " & "Height: " & Form1._mRect.Height)  'TODO: delect _mRect's info
+                'Test result: either minimum of Width or Height is 50
 
+            Else
+                loadingBox.ShowError(ex)
+            End If
         End Try
         Finalizing()
     End Function
 
     'http://saucenao.com/ - a image reserve search engine; TODO: Add other engine's entry
     Public Shared Async Function SauceNAO(imageData As Byte(), timeOut As Integer) As Threading.Tasks.Task
-        Initiating()
+        Dim loadingBox = Initiating()
         Try
             Using httpClient As HttpClient = New HttpClient()
                 httpClient.Timeout = New TimeSpan(0, 0, timeOut)
@@ -103,6 +122,8 @@ Public Class HttpRequests
                     ' tray_text changes to program name after this step
                     Using response As HttpResponseMessage = Await httpClient.PostAsync("https://saucenao.com/search.php", form)
                         Dim strContent As String = Await response.Content.ReadAsStringAsync()
+
+                        loadingBox.Teminate()
 
                         'Not necessarily Google link, also other reverse search engine's link includes in strContent
                         Dim parsedGoogleLink As String = GetGoogleLinkFromSauceNAO(strContent)
@@ -116,14 +137,21 @@ Public Class HttpRequests
                 End Using
             End Using
         Catch exception As Exception
-            MessageBox.Show("Ooops" & vbCrLf & exception.Message)
+            If loadingBox Is Nothing Then
+                MessageBox.Show("Ooops" & vbCrLf & exception.Message)
+            Else
+                loadingBox.ShowError(exception)
+            End If
         End Try
         Finalizing()
     End Function
 
-    Private Shared Sub Initiating()
+    Private Shared Function Initiating()
         Form1.tray.Text = "Processing"
-    End Sub
+        Dim loadingBox As New LoadingBox
+        loadingBox.Show()
+        Return loadingBox
+    End Function
 
     Private Shared Sub Finalizing()
         GC.Collect()  ' uneffective
