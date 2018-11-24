@@ -215,7 +215,7 @@ Public Class HttpRequests
         pattern = "(?<=" & Chr(34) & "content" & Chr(34) & "\s*:\s*" & Chr(34) & ").+?(?=(?<!\\)" & Chr(34) & ")"
         Dim matches = Regex.Matches(content, pattern)
         For Each match In matches
-            parsedText &= match.Value.Replace("\n", vbNewLine).Replace("\" & Chr(34), Chr(34))
+            parsedText &= match.Value.Replace("\n", vbNewLine).Replace("\" & Chr(34), Chr(34)).Replace("\\", "\")
         Next
 
         If Form1.Settings.Advance.EraseAllNewlines Then
