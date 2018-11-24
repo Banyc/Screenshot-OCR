@@ -58,6 +58,21 @@ Hint: In screenshot mode, press Ctrl while left click to re-capture the previous
 1. Right click tray icon to list out menu and click "Settings"; or simply left click the icon;
 2. All settings save when option "Exit" in the menu clicked.
 
+## Note
+
+### WPF Window Overview
+
+[Window_Lifetime_Events](https://docs.microsoft.com/en-us/previous-versions/dotnet/netframework-4.0/ms748948(v=vs.100)#Window_Lifetime_Events)
+
+### ActualWidth and ActualHeight Updating Lag of TextBlock
+
+Reasons
+
+- [The process cycle](https://www.codeproject.com/Questions/181118/WPF-TextBlock-Width-and-Height)
+- [Calculation of Double](https://stackoverflow.com/questions/9008525/why-actualsize-is-not-updating-its-value-on-wpf)
+
+[Solution](https://stackoverflow.com/questions/10556019/how-to-calculate-the-textbock-height-and-width-in-on-load-if-i-create-textblock)
+
 ## Appreciation
 
 - [天若OCR文字识别工具](https://www.52pojie.cn/thread-692917-1-1.html) - Source of Inspiration;
