@@ -94,6 +94,9 @@
     <Compile Include="HttpRequests.vb" />
     <Compile Include="IniFile.vb" />
     <Compile Include="KeyboardHook.vb" />
+    <Compile Include="LoadingBox.xaml.vb">
+      <DependentUpon>LoadingBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -160,6 +163,10 @@
     <Content Include="default.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="LoadingBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="OutputForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
