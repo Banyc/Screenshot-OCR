@@ -19,7 +19,9 @@ Public Class OutputForm
     End Sub
 
     Private Sub OutputForm_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
-        lblOutput.Content = _content
+        lblOutput_TextBlock.Text = _content
+
+
     End Sub
 
     'set the _content to clipboard once again
