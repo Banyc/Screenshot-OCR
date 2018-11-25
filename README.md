@@ -73,6 +73,10 @@ Reasons
 
 [Solution](https://stackoverflow.com/questions/10556019/how-to-calculate-the-textbock-height-and-width-in-on-load-if-i-create-textblock)
 
+### Data Binding
+
+[Model-View Binding](https://rachel53461.wordpress.com/2012/07/14/what-is-this-datacontext-you-speak-of/)
+
 ## Appreciation
 
 - [天若OCR文字识别工具](https://www.52pojie.cn/thread-692917-1-1.html) - Source of Inspiration;
