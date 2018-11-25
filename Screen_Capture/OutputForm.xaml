@@ -5,8 +5,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:local="clr-namespace:Screenshot_OCR"
         mc:Ignorable="d" 
-        d:DesignHeight="450" d:DesignWidth="800" WindowStyle="None" Background="Transparent" AllowsTransparency="True" ShowInTaskbar="False" Topmost="True"
-        
+        d:DesignHeight="100" d:DesignWidth="200" WindowStyle="None" Background="Transparent" AllowsTransparency="True" ShowInTaskbar="False" Topmost="True"
+        Opacity="0"
 ><!--x:Name="OutputForm"-->
     <Window.Triggers>
         <EventTrigger RoutedEvent="Loaded">
@@ -17,8 +17,10 @@
             </BeginStoryboard>
         </EventTrigger>
     </Window.Triggers>
-    <Grid>
-        <Rectangle x:Name="Card" Margin="10,10,10,10" Stroke="LightYellow" StrokeThickness="0" RadiusY="7" RadiusX="7" Fill="LightYellow" Opacity="1"><!--Fill="#FFF4F4F5"--><!--Stroke="Gray" StrokeThickness="0.2"-->
+    <Grid Name="gdMain" Margin="10,10,10,10">
+        <Rectangle x:Name="Card"  Stroke="LightYellow" StrokeThickness="0" RadiusY="7" RadiusX="7" Fill="LightYellow" Opacity="1">
+            <!--Fill="#FFF4F4F5"-->
+            <!--Stroke="Gray" StrokeThickness="0.2"-->
             <Rectangle.Effect>
                 <DropShadowEffect Color="Black" ShadowDepth="2.5" Direction="270" BlurRadius="6" Opacity="0.2">
                     <!--Softness="0.3"-->
@@ -26,19 +28,14 @@
                 </DropShadowEffect>
             </Rectangle.Effect>
         </Rectangle>
-
-        <Label x:Name="lblOutput" 
-               
-               Margin="20,20,20,20" 
-               HorizontalAlignment="Center" 
-               VerticalAlignment="Center" 
-               FontSize="16" 
-               FontFamily="Segoe UI" 
-               Foreground="DarkSlateGray" 
-               Opacity="0.9" 
-               ><!--Content="Label"--> <!--MaxWidth="100"-->
-            <TextBlock x:Name="lblOutput_TextBlock" TextWrapping="NoWrap" Text="Some text" />
-        </Label>
-
+        <TextBlock x:Name="tbOutput"
+                    TextWrapping="NoWrap" Text="Some text" 
+                    Margin="15,15,15,15" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center" 
+                    FontSize="16" 
+                    FontFamily="Segoe UI" 
+                    Foreground="DarkSlateGray" 
+                    Opacity="0.9" />
     </Grid>
 </Window>

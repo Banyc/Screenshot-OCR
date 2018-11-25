@@ -6,7 +6,6 @@ Imports System.Windows.Media.Animation
 
 Public Class OutputForm
     Private _content As String
-    Private _IsLocated As Boolean = False  ' Check for if it is the first time to locate Card to bottom right.
 
     Public Sub New(content As String)
 
@@ -14,14 +13,12 @@ Public Class OutputForm
         InitializeComponent()
 
         ' 在 InitializeComponent() 调用之后添加任何初始化。
-
         _content = content
+        tbOutput.Text = _content
     End Sub
 
     Private Sub OutputForm_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
-        lblOutput_TextBlock.Text = _content
-
-
+        ResizeWindow()
     End Sub
 
     'set the _content to clipboard once again
@@ -29,12 +26,10 @@ Public Class OutputForm
     Private Sub Card_MouseLeftButtonDown(sender As Object, e As MouseButtonEventArgs) Handles Card.MouseLeftButtonDown
         MouseLeftButtinDownHandling(e)
     End Sub
-    Private Sub lblOutput_MouseLeftButtonDown(sender As Object, e As MouseButtonEventArgs) Handles lblOutput.MouseLeftButtonDown
+    Private Sub tbOutput_MouseLeftButtonDown(sender As Object, e As MouseButtonEventArgs) Handles tbOutput.MouseLeftButtonDown
         MouseLeftButtinDownHandling(e)
     End Sub
-    Private Sub MyBase_MouseLeftButtonDown(sender As Object, e As MouseButtonEventArgs) Handles Me.MouseLeftButtonDown
-        Debug.WriteLine("In Output form, left button detected")
-    End Sub
+
     Private Sub MouseLeftButtinDownHandling(e As MouseButtonEventArgs)
         Try
             If e.LeftButton = MouseButtonState.Pressed Then
@@ -52,51 +47,39 @@ Public Class OutputForm
 #End Region
 
     Private Sub OutputForm_MouseRightButtonUp(sender As Object, e As MouseButtonEventArgs) Handles Me.MouseRightButtonUp
-        'Me.DialogResult = False  'Includes Me.Close()
         Me.Close()
     End Sub
 
-    ' Warning: it is a dynamic process, executing more than one time at starting up.
-    Private Sub lblOutput_SizeChanged(sender As Object, e As SizeChangedEventArgs) Handles lblOutput.SizeChanged
-        If lblOutput.ActualWidth > System.Windows.SystemParameters.WorkArea.Width / 3 Then
-            lblOutput.Width = System.Windows.SystemParameters.WorkArea.Width / 3
-            lblOutput_TextBlock.TextWrapping = TextWrapping.Wrap
+    ' resizes the dimension of MyBase and locates it to the bottom right
+    Private Sub ResizeWindow()
+        UpdateLayout()
+        If tbOutput.ActualWidth > System.Windows.SystemParameters.WorkArea.Width / 3 Then
+            tbOutput.Width = System.Windows.SystemParameters.WorkArea.Width / 3
+            tbOutput.TextWrapping = TextWrapping.Wrap
         End If
-        Me.Width = lblOutput.ActualWidth + 41
-        Me.Height = lblOutput.ActualHeight + 41
-        'If Not _IsLocated Then  'BUG: fail to properly locate Card
+        UpdateLayout()
+        Me.Width = tbOutput.ActualWidth + tbOutput.Margin.Left + tbOutput.Margin.Right + gdMain.Margin.Left + gdMain.Margin.Right + 1
+        Me.Height = tbOutput.ActualHeight + tbOutput.Margin.Top + tbOutput.Margin.Bottom + gdMain.Margin.Top + gdMain.Margin.Bottom + 1
         BottomRightForm()
-        '_IsLocated = True
-        'End If
-        'Me.Opacity = 1
     End Sub
-
-    ''Locate Window to the center of the screen
-    'Private Sub CenterForm()
-    '    Dim screenWidth As Double = System.Windows.SystemParameters.PrimaryScreenWidth
-    '    Dim screenHeight As Double = System.Windows.SystemParameters.PrimaryScreenHeight
-    '    Dim windowWidth As Double = Me.Width
-    '    Dim windowHeight As Double = Me.Height
-    '    Me.Left = (screenWidth / 2) - (windowWidth / 2)
-    '    Me.Top = (screenHeight / 2) - (windowHeight / 2)
-    'End Sub
 
     'Locate Window to the bottom right of the screen
     Private Sub BottomRightForm()
+        UpdateLayout()
         Dim screenWidth As Double = System.Windows.SystemParameters.WorkArea.Width
         Dim screenHeight As Double = System.Windows.SystemParameters.WorkArea.Height
-        Dim windowWidth As Double = Me.Width
-        Dim windowHeight As Double = Me.Height
+        Dim windowWidth As Double = Me.ActualWidth
+        Dim windowHeight As Double = Me.ActualHeight
         Me.Left = screenWidth - windowWidth
         Me.Top = screenHeight - windowHeight
     End Sub
 
-    'Change border color when mouse enters the form
+    'Change border color When mouse enters the form
     Private Sub Card_MouseEnter(sender As Object, e As MouseEventArgs) Handles Card.MouseEnter
         Card.Stroke = Media.Brushes.CornflowerBlue
         Card.StrokeThickness = 2
     End Sub
-    Private Sub lblOutput_MouseEnter(sender As Object, e As MouseEventArgs) Handles lblOutput.MouseEnter
+    Private Sub tbOutput_MouseEnter(sender As Object, e As MouseEventArgs) Handles tbOutput.MouseEnter
         Call Card_MouseEnter(sender, e)
     End Sub
 
@@ -105,22 +88,22 @@ Public Class OutputForm
     '' https://stackoverflow.com/questions/2378296/mousewheel-determining-up-and-down-scrolling-events
     'Private Sub Card_MouseWheel(sender As Object, e As MouseWheelEventArgs) Handles Card.MouseWheel
     '    If e.Delta > 0 Then
-    '        lblOutput.FontSize += 3
+    '        tbOutput.FontSize += 3
     '    Else
-    '        lblOutput.FontSize -= 3
+    '        tbOutput.FontSize -= 3
     '    End If
     'End Sub
-    'Private Sub lblOutput_MouseWheel(sender As Object, e As MouseWheelEventArgs) Handles lblOutput.MouseWheel
+    'Private Sub tbOutput_MouseWheel(sender As Object, e As MouseWheelEventArgs) Handles tbOutput.MouseWheel
     '    Call Card_MouseWheel(sender, e)
     'End Sub
 
     'Change border color when mouse leaves the form
     Private Sub Card_MouseLeave(sender As Object, e As MouseEventArgs) Handles Card.MouseLeave
-        'Card.Stroke = Media.Brushes.Gray
-        'Card.StrokeThickness = 0.2
         Card.StrokeThickness = 0
+        e.Handled = True
     End Sub
-    Private Sub lblOutput_MouseLeave(sender As Object, e As MouseEventArgs) Handles lblOutput.MouseLeave
+    Private Sub tbOutput_MouseLeave(sender As Object, e As MouseEventArgs) Handles tbOutput.MouseLeave
+        e.Handled = True
         Call Card_MouseLeave(sender, e)
     End Sub
 
@@ -137,7 +120,7 @@ Public Class OutputForm
             Me.BeginAnimation(UIElement.OpacityProperty, anim)
         End If
         Card = Nothing
-        lblOutput = Nothing
+        tbOutput = Nothing
         MyForm = Nothing
     End Sub
 
