@@ -36,6 +36,7 @@ Public Class LoadingBox
         Me.Close()
     End Sub
 
+    ' resizes this window and locates it on the center
     Private Sub ResizeWindow()
         Label.TextWrapping = TextWrapping.NoWrap
         If Label.ActualWidth > System.Windows.SystemParameters.WorkArea.Width / 5 Then  ' BUG
