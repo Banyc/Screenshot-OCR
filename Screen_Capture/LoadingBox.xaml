@@ -13,6 +13,7 @@
         AllowsTransparency="True"
         Topmost="True"
         ShowInTaskbar="False"
+        Opacity="0"
         
         Background="Transparent"
         ShowActivated="False"
