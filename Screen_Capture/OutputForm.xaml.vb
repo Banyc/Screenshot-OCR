@@ -21,22 +21,15 @@ Public Class OutputForm
         ResizeWindow()
     End Sub
 
-    'set the _content to clipboard once again
 #Region "Mouse Left Button Events"
     Private Sub Card_MouseLeftButtonDown(sender As Object, e As MouseButtonEventArgs) Handles Card.MouseLeftButtonDown
-        MouseLeftButtinDownHandling(e)
-    End Sub
-    Private Sub tbOutput_MouseLeftButtonDown(sender As Object, e As MouseButtonEventArgs) Handles tbOutput.MouseLeftButtonDown
-        MouseLeftButtinDownHandling(e)
-    End Sub
-
-    Private Sub MouseLeftButtinDownHandling(e As MouseButtonEventArgs)
         Try
             If e.LeftButton = MouseButtonState.Pressed Then
                 Me.DragMove()  ' BUG in some desktop
             End If
         Catch
         End Try
+        'set the _content to clipboard once again
         If e.ClickCount = 2 Then  'https://social.msdn.microsoft.com/Forums/vstudio/en-US/83ac6fbd-af42-4b9c-897e-142abb0a8199/can-not-use-event-double-click-on-button?forum=vbgeneral
             Clipboard.Clear()
             Clipboard.SetText(_content)
@@ -57,9 +50,6 @@ Public Class OutputForm
             tbOutput.Width = System.Windows.SystemParameters.WorkArea.Width / 3
             tbOutput.TextWrapping = TextWrapping.Wrap
         End If
-        UpdateLayout()
-        Me.Width = tbOutput.ActualWidth + tbOutput.Margin.Left + tbOutput.Margin.Right + gdMain.Margin.Left + gdMain.Margin.Right + 1
-        Me.Height = tbOutput.ActualHeight + tbOutput.Margin.Top + tbOutput.Margin.Bottom + gdMain.Margin.Top + gdMain.Margin.Bottom + 1
         BottomRightForm()
     End Sub
 
@@ -72,15 +62,6 @@ Public Class OutputForm
         Dim windowHeight As Double = Me.ActualHeight
         Me.Left = screenWidth - windowWidth
         Me.Top = screenHeight - windowHeight
-    End Sub
-
-    'Change border color When mouse enters the form
-    Private Sub Card_MouseEnter(sender As Object, e As MouseEventArgs) Handles Card.MouseEnter
-        Card.Stroke = Media.Brushes.CornflowerBlue
-        Card.StrokeThickness = 2
-    End Sub
-    Private Sub tbOutput_MouseEnter(sender As Object, e As MouseEventArgs) Handles tbOutput.MouseEnter
-        Call Card_MouseEnter(sender, e)
     End Sub
 
     '' TODO: Fix BUGS
@@ -97,17 +78,7 @@ Public Class OutputForm
     '    Call Card_MouseWheel(sender, e)
     'End Sub
 
-    'Change border color when mouse leaves the form
-    Private Sub Card_MouseLeave(sender As Object, e As MouseEventArgs) Handles Card.MouseLeave
-        Card.StrokeThickness = 0
-        e.Handled = True
-    End Sub
-    Private Sub tbOutput_MouseLeave(sender As Object, e As MouseEventArgs) Handles tbOutput.MouseLeave
-        e.Handled = True
-        Call Card_MouseLeave(sender, e)
-    End Sub
-
-    '=== https://stackoverflow.com/questions/5958508/fading-out-a-window
+#Region "Window Fades Out" ' https://stackoverflow.com/questions/5958508/fading-out-a-window
 
     Private AlreadyFaded As Boolean = False
 
@@ -127,5 +98,5 @@ Public Class OutputForm
     Private Sub anim_Completed(ByVal sender As Object, ByVal e As EventArgs)
         Close()
     End Sub
-    '=== end reference
+#End Region
 End Class

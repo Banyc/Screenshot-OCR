@@ -18,6 +18,7 @@
         Background="Transparent"
         ShowActivated="False"
         Focusable="False"
+        SizeToContent="WidthAndHeight"
         ><!--Height="100" Width="100"-->
     <Window.Triggers>
         <EventTrigger RoutedEvent="Loaded">

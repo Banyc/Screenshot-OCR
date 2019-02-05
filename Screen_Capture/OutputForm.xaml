@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:Screenshot_OCR"
         mc:Ignorable="d" 
         d:DesignHeight="100" d:DesignWidth="200" WindowStyle="None" Background="Transparent" AllowsTransparency="True" ShowInTaskbar="False" Topmost="True"
+        ResizeMode="NoResize"
         Opacity="0"
+        SizeToContent="WidthAndHeight"
 ><!--x:Name="OutputForm"-->
     <Window.Triggers>
         <EventTrigger RoutedEvent="Loaded">
@@ -17,25 +19,30 @@
             </BeginStoryboard>
         </EventTrigger>
     </Window.Triggers>
-    <Grid Name="gdMain" Margin="10,10,10,10">
-        <Rectangle x:Name="Card"  Stroke="LightYellow" StrokeThickness="0" RadiusY="7" RadiusX="7" Fill="LightYellow" Opacity="1">
-            <!--Fill="#FFF4F4F5"-->
-            <!--Stroke="Gray" StrokeThickness="0.2"-->
-            <Rectangle.Effect>
-                <DropShadowEffect Color="Black" ShadowDepth="2.5" Direction="270" BlurRadius="6" Opacity="0.2">
-                    <!--Softness="0.3"-->
-
-                </DropShadowEffect>
-            </Rectangle.Effect>
-        </Rectangle>
-        <TextBlock x:Name="tbOutput"
-                    TextWrapping="NoWrap" Text="Some text" 
-                    Margin="15,15,15,15" 
-                    HorizontalAlignment="Center" 
-                    VerticalAlignment="Center" 
-                    FontSize="16" 
-                    FontFamily="Segoe UI" 
-                    Foreground="DarkSlateGray" 
-                    Opacity="0.9" />
+    <Grid Name="gdMain" Margin="10">
+        <Border x:Name="Card" Background="LightYellow" Opacity="1" CornerRadius="7" BorderThickness="2">
+            <Border.Effect>
+                <DropShadowEffect Color="Black" ShadowDepth="2.5" Direction="270" BlurRadius="6" Opacity="0.2"/>
+            </Border.Effect>
+            <Border.Style>
+                <Style TargetType="{x:Type Border}">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="BorderBrush" Value="CornflowerBlue"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            
+            <TextBlock x:Name="tbOutput"
+                        TextWrapping="NoWrap" Text="Some text" 
+                        Margin="15"
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center" 
+                        FontSize="16" 
+                        FontFamily="Segoe UI" 
+                        Foreground="DarkSlateGray" 
+                        Opacity="0.9" />
+        </Border>
     </Grid>
 </Window>

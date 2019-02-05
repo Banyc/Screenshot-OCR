@@ -261,8 +261,10 @@ Public Class Form1
     ''' </summary>
     ''' <returns></returns>
     Private Function TakeScreenShot() As Bitmap
-        Dim screenSize As Size = New Size(My.Computer.Screen.Bounds.Width, My.Computer.Screen.Bounds.Height)
-        Dim screenGrab As New Bitmap(My.Computer.Screen.Bounds.Width, My.Computer.Screen.Bounds.Height)  ' pointer-like
+        'Dim screenSize As Size = New Size(My.Computer.Screen.Bounds.Width, My.Computer.Screen.Bounds.Height)
+        Dim screenSize As Size = Screen.PrimaryScreen.Bounds.Size
+        'Dim screenGrab As New Bitmap(My.Computer.Screen.Bounds.Width, My.Computer.Screen.Bounds.Height)  ' pointer-like
+        Dim screenGrab As New Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height)  ' pointer-like
         Dim g1 As Graphics = Graphics.FromImage(screenGrab)
         g1.CopyFromScreen(New Point(0, 0), New Point(0, 0), screenSize)
         Return screenGrab
@@ -291,7 +293,9 @@ Public Class Form1
         'https://stackoverflow.com/questions/14554186/run-in-full-screen-with-no-start-menu
         Me.FormBorderStyle = Windows.Forms.FormBorderStyle.None
         Me.Location = New Point(0, 0)
-        Me.Size = SystemInformation.PrimaryMonitorSize
+        'Me.Size = SystemInformation.PrimaryMonitorSize
+        Me.Size = Screen.PrimaryScreen.Bounds.Size
+        'Me.WindowState = FormWindowState.Maximized
         Me.TopMost = True
         Me.Opacity = 1
         Me.BackColor = Color.Gray

@@ -33,8 +33,8 @@ Make sure to make yourself informed the warnings below before kicking off.
 2. Press F4 when you need to convert letters on the screen to editable with OCR;
 3. Press F4 again or right click to undo;
 4. Drag a rectangle to select the letters-contained region while pressing left key;
-5. Wait for a message box to pop up. The recognized letters shown in the box are in your clipboard;
-6. Click "OK" to copy them again, "Cancel" to close the message box; in Sogou API mode, double click the message box to copy them again, right click to close it;
+5. Wait for a yellow message box to pop up. The recognized letters shown in the box are in your clipboard;
+6. Double click the message box to copy them again, right click to close it;
 7. Go to step 2.
 
 Hint: In screenshot mode, press Ctrl while left click to re-capture the previous region.
@@ -51,12 +51,12 @@ Hint: In screenshot mode, press Ctrl while left click to re-capture the previous
 4. Wait for a message box to pop up after clicking "OK". Clipboard updates at the same time;
 5. Click "OK" to copy them again, "Cancel" to close the message box.
 
-**Hint**: API that is using is based on the mode you chose at settings.
+**Hint**: API that is used is based on the mode you chose at settings.
 
 ### For Settings
 
 1. Right click tray icon to list out menu and click "Settings"; or simply left click the icon;
-2. All settings save when option "Exit" in the menu clicked.
+2. All settings save after the option "Exit" in the menu is clicked.
 
 ## Note
 

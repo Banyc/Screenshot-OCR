@@ -39,13 +39,11 @@ Public Class LoadingBox
     ' resizes this window and locates it on the center
     Private Sub ResizeWindow()
         Label.TextWrapping = TextWrapping.NoWrap
+        UpdateLayout()
         If Label.ActualWidth > System.Windows.SystemParameters.WorkArea.Width / 5 Then  ' BUG
             Label.TextWrapping = TextWrapping.Wrap
             Label.Width = System.Windows.SystemParameters.WorkArea.Width / 5
         End If
-        UpdateLayout()  ' Updates label's ActualHeight and-Width
-        Me.Height = Label.ActualHeight + Label.Margin.Top + Label.Margin.Bottom + MainGrid.Margin.Top + MainGrid.Margin.Bottom + 1.0
-        Me.Width = Label.ActualWidth + Label.Margin.Left + Label.Margin.Right + MainGrid.Margin.Left + MainGrid.Margin.Right + 1.0
 
         CenterWindowOnScreen()
     End Sub
@@ -53,8 +51,9 @@ Public Class LoadingBox
     Private Sub CenterWindowOnScreen()
         Dim screenWidth = System.Windows.SystemParameters.WorkArea.Width
         Dim screenHeight = System.Windows.SystemParameters.WorkArea.Height
-        Dim windowWidth = Me.Width
-        Dim windowHeight = Me.Height
+        UpdateLayout()
+        Dim windowWidth = Me.ActualWidth
+        Dim windowHeight = Me.ActualHeight
         Me.Left = (screenWidth / 2) - (windowWidth / 2)
         Me.Top = (screenHeight / 2) - (windowHeight / 2)
     End Sub
