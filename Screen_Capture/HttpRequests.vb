@@ -177,14 +177,14 @@ Public Class HttpRequests
         Return bitmapBytes
     End Function
 
-#Region "text executions"
+#Region "text operations"
     'analyses response documents and returns useful text
     Private Shared Function GetParsedTextFromA9T9(ByVal content As String) As String
-        ' (?<="ParsedText"\s*:\s*").+?(?=(?<!\\)")
-        Dim pattern As String = "(?<=" & Chr(34) & "ParsedText" & Chr(34) & "\s*:\s*" & Chr(34) & ").+?(?=(?<!\\)" & Chr(34) & ")"
+        ' (?<="ParsedText"\s*:\s*").*?(?=(?<!\\)")
+        Dim pattern As String = "(?<=" & Chr(34) & "ParsedText" & Chr(34) & "\s*:\s*" & Chr(34) & ").*?(?=(?<!\\)" & Chr(34) & ")"
         Dim match = Regex.Match(content, pattern)
         If match.Success Then
-            Dim plainText = match.Value.Replace("\r\n", vbCrLf).Replace("\" & Chr(34), Chr(34))
+            Dim plainText = match.Value.Replace("\r\n", vbCrLf).Replace("\" & Chr(34), Chr(34)).Replace("\\", "\")
             If Form1.Settings.Advance.EraseAllNewlines Then
                 Return ReplaceNewlines(plainText)
             Else
