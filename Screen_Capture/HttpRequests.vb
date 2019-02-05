@@ -78,7 +78,7 @@ Public Class HttpRequests
             Using httpClient As New HttpClient()
                 httpClient.Timeout = New TimeSpan(0, 0, timeOut)  ' time out after no response 
                 Using Form As New MultipartFormDataContent()  ' declare message body
-                    Form.Add(New ByteArrayContent(imageData, 0, imageData.Length), "pic", "1111111.jpg")  ' add image to message body; BUG: file name may necessarily be "1111111.jpg"
+                    Form.Add(New ByteArrayContent(imageData, 0, imageData.Length), "pic", "11111111.jpg")  ' add image to message body; BUG: file name may necessarily be "1111111.jpg"
                     Using response As HttpResponseMessage = Await httpClient.PostAsync(url, Form)  ' get response through POST method
                         strContent = Await response.Content.ReadAsStringAsync()
                         Dim parsedText As String = GetParsedTextFromSogou(strContent)
