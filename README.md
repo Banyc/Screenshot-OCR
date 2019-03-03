@@ -1,6 +1,6 @@
 # Screenshot OCR
 
-Apply **OCR** or **Reverse Image Search** to Real-Time Screenshot in Single Key Pressing and a Mouse Dragging.
+Apply **OCR** or **Reverse Image Search** to Real-Time Screenshot in a Single Key Pressing and a Mouse Dragging.
 
 ## Warnings
 
@@ -9,7 +9,7 @@ Make sure to make yourself informed the warnings below before kicking off.
 - Screenshots within the red rectangle are sent to third-party website to do OCR processing. No privacy guarantee.
 - BUGs may occasionally occur, which might mistaken the range of the red rectangle leading to extra screenshot sending. No privacy guarantee for your computer's full-size screenshot.
 - Your IP address may be exposed to the screenshots receiving websites.
-- Your screenshot and your IP address might be used in analyse use to the receiving websites.
+- Your screenshot and your IP address might be used in analysis use to the receiving websites.
 - Changes are, though little, files downloaded from the download link might be swapped. No file integrity guarantee.
 - some POST links are using unsafe HTTP Communications Protocol, rather than HTTPs.
 
@@ -85,7 +85,7 @@ Reasons
 - [SauceNAO](https://saucenao.com/) - an image reverse search site and also an image host;
 - [icon8](https://icons8.com/) - Free Icons site;
 - [ConvertICO](https://convertico.com/) - site for Converting PNG to ICO;
-- [Kelly](https://github.com/guo40020) - a pro giving me technical advises;
+- [Kelly](https://github.com/guo40020) - a pro giving me technical advice;
 - and authors whose original code is at the website whose links were written between my codes.
 
 ## TODO
@@ -96,3 +96,4 @@ Reasons
 - [X] Fix BUG: pressing Alt + F4 kills the program though it does not activated.
 - [X] Break limitation for minimum image size by Sogou API
 - [X] Perfect UI
+- [ ] fix resolution issue in some desktops
