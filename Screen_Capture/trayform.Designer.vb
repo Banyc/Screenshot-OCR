@@ -30,32 +30,33 @@ Partial Class trayform
         Me.A9T9ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ModeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
+        Me.ClearClipboardToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.traymenu.SuspendLayout()
         Me.SuspendLayout()
         '
         'traymenu
         '
         Me.traymenu.ImageScalingSize = New System.Drawing.Size(20, 20)
-        Me.traymenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.UploadToolStripMenuItem, Me.SettingsToolStripMenuItem, Me.ExitToolStripMenuItem})
+        Me.traymenu.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.UploadToolStripMenuItem, Me.ClearClipboardToolStripMenuItem, Me.SettingsToolStripMenuItem, Me.ExitToolStripMenuItem})
         Me.traymenu.Name = "traymenu"
-        Me.traymenu.Size = New System.Drawing.Size(139, 76)
+        Me.traymenu.Size = New System.Drawing.Size(192, 100)
         '
         'UploadToolStripMenuItem
         '
         Me.UploadToolStripMenuItem.Name = "UploadToolStripMenuItem"
-        Me.UploadToolStripMenuItem.Size = New System.Drawing.Size(138, 24)
+        Me.UploadToolStripMenuItem.Size = New System.Drawing.Size(191, 24)
         Me.UploadToolStripMenuItem.Text = "Upload"
         '
         'SettingsToolStripMenuItem
         '
         Me.SettingsToolStripMenuItem.Name = "SettingsToolStripMenuItem"
-        Me.SettingsToolStripMenuItem.Size = New System.Drawing.Size(138, 24)
+        Me.SettingsToolStripMenuItem.Size = New System.Drawing.Size(191, 24)
         Me.SettingsToolStripMenuItem.Text = "Settings"
         '
         'ExitToolStripMenuItem
         '
         Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(138, 24)
+        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(191, 24)
         Me.ExitToolStripMenuItem.Text = "Exit"
         '
         'A9T9ToolStripMenuItem
@@ -74,6 +75,12 @@ Partial Class trayform
         'OpenFileDialog1
         '
         Me.OpenFileDialog1.DefaultExt = "jpeg"
+        '
+        'ClearClipboardToolStripMenuItem
+        '
+        Me.ClearClipboardToolStripMenuItem.Name = "ClearClipboardToolStripMenuItem"
+        Me.ClearClipboardToolStripMenuItem.Size = New System.Drawing.Size(191, 24)
+        Me.ClearClipboardToolStripMenuItem.Text = "Clear Clipboard"
         '
         'trayform
         '
@@ -98,4 +105,5 @@ Partial Class trayform
     Friend WithEvents SettingsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents UploadToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents OpenFileDialog1 As OpenFileDialog
+    Friend WithEvents ClearClipboardToolStripMenuItem As ToolStripMenuItem
 End Class

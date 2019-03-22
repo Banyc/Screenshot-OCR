@@ -38,4 +38,8 @@ Public Class trayform
         End If
         Me.Close()
     End Sub
+
+    Private Sub ClearClipboard_ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ClearClipboardToolStripMenuItem.Click
+        Clipboard.Clear()
+    End Sub
 End Class
