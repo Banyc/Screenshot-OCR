@@ -96,3 +96,9 @@ Reasons
 - [X] Fix BUG: pressing Alt + F4 kills the program though it does not activated.
 - [X] Break limitation for minimum image size by Sogou API
 - [X] Perfect UI
+- [ ] Auto fixs the grammar mistakes on OCR results
+  - https://textgears.com/api/
+  - https://www.afterthedeadline.com/api.slp
+  - https://docs.microsoft.com/en-us/windows/desktop/intl/about-the-spell-checker-api
+  - https://stackoverflow.com/a/38128912/9920172
+- [ ] Add feature: Notes Display
