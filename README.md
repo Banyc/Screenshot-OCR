@@ -6,11 +6,11 @@ Apply **OCR** or **Reverse Image Search** to Real-Time Screenshot in a Single Ke
 
 Make sure to make yourself informed the warnings below before kicking off.
 
-- Screenshots within the red rectangle are sent to third-party website to do OCR processing. No privacy guarantee.
-- BUGs may occasionally occur, which might mistaken the range of the red rectangle leading to extra screenshot sending. No privacy guarantee for your computer's full-size screenshot.
-- Your IP address may be exposed to the screenshots receiving websites.
-- Your screenshot and your IP address might be used in analysis use to the receiving websites.
-- Changes are, though little, files downloaded from the download link might be swapped. No file integrity guarantee.
+- Screenshots within the red rectangle are sent to a third-party website to do OCR processing. No privacy guarantee.
+- BUGs may occasionally occur, which might mistaken the range of the red rectangle leading to an extra screenshot sending. No privacy guarantee for your computer's full-size screenshot.
+- Your IP address may be exposed to the screenshots receiving websites (servers).
+- Your screenshot and your IP address might be used in analysis use to the receiving websites (servers).
+- Chances are, though little, files downloaded from the download link might be swapped. No file integrity guarantee.
 - some POST links are using unsafe HTTP Communications Protocol, rather than HTTPs.
 
 ## Introduction to Different APIs
