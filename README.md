@@ -103,3 +103,5 @@ Reasons
   - https://docs.microsoft.com/en-us/windows/desktop/intl/about-the-spell-checker-api
   - https://stackoverflow.com/a/38128912/9920172
 - [ ] Add feature: Notes Display
+- [ ] Re-design class structure
+- [ ] Replace Winform with WPF
