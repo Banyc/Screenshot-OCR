@@ -6,11 +6,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{971DAF92-EDF1-4D0F-A6B5-83A91B098D76}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <StartupObject>Screenshot_OCR.My.MyApplication</StartupObject>
+    <StartupObject>Sub Main</StartupObject>
     <RootNamespace>Screenshot_OCR</RootNamespace>
     <AssemblyName>Screenshot_OCR</AssemblyName>
     <FileAlignment>512</FileAlignment>
-    <MyType>WindowsForms</MyType>
+    <MyType>Console</MyType>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -55,6 +55,9 @@
     <ApplicationIcon>default.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GlobalHotKey, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\GlobalHotKey.1.1.0\lib\GlobalHotKey.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -62,6 +65,7 @@
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
@@ -83,20 +87,17 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.vb">
-      <DependentUpon>Form1.vb</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Hotkey.vb" />
-    <Compile Include="HttpRequests.vb" />
-    <Compile Include="IniFile.vb" />
-    <Compile Include="KeyboardHook.vb" />
-    <Compile Include="LoadingBox.xaml.vb">
+    <Compile Include="Controller\System\ScreenCap.vb" />
+    <Compile Include="Controller\System\Hotkeys\Hotkeys.vb" />
+    <Compile Include="Controller\Service\HttpRequests.vb" />
+    <Compile Include="Controller\System\IniFile.vb" />
+    <Compile Include="Controller\System\KeyboardHook.vb" />
+    <Compile Include="View\LoadingBox.xaml.vb">
       <DependentUpon>LoadingBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controller\Controller.vb" />
+    <Compile Include="Model\Configuration.vb" />
+    <Compile Include="Model\HotkeyConfig.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -113,36 +114,37 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Program.vb" />
-    <Compile Include="SettingsForm.Designer.vb">
+    <Compile Include="View\ScreenShotDisplay.xaml.vb">
+      <DependentUpon>ScreenShotDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SettingsForm.Designer.vb">
       <DependentUpon>SettingsForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="SettingsForm.vb">
+    <Compile Include="View\SettingsForm.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="trayform.Designer.vb">
+    <Compile Include="View\trayform.Designer.vb">
       <DependentUpon>trayform.vb</DependentUpon>
     </Compile>
-    <Compile Include="trayform.vb">
+    <Compile Include="View\trayform.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="OutputForm.xaml.vb">
+    <Compile Include="View\OutputForm.xaml.vb">
       <DependentUpon>OutputForm.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\ViewController.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="SettingsForm.resx">
+    <EmbeddedResource Include="View\SettingsForm.resx">
       <DependentUpon>SettingsForm.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="trayform.resx">
+    <EmbeddedResource Include="View\trayform.resx">
       <DependentUpon>trayform.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
@@ -158,19 +160,25 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="default.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="LoadingBox.xaml">
+    <Page Include="View\LoadingBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="OutputForm.xaml">
+    <Page Include="View\OutputForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ScreenShotDisplay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

@@ -96,12 +96,12 @@ Reasons
 - [X] Fix BUG: pressing Alt + F4 kills the program though it does not activated.
 - [X] Break limitation for minimum image size by Sogou API
 - [X] Perfect UI
-- [ ] fix resolution issue in some desktops
+- [X] fix resolution issue in some desktops
 - [ ] Auto fixs the grammar mistakes on OCR results
   - https://textgears.com/api/
   - https://www.afterthedeadline.com/api.slp
   - https://docs.microsoft.com/en-us/windows/desktop/intl/about-the-spell-checker-api
   - https://stackoverflow.com/a/38128912/9920172
 - [ ] Add feature: Notes Display
-- [ ] Re-design class structure
-- [ ] Replace Winform with WPF
+- [X] Adapt MVC pattern
+- [X] Replace the draw board from Winform to WPF

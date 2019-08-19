@@ -2,6 +2,15 @@
 'https://social.technet.microsoft.com/wiki/contents/articles/13319.vb-net-how-to-make-a-right-click-menu-for-a-tray-icon.aspx
 Public Class trayform
     Property IsRunning As Boolean = False  'Prevent Me from closing while there are still functions running
+    Private _controller As Controller.Controller
+    Public Sub New(controller As Controller.Controller)
+
+        ' 此调用是设计器所必需的。
+        InitializeComponent()
+
+        ' 在 InitializeComponent() 调用之后添加任何初始化。
+        _controller = controller
+    End Sub
     Private Sub trayform_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         traymenu.Show(Cursor.Position) 'Shows the Right click menu on the cursor position
         Me.Left = traymenu.Left + 1 'Puts the form behind the menu horizontally
@@ -16,14 +25,13 @@ Public Class trayform
     End Sub
 
     Private Sub ExitToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExitToolStripMenuItem.Click
-        Form1.tray.Visible = False 'Hides the tray icon. if we don't do this we can kill the app, but the icon will still be there
-        Form1.FinalizingIniFile()
-        Form1.FinalizingRegisterHotkey()
-        End 'Kills the application. It skips Form1's Closing Event
+        _controller.Close()
     End Sub
 
     Private Sub SettingsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SettingsToolStripMenuItem.Click
-        SettingsForm.Show()
+        Dim settingsForm As SettingsForm = New SettingsForm(_controller)
+
+        settingsForm.Show()
         SettingsForm.Activate()
     End Sub
 
@@ -34,7 +42,7 @@ Public Class trayform
             Dim imgPath = OpenFileDialog1.FileName
             Dim binReader As New BinaryReader(File.Open(imgPath, FileMode.Open))
             Dim binData = binReader.ReadBytes(binReader.BaseStream.Length)
-            HttpRequests.AutoDirectOCR(binData)
+            Controller.HttpRequests.AutoDirectOCR(binData)
         End If
         Me.Close()
     End Sub
