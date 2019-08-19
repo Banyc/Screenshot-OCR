@@ -14,16 +14,19 @@ Namespace View
 
         Private _fullScreenshot As System.IO.MemoryStream
 
-        Shared Property Num_Instance As Integer = 0
+        Public Shared ReadOnly Property Num_Instance As Integer
+            Get
+                Return _instanceList.Count
+            End Get
+        End Property
 
         Private Shared _instanceList As List(Of ScreenShotDisplay) = New List(Of ScreenShotDisplay)
 
         Public Sub New(controller As Controller.Controller)
+            _instanceList.Add(Me)
 
             ' 此调用是设计器所必需的。
             InitializeComponent()
-
-            'Me.Hide()
 
             ' 在 InitializeComponent() 调用之后添加任何初始化。
             _controller = controller
@@ -37,8 +40,6 @@ Namespace View
             _mRect.Fill = Nothing
             _mRect.Stroke = Brushes.Red
             canvas_drawBoard.Children.Add(_mRect)
-            _instanceList.Add(Me)
-            Num_Instance += 1
         End Sub
         Public Sub SetDisplayingImage(img As Bitmap)
             Dim _fullScreenshot As System.IO.MemoryStream = New System.IO.MemoryStream()
@@ -105,7 +106,6 @@ Namespace View
                 Me._fullScreenshot.Dispose()
             End If
             Me.canvas_screenShot.Children.Clear()
-            Num_Instance -= 1
             Me.Close()
             'Me.Hide()
         End Sub
