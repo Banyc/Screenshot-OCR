@@ -2,9 +2,9 @@
     Public Class Controller
         Private _config As Model.Configuration
 
-        Public Event GotScreenShot(screenShot As Bitmap)
         Public Event ConfigChanged()
         Public Event Closing()
+        Public Event KeyPressedForScreenCapture()
 
         Public Sub New()
             _config = Model.Configuration.Load()
@@ -25,18 +25,15 @@
 
         ' called by hotkey event
         Public Sub KeyPressed()
-            If View.ScreenShotDisplay.Num_Instance > 0 Then
-                View.ScreenShotDisplay.Destroy()
-            Else
-                LaunchCap()
-            End If
+            RaiseEvent KeyPressedForScreenCapture()
         End Sub
 
-        ' called by hotkey event
-        Private Sub LaunchCap()
+        ' called by viewController
+        Public Function GetScreenshot() As Bitmap
             Dim screenShot As Bitmap = ScreenCap.CaptureScreen()
-            RaiseEvent GotScreenShot(screenShot)
-        End Sub
+            'RaiseEvent GotScreenShot(screenShot)
+            Return screenShot
+        End Function
 
         Public Function GetConfigCopy()
             Return Model.Configuration.Load()

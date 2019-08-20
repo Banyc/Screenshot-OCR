@@ -4,17 +4,14 @@ Namespace View
 
         Private WithEvents _controller As Controller.Controller
         Private WithEvents _tray As System.Windows.Forms.NotifyIcon
-        'Private WithEvents _screenShotDisplay As ScreenShotDisplay
-        'Private WithEvents _settingForm As SettingsForm
-        'Private WithEvents _outputForm As OutputForm
-        'Private WithEvents _loadingBox As LoadingBox
+        Private WithEvents _screenShotDisplay As ScreenShotDisplay
 
         Public Sub New(controller As Controller.Controller)
             _controller = controller
             ' Add event
-            AddHandler _controller.GotScreenShot, AddressOf controller_GotScreenShot
             AddHandler _controller.ConfigChanged, AddressOf controller_ConfigChanged
             AddHandler _controller.Closing, AddressOf controller_Closing
+            AddHandler _controller.KeyPressedForScreenCapture, AddressOf controller_KeyPressedForScreenCapture
 
             Dim components = New System.ComponentModel.Container()
             _tray = New System.Windows.Forms.NotifyIcon()
@@ -29,15 +26,17 @@ Namespace View
                 End
             End If
 
-            'Dim screenShotDisplay As ScreenShotDisplay
-            '_screenShotDisplay = New ScreenShotDisplay(_controller)
+            _screenShotDisplay = New ScreenShotDisplay(_controller)
         End Sub
 
-        Private Sub controller_GotScreenShot(screenShot As Bitmap)
-            Dim screenShotDisplay As ScreenShotDisplay
-            screenShotDisplay = New ScreenShotDisplay(_controller)
-            screenShotDisplay.SetDisplayingImage(screenShot)
-            screenShotDisplay.Show()
+        Private Sub controller_KeyPressedForScreenCapture()
+            If _screenShotDisplay.IsVisible AndAlso _screenShotDisplay.Opacity > 0 Then
+                _screenShotDisplay.MyHide()
+            Else
+                Dim screenshot As Bitmap = _controller.GetScreenshot()
+                _screenShotDisplay.SetDisplayingImage(screenshot)
+                _screenShotDisplay.MyShow()
+            End If
         End Sub
 
         Private Sub controller_ConfigChanged()

@@ -9,7 +9,11 @@ Namespace Controller
         End Function
 
         Public Shared Function CaptureScreen(point1 As System.Windows.Point, point2 As System.Windows.Point) As Bitmap
-            Return CaptureScreen(New Point(point1.X, point1.Y), New Point(point2.X, point2.Y))
+            If Double.IsNaN(point1.X) Then
+                Return Nothing
+            Else
+                Return CaptureScreen(New Point(point1.X, point1.Y), New Point(point2.X, point2.Y))
+            End If
         End Function
 
         Public Shared Function CaptureScreen(point1 As Point, point2 As Point) As Bitmap

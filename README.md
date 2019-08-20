@@ -105,4 +105,4 @@ Reasons
 - [ ] Add feature: Notes Display
 - [X] Adapt MVC pattern
 - [X] Replace the draw board from Winform to WPF
-- [ ] Hide draw board rather than close it after drawing to reduce startup flashing
+- [X] Reduce startup flickering
