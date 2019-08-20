@@ -20,9 +20,18 @@ Namespace View
             _config = _controller.GetConfigCopy()
             Me.WindowStyle = WindowStyle.None
             Me.AllowsTransparency = True
-            Me.WindowState = WindowState.Maximized
             Me.ResizeMode = ResizeMode.NoResize  ' <https://stackoverflow.com/a/28413414>
+            'Me.WindowState = WindowState.Maximized
+            ' alternative to `Me.WindowState = WindowState.Maximized`. But oversized
+            Me.Left = 0
+            Me.Top = 0
+            Me.Width = Windows.Forms.Screen.PrimaryScreen.Bounds.Width
+            Me.Height = Windows.Forms.Screen.PrimaryScreen.Bounds.Height
+
             Me.ShowInTaskbar = False
+            Me.Focusable = False
+            ' Me cannot be focused when `Show()` is called only
+            Me.ShowActivated = False
             '#If Not DEBUG Then
             Me.Topmost = True
             '#End If
@@ -48,7 +57,14 @@ Namespace View
             imageControl.Source = imageSource
 
             'Me.canvas_screenShot.Children.Add(imageControl)
-            Me.Background = New ImageBrush(imageSource)
+            Dim imageBruch As ImageBrush = New ImageBrush(imageSource)
+            ' in case the maximized window is oversized
+            imageBruch.Stretch = Stretch.None
+            imageBruch.AlignmentX = AlignmentX.Left
+            imageBruch.AlignmentY = AlignmentY.Top
+
+            Me.Background = imageBruch
+
         End Sub
 
         Private Sub ScreenShotDisplay_MouseDown(sender As Object, e As MouseButtonEventArgs) Handles Me.MouseDown
@@ -119,10 +135,15 @@ Namespace View
         End Function
 
         Public Sub MyShow()
+            Me.Topmost = True
             Me.Opacity = 1
         End Sub
 
         Public Sub MyHide()
+            ' prevent Me from getting focused. Worked with `Me.ShowActivated = False`
+            Me.Hide()
+            Me.Show()
+
             Me.Opacity = 0
         End Sub
 

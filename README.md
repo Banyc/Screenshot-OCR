@@ -30,14 +30,14 @@ Make sure to make yourself informed the warnings below before kicking off.
 ### For Screenshot OCR Now
 
 1. Run executive file;
-2. Press F4 when you need to convert letters on the screen to editable with OCR;
-3. Press F4 again or right click to undo;
+2. Press `F4` when you need to convert letters on the screen to editable with OCR;
+3. Press `F4` again or right click to undo;
 4. Drag a rectangle to select the letters-contained region while pressing left key;
 5. Wait for a yellow message box to pop up. The recognized letters shown in the box are in your clipboard;
 6. Double click the message box to copy them again, right click to close it;
-7. Go to step 2.
+7. Go to step *2*.
 
-Hint: In screenshot mode, press Ctrl while left click to re-capture the previous region.
+Hint: In screenshot mode, press `Ctrl` while left click to re-capture the previous region.
 
 ### For Image Reverse Search
 
