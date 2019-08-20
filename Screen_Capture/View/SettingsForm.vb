@@ -10,7 +10,7 @@ Public Class SettingsForm
 
         ' 在 InitializeComponent() 调用之后添加任何初始化。
         _controller = controller
-        _config = Model.Configuration.Load()
+        _config = _controller.GetConfigCopy()
     End Sub
     Private Sub Settings_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Limit the Form size
