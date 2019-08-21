@@ -9,7 +9,7 @@ Namespace Model
 
         Public Shared Function Load(iniFile As Controller.IniFile) As HotkeyConfig
             Dim config As New HotkeyConfig()
-            config.ScreenCapture_KeyValue = CType(Int(iniFile.ReadIni(Section:="HotKey", Key:="ScreenCapture_KeyValue", DefaultValue:=Keys.F4)), Keys)
+            config.ScreenCapture_KeyValue = CType(Int(iniFile.ReadIni(Section:="HotKey", Key:="ScreenCapture_KeyValue", DefaultValue:=Key.F4)), Key)
             config.ScreenCapture_KeyModifier = CType(Int(iniFile.ReadIni(Section:="HotKey", Key:="ScreenCapture_KeyModifier", DefaultValue:=KeyModifier.None)), KeyModifier)
             config.ScreenCapture_HotkeyId = HotkeyId.ScreenCapture
 

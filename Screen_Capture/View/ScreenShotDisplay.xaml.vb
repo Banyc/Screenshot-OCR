@@ -15,9 +15,10 @@ Namespace View
         Private _fullScreenshot As System.IO.MemoryStream
 
         Public Sub New(controller As Controller.Controller)
-            InitializeComponent()
             _controller = controller
             _config = _controller.GetConfigCopy()
+            _fullScreenshot = Nothing
+            InitializeComponent()
             Me.WindowStyle = WindowStyle.None
             Me.AllowsTransparency = True
             Me.ResizeMode = ResizeMode.NoResize  ' <https://stackoverflow.com/a/28413414>
@@ -43,7 +44,7 @@ Namespace View
             Me.Show()
         End Sub
         Public Sub SetDisplayingImage(img As Bitmap)
-            Dim _fullScreenshot As System.IO.MemoryStream = New System.IO.MemoryStream()
+            _fullScreenshot = New System.IO.MemoryStream()
             img.Save(_fullScreenshot, System.Drawing.Imaging.ImageFormat.Bmp)
             _fullScreenshot.Position = 0
 
@@ -113,6 +114,7 @@ Namespace View
         Private Sub HideWindow()
             If Me._fullScreenshot IsNot Nothing Then
                 Me._fullScreenshot.Dispose()
+                Me._fullScreenshot = Nothing
             End If
             Me.Background = Nothing
             GC.Collect()
