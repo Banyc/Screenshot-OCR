@@ -26,16 +26,16 @@ Namespace View
             ' alternative to `Me.WindowState = WindowState.Maximized`. But oversized
             Me.Left = 0
             Me.Top = 0
-            Me.Width = Windows.Forms.Screen.PrimaryScreen.Bounds.Width
-            Me.Height = Windows.Forms.Screen.PrimaryScreen.Bounds.Height
+
+            ' implemented in `MyShow()`
+            'Me.Width = Windows.Forms.Screen.PrimaryScreen.Bounds.Width
+            'Me.Height = Windows.Forms.Screen.PrimaryScreen.Bounds.Height
 
             Me.ShowInTaskbar = False
             Me.Focusable = False
             ' Me cannot be focused when `Show()` is called only
             Me.ShowActivated = False
-            '#If Not DEBUG Then
-            Me.Topmost = True
-            '#End If
+
             _mRect = New System.Windows.Shapes.Rectangle()
             _mRect.Fill = Nothing
             _mRect.Stroke = Brushes.Red
@@ -138,10 +138,16 @@ Namespace View
 
         Public Sub MyShow()
             Me.Topmost = True
+            Me.Width = Windows.Forms.Screen.PrimaryScreen.Bounds.Width
+            Me.Height = Windows.Forms.Screen.PrimaryScreen.Bounds.Height
             Me.Opacity = 1
         End Sub
 
         Public Sub MyHide()
+            Me.Topmost = False
+            Me.Width = 0
+            Me.Height = 0
+
             ' prevent Me from getting focused. Worked with `Me.ShowActivated = False`
             Me.Hide()
             Me.Show()
