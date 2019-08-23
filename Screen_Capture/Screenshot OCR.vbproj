@@ -87,11 +87,11 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller\System\ConfigIO\IConfigIniConn.vb" />
     <Compile Include="Controller\System\ScreenCap.vb" />
     <Compile Include="Controller\System\Hotkeys\Hotkeys.vb" />
     <Compile Include="Controller\Service\HttpRequests.vb" />
-    <Compile Include="Controller\System\IniFile.vb" />
-    <Compile Include="Controller\System\KeyboardHook.vb" />
+    <Compile Include="Controller\System\ConfigIO\IniFile.vb" />
     <Compile Include="View\LoadingBox.xaml.vb">
       <DependentUpon>LoadingBox.xaml</DependentUpon>
     </Compile>

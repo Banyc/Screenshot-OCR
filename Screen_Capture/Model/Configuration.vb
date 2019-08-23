@@ -1,6 +1,6 @@
 ﻿Namespace Model
     Public Class Configuration
-        Private Const iniPath As String = "./config.ini"
+        Private Const IniPath As String = "./config.ini"
 
         Public Enum Language  ' detective language
             ara = 0  'Arabic
@@ -53,20 +53,23 @@
 
         'initiate config through ".ini" file
         Public Shared Function Load() As Configuration
+            Dim configConn As New Controller.IniFile(IniPath)
+            Return Load(configConn)
+        End Function
+        'initiate config through ".ini" file
+        Public Shared Function Load(configConn As Controller.IConfigIniConn) As Configuration
             Dim config As Configuration = New Configuration()
 
-            Dim iniFile As New Controller.IniFile(iniPath)
+            config.Mode = CType(Int(configConn.Load(section:="Default", key:="Mode", defaultValue:="0")), ProcessMode)
+            config.A9T9_Lang = CType(Int(configConn.Load(section:="A9T9", key:="Language", defaultValue:=Str(Language.eng))), Language)
+            config.A9T9_Apikey = configConn.Load(section:="A9T9", key:="API_Key", defaultValue:="helloworld")
+            config.A9T9_TimeOut = configConn.Load(section:="A9T9", key:="TimeOut", defaultValue:="5")
+            config.Sogou_TimeOut = configConn.Load(section:="Sogou", key:="TimeOut", defaultValue:="5")
+            config.SauceNAO_Timeout = configConn.Load(section:="SauceNAO", key:="Timeout", defaultValue:="5")
 
-            config.Mode = CType(Int(iniFile.ReadIni(Section:="Default", Key:="Mode", DefaultValue:="0")), ProcessMode)
-            config.A9T9_Lang = CType(Int(iniFile.ReadIni(Section:="A9T9", Key:="Language", DefaultValue:=Str(Language.eng))), Language)
-            config.A9T9_Apikey = iniFile.ReadIni(Section:="A9T9", Key:="API_Key", DefaultValue:="helloworld")
-            config.A9T9_TimeOut = iniFile.ReadIni(Section:="A9T9", Key:="TimeOut", DefaultValue:="5")
-            config.Sogou_TimeOut = iniFile.ReadIni(Section:="Sogou", Key:="TimeOut", DefaultValue:="5")
-            config.SauceNAO_Timeout = iniFile.ReadIni(Section:="SauceNAO", Key:="Timeout", DefaultValue:="5")
+            config.Hotkeys = HotkeyConfig.Load(configConn)
 
-            config.Hotkeys = HotkeyConfig.Load(iniFile)
-
-            config.EraseAllNewlines = CType(iniFile.ReadIni(Section:="Advance", Key:="EraseAllNewlines", DefaultValue:="1"), Boolean)
+            config.EraseAllNewlines = CType(configConn.Load(section:="Advance", key:="EraseAllNewlines", defaultValue:="1"), Boolean)
 
             Return config
         End Function
@@ -75,19 +78,22 @@
 
         End Sub
 
+
         Public Sub Save()
-            Dim iniFile As New Controller.IniFile(iniPath)
-            iniFile.WriteIni(Section:="Default", Key:="Mode", Value:=Mode)
-            iniFile.WriteIni(Section:="A9T9", Key:="Language", Value:=A9T9_Lang)
-            iniFile.WriteIni(Section:="A9T9", Key:="API_Key", Value:=A9T9_Apikey)
-            iniFile.WriteIni(Section:="A9T9", Key:="TimeOut", Value:=A9T9_TimeOut)
-            iniFile.WriteIni(Section:="Sogou", Key:="TimeOut", Value:=Sogou_TimeOut)
-            iniFile.WriteIni(Section:="SauceNAO", Key:="Timeout", Value:=SauceNAO_Timeout)
+            Dim configConn As New Controller.IniFile(IniPath)
+            Me.Save(configConn)
+        End Sub
+        Public Sub Save(configConn As Controller.IConfigIniConn)
+            configConn.Save(section:="Default", key:="Mode", value:=Mode)
+            configConn.Save(section:="A9T9", key:="Language", value:=A9T9_Lang)
+            configConn.Save(section:="A9T9", key:="API_Key", value:=A9T9_Apikey)
+            configConn.Save(section:="A9T9", key:="TimeOut", value:=A9T9_TimeOut)
+            configConn.Save(section:="Sogou", key:="TimeOut", value:=Sogou_TimeOut)
+            configConn.Save(section:="SauceNAO", key:="Timeout", value:=SauceNAO_Timeout)
 
-            iniFile.WriteIni(Section:="HotKey", Key:="ScreenCapture_KeyValue", Value:=Hotkeys.ScreenCapture_KeyValue)
-            iniFile.WriteIni(Section:="HotKey", Key:="ScreenCapture_KeyModifier", Value:=Hotkeys.ScreenCapture_KeyModifier)
+            HotkeyConfig.Save(Hotkeys, configConn)
 
-            iniFile.WriteIni(Section:="Advance", Key:="EraseAllNewlines", Value:=EraseAllNewlines)
+            configConn.Save(section:="Advance", key:="EraseAllNewlines", value:=EraseAllNewlines)
         End Sub
 
 
