@@ -19,7 +19,7 @@ Namespace Controller.Hotkeys
 
         Private Shared Sub Load()
             Dim keyConfig As Model.HotkeyConfig
-            keyConfig = Model.Configuration.Load().Hotkeys
+            keyConfig = _controller.GetConfigCopy().Hotkeys
 
             Hotkey = keyConfig.ScreenCapture_KeyValue
             Modifier = keyConfig.ScreenCapture_KeyModifier
