@@ -14,10 +14,20 @@ Namespace View
 
         Private _fullScreenshot As System.IO.MemoryStream
 
+        Private _timer As Threading.DispatcherTimer
+
         Public Sub New(controller As Controller.Controller)
             _controller = controller
             _config = _controller.GetConfigCopy()
             _fullScreenshot = Nothing
+            _timer = New Threading.DispatcherTimer()
+            AddHandler _timer.Tick,
+                Sub()
+                    _timer.Stop()
+                    Me.Hide()
+                End Sub
+            _timer.Interval = New TimeSpan(1000000)
+
             InitializeComponent()
             Me.WindowStyle = WindowStyle.None
             Me.AllowsTransparency = True
@@ -28,20 +38,24 @@ Namespace View
             Me.Top = 0
 
             ' implemented in `MyShow()`
-            'Me.Width = Windows.Forms.Screen.PrimaryScreen.Bounds.Width
-            'Me.Height = Windows.Forms.Screen.PrimaryScreen.Bounds.Height
+            Me.Width = Windows.Forms.Screen.PrimaryScreen.Bounds.Width
+            Me.Height = Windows.Forms.Screen.PrimaryScreen.Bounds.Height
 
             Me.ShowInTaskbar = False
             Me.Focusable = False
             ' Me cannot be focused when `Show()` is called only
             Me.ShowActivated = False
 
+#If Not DEBUG Then
+            Me.Topmost = True
+#End If
+
             _mRect = New System.Windows.Shapes.Rectangle()
             _mRect.Fill = Nothing
             _mRect.Stroke = Brushes.Red
             canvas_drawBoard.Children.Add(_mRect)
             Me.MyHide()
-            Me.Show()
+            'Me.Show()
         End Sub
         Public Sub SetDisplayingImage(img As Bitmap)
             _fullScreenshot = New System.IO.MemoryStream()
@@ -65,7 +79,6 @@ Namespace View
             imageBruch.AlignmentY = AlignmentY.Top
 
             Me.Background = imageBruch
-
         End Sub
 
         Private Sub ScreenShotDisplay_MouseDown(sender As Object, e As MouseButtonEventArgs) Handles Me.MouseDown
@@ -91,16 +104,12 @@ Namespace View
                 IsMouseDown = False
                 Dim point1 As Point = New Point(Windows.Controls.Canvas.GetLeft(_mRect), Windows.Controls.Canvas.GetTop(_mRect))
                 Dim point2 As Point = New Point(Windows.Controls.Canvas.GetLeft(_mRect) + _mRect.ActualWidth, Windows.Controls.Canvas.GetTop(_mRect) + _mRect.ActualHeight)
-#If DEBUG Then
-                Me.Hide()
-#End If
+
                 Dim partialCap As Bitmap = Controller.ScreenCap.CaptureScreen(point1, point2)
-#If DEBUG Then
-                Me.Show()
-#End If
+
                 Upload_Dispose(partialCap)
             End If
-            HideWindow()
+            MyHide()
         End Sub
 
         Private Sub Upload_Dispose(image As Bitmap)
@@ -109,16 +118,6 @@ Namespace View
                 Controller.HttpRequests.AutoDirectOCR(image)
                 image.Dispose()
             End If
-        End Sub
-
-        Private Sub HideWindow()
-            If Me._fullScreenshot IsNot Nothing Then
-                Me._fullScreenshot.Dispose()
-                Me._fullScreenshot = Nothing
-            End If
-            Me.Background = Nothing
-            GC.Collect()
-            Me.MyHide()
         End Sub
 
         Private Function ResizeImg(img As Bitmap) As Bitmap
@@ -137,23 +136,38 @@ Namespace View
         End Function
 
         Public Sub MyShow()
-            Me.Topmost = True
-            Me.Width = Windows.Forms.Screen.PrimaryScreen.Bounds.Width
-            Me.Height = Windows.Forms.Screen.PrimaryScreen.Bounds.Height
             Me.Opacity = 1
+            Me.Show()
+
+            'Me.Topmost = True
+            'Me.Width = Windows.Forms.Screen.PrimaryScreen.Bounds.Width
+            'Me.Height = Windows.Forms.Screen.PrimaryScreen.Bounds.Height
+            'Me.Opacity = 1
         End Sub
 
         Public Sub MyHide()
-            Me.Topmost = False
-            Me.Width = 0
-            Me.Height = 0
+            If Me._fullScreenshot IsNot Nothing Then
+                Me._fullScreenshot.Dispose()
+                Me._fullScreenshot = Nothing
+            End If
+            Me.Background = Nothing
             Me.Opacity = 0
+            GC.Collect()
+            Me.UpdateLayout()
+            _timer.Start()
 
-            ' prevent Me from getting focused. Worked with `Me.ShowActivated = False`
-            Me.Hide()
-            Me.Show()
+            'Me.Topmost = False
+            'Me.Width = 0
+            'Me.Height = 0
+            'Me.Opacity = 0
+
+            '' prevent Me from getting focused. Worked with `Me.ShowActivated = False`
+            'Me.Hide()
+            'Me.Show()
 
         End Sub
+
+
 
     End Class
 End Namespace
