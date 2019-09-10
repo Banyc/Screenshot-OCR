@@ -7,7 +7,7 @@ Imports System.Windows.Media.Animation
 Public Class LoadingBox
     Private Sub LoadingBox_Loaded(sender As Object, e As RoutedEventArgs) Handles Me.Loaded
         Dim hwnd = New System.Windows.Interop.WindowInteropHelper(Me).Handle
-        WindowsServices.SetWindowExTransparent(hwnd)
+        ClickThruWindow.SetWindowExTransparent(hwnd)
         ResizeWindow()
     End Sub
 
@@ -76,21 +76,4 @@ Public Class LoadingBox
     End Sub
 #End Region
 
-End Class
-
-' Makes the window a click-through-able hover-window
-Public Class WindowsServices
-    'about syntax of hex expression https://codeday.me/bug/20180418/155059.html
-    Private Const WS_EX_TRANSPARENT As Integer = &H20  ' i.e. 32
-
-    Private Const GWL_EXSTYLE As Integer = -20
-
-    Private Declare Function GetWindowLong Lib "user32.dll" Alias "GetWindowLongA" (ByVal hwnd As IntPtr, ByVal index As Integer) As Integer
-
-    Private Declare Function SetWindowLong Lib "user32.dll" Alias "SetWindowLongA" (ByVal hwnd As IntPtr, ByVal index As Integer, ByVal newStyle As Integer) As Integer
-
-    Public Shared Sub SetWindowExTransparent(ByVal hwnd As IntPtr)
-        Dim extendedStyle = GetWindowLong(hwnd, GWL_EXSTYLE)
-        SetWindowLong(hwnd, GWL_EXSTYLE, (extendedStyle Or WS_EX_TRANSPARENT))
-    End Sub
 End Class

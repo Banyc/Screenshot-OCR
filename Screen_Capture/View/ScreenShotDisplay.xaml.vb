@@ -147,12 +147,12 @@ Namespace View
             Me.Topmost = False
             Me.Width = 0
             Me.Height = 0
+            Me.Opacity = 0
 
             ' prevent Me from getting focused. Worked with `Me.ShowActivated = False`
             Me.Hide()
             Me.Show()
 
-            Me.Opacity = 0
         End Sub
 
     End Class

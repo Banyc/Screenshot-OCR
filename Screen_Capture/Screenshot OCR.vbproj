@@ -87,6 +87,7 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller\System\ClickThruWindow.vb" />
     <Compile Include="Controller\System\ConfigIO\IConfigIniConn.vb" />
     <Compile Include="Controller\System\ScreenCap.vb" />
     <Compile Include="Controller\System\Hotkeys\Hotkeys.vb" />
